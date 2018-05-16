@@ -1,14 +1,19 @@
 #pragma once
 #include <string>
-#include <list>
+#include <vector>
+#include "Texture.h"
 
 class Panel {
 
 	public:
-		Panel(int ArraySize);
+		Panel(SDL_Renderer* _renderer, std::vector<std::string> _imagePaths);
 		~Panel();
 
-		std::list<std::string> DialogueLines[];
+		int m_currentLine;
+		Texture* m_BackgroundImage;
+		std::vector<std::string> m_DialogueLines;
+		std::vector<Texture*> m_SpriteList;
+		SDL_Renderer* m_Renderer;
 
-		void ShowNextLine();
+		void ShowLine(int _lineIndex);
 };

@@ -2,6 +2,7 @@
 
 Game::Game(Settings* _initialSettings) {
 
+	m_PanelList->push_back(new Panel(m_Renderer, new std::vector<std::string>("")));
 }
 
 Game::~Game() {
@@ -39,10 +40,17 @@ void Game::Update() {
 	
 }
 
+void Game::Render() {
+
+	SDL_RenderClear(m_Renderer);
+
+}
+
 void Game::Load() {
 
 }
 
+//TODO Remove, implemented in Texture
 SDL_Texture* Game::loadTexture(std::string path) {
 
 	SDL_Texture* newTexture = NULL;

@@ -133,6 +133,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="TanyaPortrait01.png" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

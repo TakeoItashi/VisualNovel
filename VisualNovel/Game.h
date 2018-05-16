@@ -1,7 +1,7 @@
 #pragma once
 #include "Panel.h"
 #include "Settings.h"
-#include "list"
+#include <vector>
 #include "include\SDL.h"
 #include "include\SDL_image.h"
 
@@ -18,14 +18,14 @@ class Game {
 
 		SDL_Surface* m_ScreenSurface = NULL;
 		SDL_Surface* m_Background = NULL;
-		std::list<Panel> PanelList[];
+		std::vector<Panel> m_PanelList[];
 
 		void Init();
 		void NewGame();
 		void Update();
+		void Render();
 		void Load();
+		void ChangeSettings(Settings* NewSettings);
 
 		SDL_Texture* loadTexture(std::string path);
-
-		void ChangeSettings(Settings* NewSettings);
 };
