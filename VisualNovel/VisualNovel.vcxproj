@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="DialogueLine.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="ImageLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Settings.cpp" />
@@ -142,9 +143,13 @@
   <ItemGroup>
     <ClInclude Include="DialogueLine.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ImageImports.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

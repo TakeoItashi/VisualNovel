@@ -2,18 +2,18 @@
 
 Game::Game(Settings* _initialSettings) {
 
-	m_PanelList->push_back(new Panel(m_Renderer, new std::vector<std::string>("")));
 }
 
 Game::~Game() {
-	SDL_DestroyTexture(m_Texture);
-	m_Texture = NULL;
 
+	SDL_DestroyTexture(m_Texture);
 	SDL_DestroyRenderer(m_Renderer);
 	SDL_DestroyWindow(m_Window);
+	delete m_ImageLoader;
+	m_Texture = NULL;
 	m_Renderer = NULL;
 	m_Window = NULL;
-
+	m_ImageLoader = NULL;
 	IMG_Quit();
 	SDL_Quit();
 }
@@ -28,11 +28,21 @@ void Game::Init() {
 	
 	SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	m_ScreenSurface = SDL_GetWindowSurface(m_Window);
+
+	m_ImageLoader = new ImageLoader(m_Renderer);
+	m_ImageLoader->LoadTextures();
+	
+	std::vector<int> testIndicies;
+
+	testIndicies.push_back(0);
+	testIndicies.push_back(1);
+	Panel* newPanel = new Panel(m_Renderer, m_ImageLoader->GetTextures(testIndicies));
+	m_PanelList.push_back(newPanel);
 }
 
 void Game::NewGame() {
 
-	m_Texture = loadTexture("wallpaper.jpg");
+
 }
 
 void Game::Update() {
@@ -43,22 +53,11 @@ void Game::Update() {
 void Game::Render() {
 
 	SDL_RenderClear(m_Renderer);
-
+	m_PanelList[0]->ShowLine(0);
 }
 
 void Game::Load() {
 
-}
-
-//TODO Remove, implemented in Texture
-SDL_Texture* Game::loadTexture(std::string path) {
-
-	SDL_Texture* newTexture = NULL;
-	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
-	newTexture = SDL_CreateTextureFromSurface(m_Renderer, loadedSurface);
-	SDL_FreeSurface(loadedSurface);
-
-	return newTexture;
 }
 
 void Game::ChangeSettings(Settings* NewSettings) {

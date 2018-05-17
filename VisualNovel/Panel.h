@@ -6,7 +6,7 @@
 class Panel {
 
 	public:
-		Panel(SDL_Renderer* _renderer, std::vector<std::string> _imagePaths);
+		Panel(SDL_Renderer* _renderer, std::vector<Texture*> _Images);
 		~Panel();
 
 		int m_currentLine;

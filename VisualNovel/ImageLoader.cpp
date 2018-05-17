@@ -1,8 +1,9 @@
 #include "ImageLoader.h"
 
-ImageLoader::ImageLoader()
+ImageLoader::ImageLoader(SDL_Renderer* _renderer)
 {
 	m_loadedTextures.shrink_to_fit();
+	m_Renderer = _renderer;
 }
 
 ImageLoader::~ImageLoader()
@@ -14,20 +15,29 @@ void ImageLoader::LoadTextures()
 {
 	//Parse ImageImports.txt
 	std::ifstream imagefile ("ImageImports.txt");
-	std::vector<std::string> fileNames;
+	std::string fileNames;
 
 	if (imagefile.is_open()) {
 
-		while (getline (imagefile, fileNames.back()))
+		while (getline (imagefile, fileNames))
 		{
-
+			Texture* newTexture = new Texture();
+			newTexture->LoadMedia(fileNames, m_Renderer);
+			m_loadedTextures.push_back(newTexture);
 		}
 	}
-
-	//Add Images to loadedTextures List
 }
 
-Texture* ImageLoader::GetTexture(int index)
+std::vector<Texture*> ImageLoader::GetTextures(std::vector<int> indicies)
 {
-	return m_loadedTextures[index];
+	std::vector<Texture*> newList;
+
+	for (int i = 0; i < indicies.size(); i++) {
+
+		newList.push_back(m_loadedTextures[indicies[i]]);
+	}
+
+	//TODO newList löschen?
+
+	return newList;
 }

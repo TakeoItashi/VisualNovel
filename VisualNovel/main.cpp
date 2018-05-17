@@ -20,15 +20,17 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
-		//Apply the PNG image
+		newGame->Render();
+		//TODO Remove
+		////Apply the PNG image
 		SDL_Rect stretchRect;
 		stretchRect.x = 0;
 		stretchRect.y = 0;
 		stretchRect.w = 800;
 		stretchRect.h = 600;
-		
-		SDL_RenderClear(newGame->m_Renderer);
-		SDL_RenderCopy(newGame->m_Renderer, newGame->m_Texture, NULL, NULL);
+		//
+		//SDL_RenderClear(newGame->m_Renderer);
+		//SDL_RenderCopy(newGame->m_Renderer, newGame->m_Texture, NULL, NULL);
 		SDL_RenderPresent(newGame->m_Renderer);
 	}
 	return 0;

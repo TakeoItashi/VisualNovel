@@ -2,16 +2,18 @@
 #include <vector>
 #include "Texture.h"
 #include <fstream>
-#include <iostream>
+#include <sstream>
 #include <string>
+
 class ImageLoader {
 
 	public:
-		ImageLoader();
+		ImageLoader(SDL_Renderer* _renderer);
 		~ImageLoader();
 
 		void LoadTextures();
-		Texture* GetTexture(int index);
+		SDL_Renderer* m_Renderer;
+		std::vector<Texture*> GetTextures(std::vector<int> index);
 	private:
 		std::vector<Texture*> m_loadedTextures;
 };

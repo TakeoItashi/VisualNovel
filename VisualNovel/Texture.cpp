@@ -22,9 +22,10 @@ void Texture::Free() {
 	}
 }
 
-void Texture::Render(int x, int y, SDL_Renderer* _renderer) {
+void Texture::Render(int x, int y, int _Width, int _Height, SDL_Renderer* _renderer) {
 
-	SDL_Rect renderQuad = { x, y, Width, Height };
+	SDL_Rect renderQuad = { x, y, _Width, _Height };
+	
 	SDL_RenderCopy(_renderer, m_Texture, NULL, &renderQuad);
 }
 
