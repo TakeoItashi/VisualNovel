@@ -29,13 +29,13 @@ Panel::~Panel() {
 void Panel::ShowLine(int _lineIndex) {
 
 	//Sprites rendern
-	m_BackgroundImage->Render(0, 0, 800, 600, m_Renderer);
+	m_BackgroundImage->Render(0, 0, 800, 600);
 
 	//TODO Magic Numbers :D
 	int widthRatio = 600 / 2;
 	int HeightRatio = ((800 / 4) * 3)-100;
-	m_SpriteList[0]->Render(50, 50, widthRatio, HeightRatio, m_Renderer);
-		//currentLine parsen um Sprite Positionen rauszufinden
+	m_SpriteList[0]->Render(50, 50, widthRatio, HeightRatio);
+	//currentLine parsen um Sprite Positionen rauszufinden
 
 	//Text anzeigen
 }

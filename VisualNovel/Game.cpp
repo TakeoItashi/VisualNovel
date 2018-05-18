@@ -22,6 +22,7 @@ void Game::Init() {
 
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
+	TTF_Init();
 
 	m_Window = SDL_CreateWindow("Visual Novel", 100, 50, 800, 600, SDL_WINDOW_SHOWN);
 	m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
@@ -31,7 +32,11 @@ void Game::Init() {
 
 	m_ImageLoader = new ImageLoader(m_Renderer);
 	m_ImageLoader->LoadTextures();
-	
+
+	m_TextBox = new TextBox(m_Renderer);
+	m_TextBox->ApplyBackgroundSettings();
+	m_TextBox->loadFont();
+
 	std::vector<int> testIndicies;
 
 	testIndicies.push_back(0);
@@ -54,6 +59,7 @@ void Game::Render() {
 
 	SDL_RenderClear(m_Renderer);
 	m_PanelList[0]->ShowLine(0);
+	m_TextBox->Render("This is a Test");
 }
 
 void Game::Load() {

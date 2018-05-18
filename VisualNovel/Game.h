@@ -5,7 +5,7 @@
 #include "include\SDL.h"
 #include "include\SDL_image.h"
 #include "ImageLoader.h"
-
+#include "TextBox.h"
 class Game {
 
 	public:
@@ -14,6 +14,7 @@ class Game {
 
 		Settings* m_GameSettings;
 		ImageLoader* m_ImageLoader;
+		TextBox* m_TextBox;
 		SDL_Window* m_Window = NULL;
 		SDL_Renderer* m_Renderer = NULL;
 		SDL_Texture* m_Texture = NULL;

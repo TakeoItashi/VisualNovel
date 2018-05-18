@@ -34,6 +34,9 @@
     <ClCompile Include="ImageLoader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="TextBox.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="TanyaPortrait01.png">
@@ -62,10 +65,18 @@
     <ClInclude Include="ImageLoader.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="TextBox.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ImageImports.txt">
       <Filter>Ressourcendateien</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="ttf\OpenSans-Regular.ttf">
+      <Filter>Ressourcendateien</Filter>
+    </Font>
   </ItemGroup>
 </Project>

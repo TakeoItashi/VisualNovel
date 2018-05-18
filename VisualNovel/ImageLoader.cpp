@@ -21,8 +21,8 @@ void ImageLoader::LoadTextures()
 
 		while (getline (imagefile, fileNames))
 		{
-			Texture* newTexture = new Texture();
-			newTexture->LoadMedia(fileNames, m_Renderer);
+			Texture* newTexture = new Texture(m_Renderer);
+			newTexture->LoadMedia(fileNames);
 			m_loadedTextures.push_back(newTexture);
 		}
 	}
