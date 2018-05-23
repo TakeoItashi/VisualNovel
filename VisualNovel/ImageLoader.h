@@ -10,9 +10,10 @@ class ImageLoader {
 	public:
 		ImageLoader(SDL_Renderer* _renderer);
 		~ImageLoader();
+		
+		SDL_Renderer* m_Renderer;
 
 		void LoadTextures();
-		SDL_Renderer* m_Renderer;
 		std::vector<Texture*> GetTextures(std::vector<int> index);
 	private:
 		std::vector<Texture*> m_loadedTextures;

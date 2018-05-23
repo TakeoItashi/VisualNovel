@@ -19,7 +19,7 @@ class TextBox {
 		void loadFont();
 		void ApplyBackgroundSettings();
 	private:
-		SDL_Renderer * m_renderer;
+		SDL_Renderer* m_renderer;
 		Texture* m_boxBackground;
 		Texture* m_textTexture;
 		TTF_Font* m_font;

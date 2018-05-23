@@ -1,23 +1,23 @@
 #include "Texture.h"
 
-Texture::Texture(SDL_Renderer* _Renderer) {
+Texture::Texture(SDL_Renderer* _renderer) {
 
 	m_Texture = NULL;
 	Width = 0;
 	Height = 0;
-	m_Renderer = _Renderer;
+	m_Renderer = _renderer;
 }
 
 Texture::~Texture() {
 	Free();
 }
 
-void Texture::setBlendMode(SDL_BlendMode _blending)
+void Texture::SetBlendMode(SDL_BlendMode _blending)
 {
 	SDL_SetTextureBlendMode(m_Texture, _blending);
 }
 
-void Texture::setAlpha(Uint8 _alpha)
+void Texture::SetAlpha(Uint8 _alpha)
 {
 	SDL_SetTextureAlphaMod(m_Texture, _alpha);
 }
@@ -40,13 +40,13 @@ void Texture::Render(int x, int y, int _Width, int _Height) {
 	SDL_RenderCopy(m_Renderer, m_Texture, NULL, &renderQuad);
 }
 
-bool Texture::LoadMedia(std::string path) {
+bool Texture::LoadMedia(std::string _path) {
 	
 	//Get rid of existing Texture
 	Free();
 
 	SDL_Texture* newTexture = NULL;
-	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+	SDL_Surface* loadedSurface = IMG_Load(_path.c_str());
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
 	
 	newTexture = SDL_CreateTextureFromSurface(m_Renderer, loadedSurface);

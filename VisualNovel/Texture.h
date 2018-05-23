@@ -6,7 +6,7 @@
 class Texture {
 
 	public:
-		Texture(SDL_Renderer*);
+		Texture(SDL_Renderer* _renderer);
 		~Texture();
 
 		//TODO minimale Zugriffsberechtigung
@@ -15,17 +15,17 @@ class Texture {
 		int PosX;
 		int PosY;
 
-		void setBlendMode(SDL_BlendMode _blending);
+		void SetBlendMode(SDL_BlendMode _blending);
 		/**
 		Sets the Alpha value for this Texture
 		@param _alpha the alpha value this Texture should use. 0 means transparent and 255 means solid
 		*/
-		void setAlpha(Uint8 _alpha);
+		void SetAlpha(Uint8 _alpha);
 		void Free();
 		void Render(int x, int y, int Height, int Width);
-		bool LoadMedia(std::string);
+		bool LoadMedia(std::string _path);
 		void CreateFromSurface(SDL_Surface* _surface);
 	private:
-		SDL_Renderer * m_Renderer;
+		SDL_Renderer* m_Renderer;
 		SDL_Texture* m_Texture;
 };
