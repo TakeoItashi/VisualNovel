@@ -15,7 +15,7 @@ class TextBox {
 		Renders this Textbox with it's according text
 		@param _text: The Text that is supposed to be displayed inside the Textbox 
 		*/
-		void Render(std::string _text);
+		void Render(std::string _text, int _speed = 0);
 		void loadFont();
 		void ApplyBackgroundSettings();
 	private:
