@@ -1,0 +1,27 @@
+##Panel 1 {
+
+	## Background Image Index;
+	
+	## Sprites {
+	
+		## Sprite Index n, [Sprite_Position x, Sprite_Position y];
+		## Sprite_Index 1;
+		## Sprite Index 2, Sprite_Position 50, 100;
+		## Sprite Index 3;
+	
+	## }Sprites
+	
+	## Text {
+	
+		## Line 1: Name: "Heinrich Schmeinrich", Text: "This is a String", [Sprite_Indeicies x, y]
+		## Line 2: Name: "Heinrich Kleinrich", Text: "This is also a String", Sprite_Indicies: 2,3
+	
+	## }Text
+	
+	## Animation_Placeholder{
+	
+	
+	
+	## }Animation_Placeholder{
+
+##}Panel
