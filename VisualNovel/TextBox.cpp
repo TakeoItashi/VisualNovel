@@ -1,5 +1,7 @@
 #include "TextBox.h"
 
+#include <vector>
+
 TextBox::TextBox(SDL_Renderer* _renderer)
 {
 	m_renderer = _renderer;
@@ -15,7 +17,7 @@ TextBox::~TextBox()
 {
 }
 
-void TextBox::Render(std::string _text)
+void TextBox::Render(std::string _text, int _speed)
 {
 	if (m_textTexture != NULL) {
 
@@ -25,15 +27,33 @@ void TextBox::Render(std::string _text)
 		m_textTexture = new Texture(m_renderer);
 	}
 
+	std::vector<Texture*> TextCharsTexture;
+
 	//TODO TextBox Position an Window Größe anpassen
 	m_boxBackground->Render(25, 425, Width, Height);
 
-	SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, _text.c_str(), m_Color);
-	m_textTexture->CreateFromSurface(textSurface);
-	m_textTexture->Height = Height;
-	m_textTexture->Width = Width;
-	m_textTexture->Render(25, 425, Width, Height);
-	SDL_FreeSurface(textSurface);
+	for (int i = 0; i < _text.size(); i++) {
+	
+		SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, &_text[i], m_Color);
+		Texture* newCharTexture = new Texture(m_renderer);
+		newCharTexture->CreateFromSurface(textSurface);
+		newCharTexture->Height = 100;
+		newCharTexture->Width = 100;
+		TextCharsTexture.push_back(newCharTexture);
+		SDL_FreeSurface(textSurface);
+	}
+	
+	for (int i = 0; i < _text.size(); i++) {
+	
+		TextCharsTexture[i]->Render(25 + (i*TextCharsTexture[i]->Width), 425, TextCharsTexture[i]->Height, TextCharsTexture[i]->Width);
+	}
+
+	//SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, _text.c_str(), m_Color);
+	//m_textTexture->CreateFromSurface(textSurface);
+	//m_textTexture->Height = Height;
+	//m_textTexture->Width = Width;
+	//m_textTexture->Render(25, 425, Width, Height);
+	//SDL_FreeSurface(textSurface);
 }
 
 void TextBox::loadFont()
@@ -50,6 +70,6 @@ void TextBox::ApplyBackgroundSettings()
 	m_boxBackground->CreateFromSurface(backgroundSurface);
 
 	//TODO checke Settings auf Alpha für TextBox
-	m_boxBackground->setBlendMode(SDL_BLENDMODE_BLEND);
-	m_boxBackground->setAlpha((255 * 0.5));
+	m_boxBackground->SetBlendMode(SDL_BLENDMODE_BLEND);
+	m_boxBackground->SetAlpha((255 * 0.5));
 }
