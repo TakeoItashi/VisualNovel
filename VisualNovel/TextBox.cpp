@@ -30,7 +30,7 @@ void TextBox::Render(std::string _text, int _speed)
 	std::vector<Texture*> TextCharsTexture;
 
 	//TODO TextBox Position an Window Größe anpassen
-	m_boxBackground->Render(25, 425, Width, Height);
+	m_boxBackground->Render(25, 425, Height, Width);
 
 	for (int i = 0; i < _text.size(); i++) {
 	

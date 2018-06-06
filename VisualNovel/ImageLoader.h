@@ -13,7 +13,7 @@ class ImageLoader {
 		
 		SDL_Renderer* m_Renderer;
 
-		void LoadTextures();
+		int LoadTextures();
 		std::vector<Texture*> GetTextures(std::vector<int> index);
 	private:
 		std::vector<Texture*> m_loadedTextures;

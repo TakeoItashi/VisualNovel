@@ -30,6 +30,8 @@ void Game::Init() {
 	SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	m_ScreenSurface = SDL_GetWindowSurface(m_Window);
 
+	//TODO Game Loop
+
 	m_ImageLoader = new ImageLoader(m_Renderer);
 	m_ImageLoader->LoadTextures();
 
@@ -40,7 +42,8 @@ void Game::Init() {
 	std::vector<int> testIndicies;
 
 	testIndicies.push_back(0);
-	testIndicies.push_back(1);
+	//testIndicies.push_back(1);
+
 	Panel* newPanel = new Panel(m_Renderer, m_ImageLoader->GetTextures(testIndicies));
 	m_PanelList.push_back(newPanel);
 }

@@ -33,7 +33,14 @@ void Texture::Free() {
 	}
 }
 
-void Texture::Render(int x, int y, int _Width, int _Height) {
+void Texture::Render(int x, int y, int _Height = -1, int _Width = -1) {
+
+	if (_Width == -1) {
+		_Width = Width;
+	}
+	if (_Height == -1) {
+		_Height = Height;
+	}
 
 	SDL_Rect renderQuad = { x, y, _Width, _Height };
 	

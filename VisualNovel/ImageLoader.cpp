@@ -11,21 +11,26 @@ ImageLoader::~ImageLoader()
 	m_loadedTextures.shrink_to_fit();
 }
 
-void ImageLoader::LoadTextures()
+int ImageLoader::LoadTextures()
 {
 	//Parse ImageImports.txt
 	std::ifstream imagefile ("ImageImports.txt");
 	std::string fileNames;
-
+	int imageCount;
 	if (imagefile.is_open()) {
 
 		while (getline (imagefile, fileNames))
 		{
+			if (fileNames[0] == '#' || fileNames[1] == '#') {
+				continue;
+			}
 			Texture* newTexture = new Texture(m_Renderer);
 			newTexture->LoadMedia(fileNames);
 			m_loadedTextures.push_back(newTexture);
+			imageCount++;
 		}
 	}
+	return imageCount;
 }
 
 std::vector<Texture*> ImageLoader::GetTextures(std::vector<int> indicies)
