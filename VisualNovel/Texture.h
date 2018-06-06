@@ -31,9 +31,21 @@ class Texture {
 		void Free();
 		/**
 		Render the Texture at the specified Position
+		@param x: The Position on the X Axis where the Texture is supposed to Render
+			   y: The Position on the Y Axis where the Texture is supposed to Render
+			   _height: The Height of the Texture. If no Value is set the Textures own Height will be used
+			   _hidth: The Width of the Texture. If no Value is set the Textures own Width will be used
 		*/
-		void Render(int x, int y, int Height, int Width);
+		void Render(int x, int y, int _height, int _width);
+		/**
+		Allocates a Texture from a given filepath to the m_Texture Variable
+		@param _path: The Path of the image file
+		*/
 		bool LoadMedia(std::string _path);
+		/**
+		Allocates a Texture from a given Surface to the m_Texture Variable
+		@param _path: The Surface that will be turned into a Texture
+		*/
 		void CreateFromSurface(SDL_Surface* _surface);
 	private:
 		SDL_Renderer* m_Renderer;

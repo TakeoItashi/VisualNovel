@@ -14,6 +14,9 @@ class Panel {
 		std::vector<std::string> m_DialogueLines;
 		std::vector<Texture*> m_SpriteList;
 		SDL_Renderer* m_Renderer;
-
+		/**
+		Displays the Line corresponding to the index that is handed over
+		@param _lineIndex: The Index of the Line in this Panel
+		*/
 		void ShowLine(int _lineIndex);
 };

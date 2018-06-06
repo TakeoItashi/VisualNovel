@@ -16,7 +16,7 @@ int ImageLoader::LoadTextures()
 	//Parse ImageImports.txt
 	std::ifstream imagefile ("ImageImports.txt");
 	std::string fileNames;
-	int imageCount;
+	int imageCount = 0;
 	if (imagefile.is_open()) {
 
 		while (getline (imagefile, fileNames))

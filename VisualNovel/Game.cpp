@@ -36,7 +36,7 @@ void Game::Init() {
 	m_ImageLoader->LoadTextures();
 
 	m_TextBox = new TextBox(m_Renderer);
-	m_TextBox->ApplyBackgroundSettings();
+	m_TextBox->ApplySettings("");
 	m_TextBox->loadFont();
 
 	std::vector<int> testIndicies;
@@ -62,7 +62,7 @@ void Game::Render() {
 
 	SDL_RenderClear(m_Renderer);
 	m_PanelList[0]->ShowLine(0);
-	m_TextBox->Render("This is a Test");
+	m_TextBox->Render("This is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a TestThis is a Test");
 }
 
 void Game::Load() {

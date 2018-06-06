@@ -2,28 +2,24 @@
 
 #include <vector>
 
-TextBox::TextBox(SDL_Renderer* _renderer)
-{
+TextBox::TextBox(SDL_Renderer* _renderer) {
 	m_renderer = _renderer;
 	//TODO richtige implementierung von color
-	m_Color = SDL_Color{0, 0, 0};
+	m_Color = SDL_Color{ 0, 0, 0 };
 	//TODO TextBox Größe und Position aus den Settings holen
 	Width = 750;
 	Height = 150;
 	m_boxBackground = new Texture(_renderer);
 }
 
-TextBox::~TextBox()
-{
+TextBox::~TextBox() {
 }
 
-void TextBox::Render(std::string _text, int _speed)
-{
+void TextBox::Render(std::string _text, int _speed) {
 	if (m_textTexture != NULL) {
 
 		m_textTexture->Free();
-	}
-	else {
+	} else {
 		m_textTexture = new Texture(m_renderer);
 	}
 
@@ -33,45 +29,63 @@ void TextBox::Render(std::string _text, int _speed)
 	m_boxBackground->Render(25, 425, Height, Width);
 
 	////TODO Rework der Text Darstellung für Animation: Create new Texture after DeltaTime has passed. New Texture uses one Char more than before
-	//
-	//for (int i = 0; i < _text.size(); i++) {
-	//
-	//	//const char** currentChar = new char(_text[i]);
-	//	std::string parString;
-	//	parString += _text[i];
-	//	const char* currentChar = parString.c_str();
-	//	SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, currentChar, m_Color);		//TODO Größen Verhältnisse für alle chars heruasfinden mit TTF_Glyph Metric
-	//	Texture* newCharTexture = new Texture(m_renderer);
-	//	newCharTexture->CreateFromSurface(textSurface);
-	//	newCharTexture->Height = 40;
-	//	newCharTexture->Width = 20;
-	//	TextCharsTexture.push_back(newCharTexture);
-	//	SDL_FreeSurface(textSurface);
-	//}
-	//
-	//for (int i = 0; i < _text.size(); i++) {
-	//
-	//	TextCharsTexture[i]->Render(25 + (i*TextCharsTexture[i]->Width), 425, TextCharsTexture[i]->Width, TextCharsTexture[i]->Height);
-	//}
 
-	SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, _text.c_str(), m_Color);
-	m_textTexture->CreateFromSurface(textSurface);
-	m_textTexture->Height = Height;
-	m_textTexture->Width = Width;
-	m_textTexture->Render(25, 425, Width, Height);
-	SDL_FreeSurface(textSurface);
+	int TextWidth, LineWidth;
+	std::string result, text, line, word;
+	std::vector<std::string> lines;
+	line = "";
+	text = _text;
+	TTF_SizeText(m_font, _text.c_str(), &TextWidth, nullptr);
+
+	while (_text.size() > 0) {
+
+		//Findet den Index vom ende des nächsten Wortes
+		int nextSpace = _text.find(' ');
+
+		//Itteriert den Satz Wort um Wort
+		if (nextSpace == _text.npos) {
+
+			nextSpace = _text.size();
+			_text = _text.substr(0, nextSpace);
+			_text = "";
+		} else {
+			word = _text.substr(0, nextSpace + 1);
+			_text.erase(0, nextSpace + 1);
+		}
+
+		//Testet die neue Zeilen länge
+		std::string temp = line + word;
+		TTF_SizeText(m_font, temp.c_str(), &LineWidth, nullptr);
+
+		if (LineWidth <= (Width - 10)) {
+			line += word;
+			TTF_SizeText(m_font, _text.c_str(), &TextWidth, nullptr);
+		} else {
+			lines.push_back(line);
+			line = word;
+			TTF_SizeText(m_font, _text.c_str(), &TextWidth, nullptr);
+		}
+	}
+
+	for (int i = 0; i < lines.size(); i++) {
+
+		SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, lines[i].c_str(), m_Color);
+		m_textTexture->CreateFromSurface(textSurface);
+		TTF_SizeText(m_font, lines[i].c_str(), &m_textTexture->Width, &m_textTexture->Height);
+		m_textTexture->Render(30, 425 + (i*(m_textTexture->Height - 5)), m_textTexture->Height, m_textTexture->Width);
+		SDL_FreeSurface(textSurface);
+	}
 }
 
-void TextBox::loadFont()
-{
+void TextBox::loadFont(std::string _path) {
 	//TODO use FontSize from Settings
 	m_font = TTF_OpenFont("OpenSans-Regular.ttf", 28);
 }
 
-void TextBox::ApplyBackgroundSettings()
-{
+//TODO Use Configured Background Settings
+void TextBox::ApplySettings(std::string _settings) {
 	SDL_Surface* backgroundSurface = SDL_CreateRGBSurface(0, Width, Height, 32, 0, 0, 0, 0);
-	
+
 	SDL_FillRect(backgroundSurface, NULL, SDL_MapRGB(backgroundSurface->format, 0, 0, 255));
 	m_boxBackground->CreateFromSurface(backgroundSurface);
 

@@ -22,10 +22,29 @@ class Game {
 		SDL_Surface* m_Background = NULL;
 		std::vector<Panel*> m_PanelList;
 
+		/**
+		Initializes the Game Libraries and Variables
+		*/
 		void Init();
+		/**
+		Starts a new Game
+		*/
 		void NewGame();
+		/**
+		Updates the current Process
+		*/
 		void Update();
+		/**
+		Renders all the Current Sprites
+		*/
 		void Render();
+		/**
+		Loads a serialized game state
+		*/
 		void Load();
+		/**
+		Changes the Settings of the Game
+		@param The new Settings of the Game
+		*/
 		void ChangeSettings(Settings* NewSettings);
 };
