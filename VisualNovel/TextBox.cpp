@@ -32,28 +32,34 @@ void TextBox::Render(std::string _text, int _speed)
 	//TODO TextBox Position an Window Größe anpassen
 	m_boxBackground->Render(25, 425, Height, Width);
 
-	for (int i = 0; i < _text.size(); i++) {
-	
-		SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, &_text[i], m_Color);
-		Texture* newCharTexture = new Texture(m_renderer);
-		newCharTexture->CreateFromSurface(textSurface);
-		newCharTexture->Height = 100;
-		newCharTexture->Width = 100;
-		TextCharsTexture.push_back(newCharTexture);
-		SDL_FreeSurface(textSurface);
-	}
-	
-	for (int i = 0; i < _text.size(); i++) {
-	
-		TextCharsTexture[i]->Render(25 + (i*TextCharsTexture[i]->Width), 425, TextCharsTexture[i]->Height, TextCharsTexture[i]->Width);
-	}
+	////TODO Rework der Text Darstellung für Animation: Create new Texture after DeltaTime has passed. New Texture uses one Char more than before
+	//
+	//for (int i = 0; i < _text.size(); i++) {
+	//
+	//	//const char** currentChar = new char(_text[i]);
+	//	std::string parString;
+	//	parString += _text[i];
+	//	const char* currentChar = parString.c_str();
+	//	SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, currentChar, m_Color);		//TODO Größen Verhältnisse für alle chars heruasfinden mit TTF_Glyph Metric
+	//	Texture* newCharTexture = new Texture(m_renderer);
+	//	newCharTexture->CreateFromSurface(textSurface);
+	//	newCharTexture->Height = 40;
+	//	newCharTexture->Width = 20;
+	//	TextCharsTexture.push_back(newCharTexture);
+	//	SDL_FreeSurface(textSurface);
+	//}
+	//
+	//for (int i = 0; i < _text.size(); i++) {
+	//
+	//	TextCharsTexture[i]->Render(25 + (i*TextCharsTexture[i]->Width), 425, TextCharsTexture[i]->Width, TextCharsTexture[i]->Height);
+	//}
 
-	//SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, _text.c_str(), m_Color);
-	//m_textTexture->CreateFromSurface(textSurface);
-	//m_textTexture->Height = Height;
-	//m_textTexture->Width = Width;
-	//m_textTexture->Render(25, 425, Width, Height);
-	//SDL_FreeSurface(textSurface);
+	SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, _text.c_str(), m_Color);
+	m_textTexture->CreateFromSurface(textSurface);
+	m_textTexture->Height = Height;
+	m_textTexture->Width = Width;
+	m_textTexture->Render(25, 425, Width, Height);
+	SDL_FreeSurface(textSurface);
 }
 
 void TextBox::loadFont()
