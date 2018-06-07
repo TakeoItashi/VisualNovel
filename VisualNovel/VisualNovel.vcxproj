@@ -135,6 +135,7 @@
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="TextBox.cpp" />
+    <ClCompile Include="TextLoader.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,10 +149,12 @@
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="TextBox.h" />
+    <ClInclude Include="TextLoader.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ImageImports.txt" />
+    <Text Include="Storyboard.txt" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ttf\OpenSans-Regular.ttf" />
