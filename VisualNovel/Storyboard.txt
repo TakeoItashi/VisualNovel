@@ -19,7 +19,7 @@ Panel {
 		Text: "Heinrich Meinrich"   , "This is not a String" , 2(50,100), 3(100,100);			## Line 2
 	}
 	
-	Animation_Placeholder{
+	Animation_Placeholder {
 	
-	}
+	}	
 }

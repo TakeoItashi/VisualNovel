@@ -33,5 +33,7 @@ int main(int argc, char* argv[]) {
 		//SDL_RenderCopy(newGame->m_Renderer, newGame->m_Texture, NULL, NULL);
 		SDL_RenderPresent(newGame->m_Renderer);
 	}
+	delete newGame;
+	newGame = nullptr;
 	return 0;
 }

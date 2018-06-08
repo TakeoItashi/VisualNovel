@@ -1,5 +1,10 @@
 #include "Panel.h"
 
+Panel::Panel(SDL_Renderer* _renderer) {
+
+	m_Renderer = _renderer;
+}
+
 Panel::Panel(SDL_Renderer* _renderer, std::vector<Texture*> _imagePaths) {
 
 	//m_BackgroundImage->LoadMedia(_imagePaths[0], _renderer);
@@ -41,7 +46,7 @@ void Panel::ShowLine(int _lineIndex) {
 			m_SpriteList[i]->Render(50, 50, HeightRatio, widthRatio);
 		}
 	}
-	//currentLine parsen um Sprite Positionen rauszufinden
+	//TODO currentLine parsen um Sprite Positionen rauszufinden
 
-	//Text anzeigen
+	//TODO Text anzeigen
 }

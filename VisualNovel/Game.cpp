@@ -10,10 +10,12 @@ Game::~Game() {
 	SDL_DestroyRenderer(m_Renderer);
 	SDL_DestroyWindow(m_Window);
 	delete m_ImageLoader;
-	m_Texture = NULL;
-	m_Renderer = NULL;
-	m_Window = NULL;
-	m_ImageLoader = NULL;
+	delete m_textLoader;
+	m_Texture = nullptr;
+	m_Renderer = nullptr;
+	m_Window = nullptr;
+	m_ImageLoader = nullptr;
+	m_textLoader = nullptr;
 	IMG_Quit();
 	SDL_Quit();
 }
@@ -44,8 +46,9 @@ void Game::Init() {
 	testIndicies.push_back(0);
 	//testIndicies.push_back(1);
 
-	Panel* newPanel = new Panel(m_Renderer, m_ImageLoader->GetTextures(testIndicies));
-	m_PanelList.push_back(newPanel);
+	m_textLoader = new TextLoader();
+	m_keywords = m_textLoader->LoadText();
+	Load();
 }
 
 void Game::NewGame() {
@@ -67,6 +70,23 @@ void Game::Render() {
 
 void Game::Load() {
 
+	for (int i = 0; i < m_keywords.size(); i++) {
+
+		if (m_keywords[i] == "Panel" && m_keywords[i+1] == "{") {
+
+			Panel* newPanel = new Panel(m_Renderer);
+			i = i + 2;
+			for (i; i < m_keywords.size(); i++) {
+
+				if (m_keywords[i] == "Name:") {
+
+					newPanel->m_PanelName = m_keywords[i + 1];
+				}
+			}
+
+			m_PanelList.push_back(newPanel);
+		}
+	}
 }
 
 void Game::ChangeSettings(Settings* NewSettings) {
