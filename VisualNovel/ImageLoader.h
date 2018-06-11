@@ -4,7 +4,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "SpritePosition.h"
 
 class ImageLoader {
 
@@ -25,7 +24,7 @@ class ImageLoader {
 		@param _indicies: A List of the Indicies of the desired Textures
 		@return A List of Pointers to the Textures
 		*/
-		std::vector<Texture*> GetTextures(std::vector<SpritePosition> _indicies);
+		std::vector<Texture*> GetTextures(std::vector<int> _indicies);
 	private:
 		std::vector<Texture*> m_loadedTextures;
 };
