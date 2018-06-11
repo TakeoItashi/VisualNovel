@@ -25,6 +25,8 @@ class Game {
 		std::vector<Panel*> m_PanelList;
 		TextLoader* m_textLoader = nullptr;
 		std::vector<std::string> m_keywords;
+		int m_CurrentLine;
+		int m_CurrentPanel;
 
 		/**
 		Initializes the Game Libraries and Variables

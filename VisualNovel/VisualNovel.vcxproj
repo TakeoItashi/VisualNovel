@@ -148,6 +148,7 @@
     <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="SpritePosition.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="TextLoader.h" />
     <ClInclude Include="Texture.h" />

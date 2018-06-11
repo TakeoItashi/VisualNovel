@@ -1,24 +1,21 @@
 #include "Panel.h"
 
-Panel::Panel(SDL_Renderer* _renderer) {
+Panel::Panel(SDL_Renderer* _renderer, TextBox* _textBoxReference, ImageLoader* _imageLoaderReference) {
 
 	m_Renderer = _renderer;
+	m_TextBox = _textBoxReference;
+	m_ImageLoader = _imageLoaderReference;
 }
 
-Panel::Panel(SDL_Renderer* _renderer, std::vector<Texture*> _imagePaths) {
+Panel::Panel(SDL_Renderer* _renderer, std::vector<Texture*> _imagePaths, TextBox* _textBoxReference, ImageLoader* _ImageLoaderReference) {
 
-	//m_BackgroundImage->LoadMedia(_imagePaths[0], _renderer);
 	m_Renderer = _renderer;
-
 	//Background Image is always the first in the list
-	m_BackgroundImage = _imagePaths[0];
-	_imagePaths.erase(_imagePaths.begin());
-	m_SpriteList = _imagePaths;
+	m_TextBox = _textBoxReference;
 }
 
 Panel::~Panel() {
 
-	m_currentLine = 0;
 	m_BackgroundImage = NULL;
 
 	for (int i = 0; i < m_SpriteList.size(); i++) {
@@ -33,10 +30,12 @@ Panel::~Panel() {
 
 void Panel::ShowLine(int _lineIndex) {
 
+	//m_DialogueLines[_lineIndex]->SpriteIndicies[0];
+
 	//Sprites rendern
 	m_BackgroundImage->Render(0, 0, 600, 800);
 
-	//TODO Magic Numbers :D
+	//TODO Magic Numbers entfernen :D
 	int widthRatio = 600 / 2;
 	int HeightRatio = ((800 / 4) * 3)-100;
 	if (m_SpriteList.size() > 0) {
@@ -49,4 +48,11 @@ void Panel::ShowLine(int _lineIndex) {
 	//TODO currentLine parsen um Sprite Positionen rauszufinden
 
 	//TODO Text anzeigen
+	m_TextBox->Render(m_DialogueLines[_lineIndex]->Text);
+}
+
+void Panel::LoadImages() {
+
+	m_SpriteList = m_ImageLoader->GetTextures(m_SpriteIndexList);
+	m_BackgroundImage = m_SpriteList[m_SpriteIndexList[0].Index];
 }
