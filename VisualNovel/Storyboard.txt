@@ -8,15 +8,15 @@ Panel {
 	
 		Sprite: 0;				## Sprite_Index n;
 		Sprite: 1;				## Sprite_Index 1;
-		Sprite: 2;				## Sprite_Index 2, Sprite_Position 50, 100;
-		Sprite: 3;				## Sprite_Index 3;
+		##Sprite: 2;				## Sprite_Index 2, Sprite_Position 50, 100;
+		##Sprite: 3;				## Sprite_Index 3;
 	}
 	
 	Texts {
 																							    ## Text: Name, Text, [Sprite_Indicies x, Sprite_Indicies y([Sprite_Position x, Sprite_Position y])];
 		Text: "Heinrich Schmeinrich", "This is a String";									    ## Line 1
-		Text: "Heinrich Kleinrich"  , "This is also a String", 2, 3(50,100);					## Line 2
-		Text: "Heinrich Meinrich"   , "This is not a String" , 2(50,100), 3(100,100);			## Line 2
+		Text: "Heinrich Kleinrich"  , "This is also a String", 1, 1(50,100);					## Line 2
+		Text: "Heinrich Meinrich"   , "This is not a String" , 1(50,100), 1(100,100);			## Line 2
 	}
 	
 	Animation_Placeholder {
