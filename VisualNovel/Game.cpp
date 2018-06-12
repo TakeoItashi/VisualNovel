@@ -142,14 +142,16 @@ void Game::Load() {
 							i++;
 							SpritePosition spritePosition;
 							spritePosition.Index = std::stoi(m_keywords[i]);
+							spritePosition.PosX = -1;
+							spritePosition.PosY = -1;
 							i++;
 							while (m_keywords[i] != ";") {
 
 								if (m_keywords[i] == ",") {
 
-									newPanel->m_SpriteIndexList.push_back(spritePosition);
+									newLine->m_SpritesShown.push_back(spritePosition);
 									i++;
-									spritePosition = { 0 };
+									spritePosition = { -1 };
 									continue;
 								}
 								if (m_keywords[i] == "(") {
@@ -167,9 +169,9 @@ void Game::Load() {
 								spritePosition.Index = std::stoi(m_keywords[i]);
 								i++;
 							}
-							newPanel->m_SpriteIndexList.push_back(spritePosition);
+							newLine->m_SpritesShown.push_back(spritePosition);
 							i++;
-							spritePosition = { 0 };
+							spritePosition = { -1 };
 						}
 						if (m_keywords[i] == "}") {
 							i++;
@@ -178,7 +180,7 @@ void Game::Load() {
 					}
 				}
 				if (m_keywords[i] == "Animation_Placeholder") {
-					i++;
+					i++;		//TODO Animation
 					break;
 				}
 				if (m_keywords[i] == "}") {

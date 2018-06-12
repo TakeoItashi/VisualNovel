@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <list>
+#include <vector>
+#include "SpritePosition.h"
 class DialogueLine {
 
 	public:
@@ -10,5 +12,5 @@ class DialogueLine {
 
 		std::string Name;
 		std::string Text;
-		std::list<int> SpriteIndicies;
+		std::vector<SpritePosition> m_SpritesShown;
 };

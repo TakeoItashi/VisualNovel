@@ -6,8 +6,8 @@ Panel {
 	
 	Sprites {
 	
-		Sprite: 0;				## Sprite_Index n;
-		Sprite: 1;				## Sprite_Index 1;
+		Sprite: 1;				## Sprite_Index n;
+		##Sprite: 1;				## Sprite_Index 1;
 		##Sprite: 2;				## Sprite_Index 2, Sprite_Position 50, 100;
 		##Sprite: 3;				## Sprite_Index 3;
 	}
