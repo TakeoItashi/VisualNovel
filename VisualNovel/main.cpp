@@ -18,6 +18,10 @@ int main(int argc, char* argv[]) {
 
 				quit = true;
 			}
+			if (eventHandler.type == SDL_MOUSEBUTTONUP || eventHandler.type == SDL_KEYDOWN) {
+
+				newGame->m_CurrentLine++;
+			}
 		}
 
 		newGame->Render();

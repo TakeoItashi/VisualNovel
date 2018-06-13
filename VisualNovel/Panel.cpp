@@ -30,25 +30,24 @@ Panel::~Panel() {
 
 void Panel::ShowLine(int _lineIndex) {
 
-	//m_DialogueLines[_lineIndex]->SpriteIndicies[0];
-
-	//Sprites rendern
 	m_BackgroundImage->Render(0, 0, 600, 800);
 
-	//TODO Magic Numbers entfernen :D
-	int widthRatio = 600 / 2;
-	int HeightRatio = ((800 / 4) * 3)-100;
-	if (m_SpriteList.size() > 0) {
-		for (int i = 0; i < m_SpriteList.size(); i++) {
+	if (m_DialogueLines[_lineIndex]->m_SpritesShown.size() != 0) {
+		//TODO Magic Numbers entfernen
+		int widthRatio = 600 / 2;
+		int HeightRatio = ((800 / 4) * 3) - 100;
+		if (m_SpriteList.size() > 0) {
+			for (int i = 1; i < m_SpriteList.size(); i++) {
 
-			//TODO alle Sprites an der richtigen Stelle rendern
-			m_SpriteList[i]->Render(50, 50, HeightRatio, widthRatio);
+				//TODO alle Sprites an der richtigen Stelle rendern
+				m_SpriteList[i]->Render(m_SpriteList[i]->PosX, m_SpriteList[i]->PosY, HeightRatio, widthRatio);
+			}
 		}
-	}
-	//TODO currentLine parsen um Sprite Positionen rauszufinden
+		//TODO currentLine parsen um Sprite Positionen rauszufinden
 
-	//TODO Text anzeigen
-	m_TextBox->Render(m_DialogueLines[_lineIndex]->Text);
+		//TODO Text anzeigen
+	}
+	m_TextBox->Render((*m_DialogueLines[_lineIndex]));
 }
 
 void Panel::LoadImages() {

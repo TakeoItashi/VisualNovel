@@ -1,5 +1,5 @@
 #include "TextBox.h"
-
+#include <algorithm>
 #include <vector>
 
 TextBox::TextBox(SDL_Renderer* _renderer) {
@@ -15,7 +15,8 @@ TextBox::TextBox(SDL_Renderer* _renderer) {
 TextBox::~TextBox() {
 }
 
-void TextBox::Render(std::string _text, int _speed) {
+void TextBox::Render(DialogueLine _line, int _speed) {
+
 	if (m_textTexture != NULL) {
 
 		m_textTexture->Free();
@@ -28,29 +29,34 @@ void TextBox::Render(std::string _text, int _speed) {
 	//TODO TextBox Position an Window Größe anpassen
 	m_boxBackground->Render(25, 425, Height, Width);
 
-	////TODO Rework der Text Darstellung für Animation: Create new Texture after DeltaTime has passed. New Texture uses one Char more than before
+	//TODO Rework der Text Darstellung für Animation: Create new Texture after DeltaTime has passed. New Texture uses one Char more than before
 
 	int TextWidth, LineWidth;
 	std::string result, text, line, word;
 	std::vector<std::string> lines;
 	line = "";
-	text = _text;
-	TTF_SizeText(m_font, _text.c_str(), &TextWidth, nullptr);
+	text = _line.Text;
+	TTF_SizeText(m_font, _line.Text.c_str(), &TextWidth, nullptr);
+	int nextSpace;
 
-	while (_text.size() > 0) {
+	std::replace(_line.Text.begin(), _line.Text.end(), '_', ' ');
+	std::replace(_line.Name.begin(), _line.Name.end(), '_', ' ');
+	_line.Name.append(":");
+
+	while (_line.Text.size() > 0) {
 
 		//Findet den Index vom ende des nächsten Wortes
-		int nextSpace = _text.find(' ');
+		nextSpace = _line.Text.find(' ');
 
 		//Itteriert den Satz Wort um Wort
-		if (nextSpace == _text.npos) {
+		if (nextSpace == _line.Text.npos) {
 
-			nextSpace = _text.size();
-			_text = _text.substr(0, nextSpace);
-			_text = "";
+			nextSpace = _line.Text.size();
+			word = _line.Text.substr(0, nextSpace);
+			_line.Text = "";
 		} else {
-			word = _text.substr(0, nextSpace + 1);
-			_text.erase(0, nextSpace + 1);
+			word = _line.Text.substr(0, nextSpace + 1);
+			_line.Text.erase(0, nextSpace + 1);
 		}
 
 		//Testet die neue Zeilen länge
@@ -59,20 +65,29 @@ void TextBox::Render(std::string _text, int _speed) {
 
 		if (LineWidth <= (Width - 10)) {
 			line += word;
-			TTF_SizeText(m_font, _text.c_str(), &TextWidth, nullptr);
+			TTF_SizeText(m_font, _line.Text.c_str(), &TextWidth, nullptr);
 		} else {
 			lines.push_back(line);
 			line = word;
-			TTF_SizeText(m_font, _text.c_str(), &TextWidth, nullptr);
+			TTF_SizeText(m_font, _line.Text.c_str(), &TextWidth, nullptr);
 		}
 	}
 
+	lines.push_back(line);
+	int lineStart = 425;	//TODO an Fenstergröße anpassen
+	SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, _line.Name.c_str(), m_Color);
+	m_textTexture->CreateFromSurface(textSurface);
+	TTF_SizeText(m_font, _line.Name.c_str(), &m_textTexture->Width, &m_textTexture->Height);
+	m_textTexture->Render(30, lineStart, m_textTexture->Height, m_textTexture->Width);
+	lineStart += m_textTexture->Height - 5;
+	SDL_FreeSurface(textSurface);
+
 	for (int i = 0; i < lines.size(); i++) {
 
-		SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, lines[i].c_str(), m_Color);
+		textSurface = TTF_RenderText_Blended(m_font, lines[i].c_str(), m_Color);
 		m_textTexture->CreateFromSurface(textSurface);
 		TTF_SizeText(m_font, lines[i].c_str(), &m_textTexture->Width, &m_textTexture->Height);
-		m_textTexture->Render(30, 425 + (i*(m_textTexture->Height - 5)), m_textTexture->Height, m_textTexture->Width);
+		m_textTexture->Render(35, lineStart + (i*(m_textTexture->Height - 5)), m_textTexture->Height, m_textTexture->Width);
 		SDL_FreeSurface(textSurface);
 	}
 }

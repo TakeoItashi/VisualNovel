@@ -48,8 +48,8 @@ void Game::Init() {
 
 	m_textLoader = new TextLoader();
 	m_keywords = m_textLoader->LoadText();
-	Load();
 
+	Load();
 }
 
 void Game::NewGame() {
@@ -120,7 +120,7 @@ void Game::Load() {
 						}
 					}
 				}
-				if (m_keywords[i] == "Texts" && m_keywords[i + 1] == "{") {
+				if (m_keywords[i] == "Texts" && m_keywords[i + 1] == "{") {		//TODO Anführungszeichen entfernen
 					i = i + 2;
 					DialogueLine* newLine = new DialogueLine();
 					for (i; i < m_keywords.size(); i) {
@@ -170,6 +170,7 @@ void Game::Load() {
 								i++;
 							}
 							newLine->m_SpritesShown.push_back(spritePosition);
+							newPanel->m_DialogueLines.push_back(newLine);
 							i++;
 							spritePosition = { -1 };
 						}

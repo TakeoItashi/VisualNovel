@@ -30,10 +30,11 @@ std::vector<std::string> TextLoader::LoadText() {
 
 			//Check for quotes
 			//If the parser finds a quote, all whitespaces are replaced by underscores
+			//TODO Anfuehrungszeichen erlauben
 			if (currentCharacter == '"') {
 
 				quote = !quote;
-				currentKeyword += currentCharacter;
+				//currentKeyword += currentCharacter;
 				while (quote) {
 
 					fin.get(currentCharacter);
@@ -42,7 +43,7 @@ std::vector<std::string> TextLoader::LoadText() {
 						currentCharacter = '_';
 					} else if (currentCharacter == '"') {
 
-						currentKeyword += currentCharacter;
+						//currentKeyword += currentCharacter;
 						keywords.push_back(currentKeyword);
 						currentKeyword.clear();
 						quote = !quote;

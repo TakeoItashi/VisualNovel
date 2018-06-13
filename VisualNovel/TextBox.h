@@ -1,5 +1,6 @@
 #pragma once
 #include "Texture.h"
+#include "DialogueLine.h"
 #include <string>
 #include <SDL_ttf.h>
 class TextBox {
@@ -16,7 +17,7 @@ class TextBox {
 		@param _text: The Text that is supposed to be displayed inside the Textbox 
 			   _speed: The Speed at which the Text is supposed to appear
 		*/
-		void Render(std::string _text, int _speed = 0);
+		void Render(DialogueLine _text, int _speed = 0);
 		/**
 		Loads the specified Font for the TextBox
 		@param _path: The filepath of the Font
