@@ -10,7 +10,8 @@ int main(int argc, char* argv[]) {
 	//Main loop
 	bool quit = false;
 	SDL_Event eventHandler;
-
+	newGame->Render();
+	SDL_RenderPresent(newGame->m_Renderer);
 	while(!quit){
 
 		while (SDL_PollEvent(&eventHandler) != 0) {
@@ -21,21 +22,10 @@ int main(int argc, char* argv[]) {
 			if (eventHandler.type == SDL_MOUSEBUTTONUP || eventHandler.type == SDL_KEYDOWN) {
 
 				newGame->m_CurrentLine++;
+				newGame->Render();
+				SDL_RenderPresent(newGame->m_Renderer);
 			}
 		}
-
-		newGame->Render();
-		//TODO Remove
-		////Apply the PNG image
-		SDL_Rect stretchRect;
-		stretchRect.x = 0;
-		stretchRect.y = 0;
-		stretchRect.w = 800;
-		stretchRect.h = 600;
-		//
-		//SDL_RenderClear(newGame->m_Renderer);
-		//SDL_RenderCopy(newGame->m_Renderer, newGame->m_Texture, NULL, NULL);
-		SDL_RenderPresent(newGame->m_Renderer);
 	}
 	delete newGame;
 	newGame = nullptr;

@@ -1,17 +1,12 @@
 #include "Panel.h"
 
+#define CurrentSprite m_DialogueLines[_lineIndex]->m_SpritesShown[i]
+
 Panel::Panel(SDL_Renderer* _renderer, TextBox* _textBoxReference, ImageLoader* _imageLoaderReference) {
 
 	m_Renderer = _renderer;
 	m_TextBox = _textBoxReference;
 	m_ImageLoader = _imageLoaderReference;
-}
-
-Panel::Panel(SDL_Renderer* _renderer, std::vector<Texture*> _imagePaths, TextBox* _textBoxReference, ImageLoader* _ImageLoaderReference) {
-
-	m_Renderer = _renderer;
-	//Background Image is always the first in the list
-	m_TextBox = _textBoxReference;
 }
 
 Panel::~Panel() {
@@ -32,15 +27,46 @@ void Panel::ShowLine(int _lineIndex) {
 
 	m_BackgroundImage->Render(0, 0, 600, 800);
 
+	int aviableSpriteSpace;
+
+	//Find out Default Sprite offset
+	if (m_DialogueLines[_lineIndex]->m_SpritesShown.size() > 0) {
+
+		//Hintergrund Breite herausfinden
+		int BackgroundWidth = 800;
+		int Padding = 20;
+		//Padding addieren
+		int AviableWidth = BackgroundWidth;// -Padding;
+		//Bilder um (BreiteHinter / (Anzahl Sprites + 1)) - (BreiteSprite/2) verschieben
+		aviableSpriteSpace = (AviableWidth / (m_DialogueLines[_lineIndex]->m_SpritesShown.size() + 1));
+	}
+
 	if (m_DialogueLines[_lineIndex]->m_SpritesShown.size() != 0) {
 		//TODO Magic Numbers entfernen
 		int widthRatio = 600 / 2;
 		int HeightRatio = ((800 / 4) * 3) - 100;
+		int SpritePosX = 0;
+		int SpritePosY = 0;		//TODO Padding für die Sprites überarbeiten
 		if (m_SpriteList.size() > 0) {
-			for (int i = 1; i < m_SpriteList.size(); i++) {
+			for (int i = 0; i < m_DialogueLines[_lineIndex]->m_SpritesShown.size(); i++) {
 
-				//TODO alle Sprites an der richtigen Stelle rendern
-				m_SpriteList[i]->Render(m_SpriteList[i]->PosX, m_SpriteList[i]->PosY, HeightRatio, widthRatio);
+				if (CurrentSprite.PosX < 0) {
+
+					int test = aviableSpriteSpace * (i + 1);
+					int test2 = (widthRatio / 2);
+					SpritePosX = (aviableSpriteSpace * (i+1)) - (widthRatio / 2);		//TODO richtige Textur Width benutzen
+				} else {
+
+					SpritePosX = CurrentSprite.PosX;
+				}
+				if (CurrentSprite.PosY < 0) {
+
+					SpritePosY = 50;
+				} else {
+
+					SpritePosY = CurrentSprite.PosY;
+				}
+				m_SpriteList[CurrentSprite.Index]->Render(SpritePosX, SpritePosY, HeightRatio, widthRatio);
 			}
 		}
 		//TODO currentLine parsen um Sprite Positionen rauszufinden

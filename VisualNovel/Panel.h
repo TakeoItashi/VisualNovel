@@ -10,7 +10,6 @@ class Panel {
 
 	public:
 		Panel(SDL_Renderer* _renderer, TextBox* _textBoxReference, ImageLoader* _textLoaderReference);
-		Panel(SDL_Renderer* _renderer, std::vector<Texture*> _Images, TextBox* _text_textBoxReference, ImageLoader* _ImageLoaderReference);
 		~Panel();
 
 		//TODO Background Image entfernen und m_SpriteList[0] verwenden

@@ -151,14 +151,14 @@ void Game::Load() {
 
 									newLine->m_SpritesShown.push_back(spritePosition);
 									i++;
-									spritePosition = { -1 };
+									spritePosition = { -1, -1, -1 };
 									continue;
 								}
 								if (m_keywords[i] == "(") {
 									i++;
-									spritePosition.PosX = std::stoi(m_keywords[i]);
-									i = i + 2;											//um 2 Positionen verschieben, weil sich zwischen den Koordinaten ein Komma befindet
 									spritePosition.PosY = std::stoi(m_keywords[i]);
+									i = i + 2;											//um 2 Positionen verschieben, weil sich zwischen den Koordinaten ein Komma befindet
+									spritePosition.PosX = std::stoi(m_keywords[i]);
 									i++;
 									continue;
 								}
@@ -172,7 +172,7 @@ void Game::Load() {
 							newLine->m_SpritesShown.push_back(spritePosition);
 							newPanel->m_DialogueLines.push_back(newLine);
 							i++;
-							spritePosition = { -1 };
+							spritePosition = { -1, -1, -1 };
 						}
 						if (m_keywords[i] == "}") {
 							i++;

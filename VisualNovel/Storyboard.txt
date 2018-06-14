@@ -14,9 +14,10 @@ Panel {
 	
 	Texts {
 																							    ## Text: Name, Text, [Sprite_Indicies x, Sprite_Indicies y([Sprite_Position x, Sprite_Position y])];
-		Text: "Heinrich Schmeinrich", "This is a String";									    ## Line 1
-		Text: "Heinrich Kleinrich"  , "This is also a String", 1, 1(50,100);					## Line 2
-		Text: "Heinrich Meinrich"   , "This is not a String" , 1(50,100), 1(100,100);			## Line 2
+		Text: "Heinrich Schmeinrich", "This is a String", 1, 1;									    ## Line 1
+		Text: "Heinrich Kleinrich"  , "This is also a String", 1, 1(50,400);					## Line 2
+		Text: "Heinrich Meinrich"   , "This is not a String";									## Line 2
+		Text: "Heinrich Beinrich"   , "This is going to be a String", 1(20,100), 1(70,400);						## Line 2
 	}
 	
 	Animation_Placeholder {
