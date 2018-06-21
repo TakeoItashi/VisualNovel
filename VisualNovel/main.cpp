@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 			}
 			if (eventHandler.type == SDL_MOUSEBUTTONUP || eventHandler.type == SDL_KEYDOWN) {
 
-				newGame->m_CurrentLine++;
+				newGame->Update();
 				newGame->Render();
 				SDL_RenderPresent(newGame->m_Renderer);
 			}

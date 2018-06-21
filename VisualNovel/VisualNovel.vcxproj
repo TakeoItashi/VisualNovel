@@ -128,10 +128,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="DialogueLine.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="TextBox.cpp" />
@@ -143,9 +146,13 @@
     <Image Include="wallpaper.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="DialogueLine.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ImageLoader.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuItem.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SpritePosition.h" />
@@ -155,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ImageImports.txt" />
+    <Text Include="MainMenu.txt" />
     <Text Include="Storyboard.txt" />
   </ItemGroup>
   <ItemGroup>

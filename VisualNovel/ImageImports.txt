@@ -1,2 +1,5 @@
 wallpaper.jpg
 TanyaPortrait01.png
+GoblinMage.png
+summerBackground.png
+square-rounded-empty-outlined-button-shapeByKatarinaStefanikova.png

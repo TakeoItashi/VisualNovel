@@ -6,12 +6,10 @@ Game::Game(Settings* _initialSettings) {
 
 Game::~Game() {
 
-	SDL_DestroyTexture(m_Texture);
 	SDL_DestroyRenderer(m_Renderer);
 	SDL_DestroyWindow(m_Window);
 	delete m_ImageLoader;
 	delete m_textLoader;
-	m_Texture = nullptr;
 	m_Renderer = nullptr;
 	m_Window = nullptr;
 	m_ImageLoader = nullptr;
@@ -30,9 +28,8 @@ void Game::Init() {
 	m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
 
 	SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	m_ScreenSurface = SDL_GetWindowSurface(m_Window);
 
-	//TODO Game Loop
+	//TODO Game Loop? In der Init?
 
 	m_ImageLoader = new ImageLoader(m_Renderer);
 	m_ImageLoader->LoadTextures();
@@ -47,8 +44,9 @@ void Game::Init() {
 	//testIndicies.push_back(1);
 
 	m_textLoader = new TextLoader();
-	m_keywords = m_textLoader->LoadText();
+	m_keywords = m_textLoader->LoadText("Storyboard.txt");
 
+	m_MainMenu = new MainMenu(m_ImageLoader, "MainMenu.txt");
 	Load();
 }
 
@@ -59,12 +57,19 @@ void Game::NewGame() {
 
 void Game::Update() {
 
+	m_CurrentLine++;
 
+	if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
+
+		m_CurrentPanel++;
+		m_CurrentLine = 0;
+	}
 }
 
 void Game::Render() {
 
 	SDL_RenderClear(m_Renderer);
+
 	m_PanelList[m_CurrentPanel]->ShowLine(m_CurrentLine);
 }
 
@@ -75,7 +80,7 @@ void Game::Load() {
 
 		if (m_keywords[i] == "Panel" && m_keywords[i + 1] == "{") {
 
-			Panel* newPanel = new Panel(m_Renderer, m_TextBox, m_ImageLoader);
+			Panel* newPanel = new Panel(m_TextBox, m_ImageLoader);
 			i = i + 2;
 			for (i; i < m_keywords.size(); i) {
 

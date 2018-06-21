@@ -7,15 +7,10 @@ TextLoader::TextLoader() {
 TextLoader::~TextLoader() {
 }
 
-std::vector<std::string> TextLoader::LoadText() {
-
-	//Parse ImageImports.txt
-	std::ifstream imagefile("Storyboard.txt");
-	std::string fileNames;
-	int imageCount = 0;
+std::vector<std::string> TextLoader::LoadText(std::string _filepath) {
 
 	std::ifstream fin;
-	fin.open("Storyboard.txt", std::ios::in);
+	fin.open(_filepath, std::ios::in);
 
 	char currentCharacter;
 	std::string currentKeyword;

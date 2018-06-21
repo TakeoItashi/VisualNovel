@@ -40,6 +40,15 @@
     <ClCompile Include="TextLoader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="TanyaPortrait01.png">
@@ -77,12 +86,27 @@
     <ClInclude Include="SpritePosition.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="MenuItem.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ImageImports.txt">
       <Filter>Ressourcendateien</Filter>
     </Text>
     <Text Include="Storyboard.txt">
+      <Filter>Ressourcendateien</Filter>
+    </Text>
+    <Text Include="MainMenu.txt">
       <Filter>Ressourcendateien</Filter>
     </Text>
   </ItemGroup>

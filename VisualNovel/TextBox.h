@@ -22,6 +22,7 @@ class TextBox {
 		Loads the specified Font for the TextBox
 		@param _path: The filepath of the Font
 		*/
+		//TODO lade Font aus einem bestimmten Ordner. Vielleicht anderes System mit dem man mehrere Fonts definieren kann
 		void loadFont(std::string _path = "");
 		/**
 		Loads the Settings for the Textbox and spplies them

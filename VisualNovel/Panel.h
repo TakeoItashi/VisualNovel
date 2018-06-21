@@ -9,14 +9,13 @@
 class Panel {
 
 	public:
-		Panel(SDL_Renderer* _renderer, TextBox* _textBoxReference, ImageLoader* _textLoaderReference);
+		Panel(TextBox* _textBoxReference, ImageLoader* _imageLoaderReference);
 		~Panel();
 
 		//TODO Background Image entfernen und m_SpriteList[0] verwenden
 		Texture* m_BackgroundImage = nullptr;
-		SDL_Renderer* m_Renderer = nullptr;
 		TextBox* m_TextBox = nullptr;
-		ImageLoader* m_ImageLoader;
+		ImageLoader* m_ImageLoader;							//TODO statische Image Loader Referenz
 		std::string m_PanelName;
 		std::vector<DialogueLine*> m_DialogueLines;
 		std::vector<SpritePosition> m_SpriteIndexList;		//TODO Liste wieder auf ints zurueck setzen

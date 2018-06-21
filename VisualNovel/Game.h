@@ -7,6 +7,7 @@
 #include "ImageLoader.h"
 #include "TextBox.h"
 #include "TextLoader.h"
+#include "MainMenu.h"
 
 class Game {
 
@@ -14,17 +15,15 @@ class Game {
 		Game(Settings* _initialSettings);
 		~Game();
 
+		MainMenu* m_MainMenu = nullptr;
 		Settings* m_GameSettings = nullptr;
 		ImageLoader* m_ImageLoader = nullptr;
 		TextBox* m_TextBox = nullptr;
 		SDL_Window* m_Window = nullptr;
 		SDL_Renderer* m_Renderer = nullptr;
-		SDL_Texture* m_Texture = nullptr;
-		SDL_Surface* m_ScreenSurface = nullptr;
-		SDL_Surface* m_Background = nullptr;
 		std::vector<Panel*> m_PanelList;
 		TextLoader* m_textLoader = nullptr;
-		std::vector<std::string> m_keywords;
+		std::vector<std::string> m_keywords;		//TODO eventuell in seperate Klasse aussondern, zusammen mit der LoadStory Funktion
 		int m_CurrentLine;
 		int m_CurrentPanel;
 

@@ -1,6 +1,6 @@
 #include "Button.h"
 
-Button::Button(Texture _texture) {
+Button::Button() {
 }
 
 Button::~Button() {

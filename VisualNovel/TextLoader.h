@@ -14,6 +14,7 @@ public:
 	~TextLoader();
 
 	std::vector<Panel*> m_PanelList;
-	std::vector<std::string> LoadText();
+
+	std::vector<std::string> LoadText(std::string _filepath);
 };
 

@@ -2,9 +2,8 @@
 
 #define CurrentSprite m_DialogueLines[_lineIndex]->m_SpritesShown[i]
 
-Panel::Panel(SDL_Renderer* _renderer, TextBox* _textBoxReference, ImageLoader* _imageLoaderReference) {
+Panel::Panel(TextBox* _textBoxReference, ImageLoader* _imageLoaderReference) {
 
-	m_Renderer = _renderer;
 	m_TextBox = _textBoxReference;
 	m_ImageLoader = _imageLoaderReference;
 }
@@ -20,7 +19,6 @@ Panel::~Panel() {
 
 	m_DialogueLines.shrink_to_fit();
 	m_SpriteList.shrink_to_fit();
-	m_Renderer = NULL;
 }
 
 void Panel::ShowLine(int _lineIndex) {
@@ -41,6 +39,7 @@ void Panel::ShowLine(int _lineIndex) {
 		aviableSpriteSpace = (AviableWidth / (m_DialogueLines[_lineIndex]->m_SpritesShown.size() + 1));
 	}
 
+	//Sprites anzeigen
 	if (m_DialogueLines[_lineIndex]->m_SpritesShown.size() != 0) {
 		//TODO Magic Numbers entfernen
 		int widthRatio = 600 / 2;
@@ -73,6 +72,7 @@ void Panel::ShowLine(int _lineIndex) {
 
 		//TODO Text anzeigen
 	}
+
 	m_TextBox->Render((*m_DialogueLines[_lineIndex]));
 }
 

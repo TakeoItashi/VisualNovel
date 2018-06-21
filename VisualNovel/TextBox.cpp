@@ -9,6 +9,7 @@ TextBox::TextBox(SDL_Renderer* _renderer) {
 	//TODO TextBox Größe und Position aus den Settings holen
 	Width = 750;
 	Height = 150;
+	//TODO Box Backgound lädt eine textur aus einem Ordner und erstellt selbst eine Textur, wenn keine Textur vordefiniert wurde
 	m_boxBackground = new Texture(_renderer);
 }
 
@@ -23,6 +24,8 @@ void TextBox::Render(DialogueLine _line, int _speed) {
 	} else {
 		m_textTexture = new Texture(m_renderer);
 	}
+
+	//TODO ganz lange Wörter abarbeiten
 
 	std::vector<Texture*> TextCharsTexture;
 
