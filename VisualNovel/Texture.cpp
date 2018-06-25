@@ -33,13 +33,19 @@ void Texture::Free() {
 	}
 }
 
-void Texture::Render(int x, int y, int _Height = -1, int _Width = -1) {
+void Texture::Render(int x, int y, int _Height, int _Width) {
 
-	if (_Width == -1) {
-		_Width = Width;
+	if (_Width < 0) {
+		_Width = Width;		//TODO Screen Width
 	}
-	if (_Height == -1) {
-		_Height = Height;
+	if (_Height < 0) {
+		_Height = Height;	//TODO Screen Height
+	}
+	if (x < 0) {
+		x = PosX;
+	}
+	if (y < 0) {
+		y = PosY;
 	}
 
 	SDL_Rect renderQuad = { x, y, _Width, _Height };
@@ -78,4 +84,9 @@ void Texture::CreateFromSurface(SDL_Surface* _surface)
 
 	Width = _surface->w;
 	Height = _surface->h;
+}
+
+void Texture::SetTexture(Texture* _texture) {
+
+	m_Texture = _texture->m_Texture;
 }

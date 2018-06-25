@@ -1,9 +1,12 @@
 #include "Menu.h"
+#include "Game.h"
 #define LastButton m_MenuItems[m_MenuItems.size()-1].Button
 
-Menu::Menu(ImageLoader* _imageLoader, std::string _filePath) {
+Menu::Menu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, std::string _filePath) {
 
 	m_ImageLoader = _imageLoader;
+	m_Renderer = _renderer;
+	m_Color = SDL_Color{ 0, 0, 0 };
 	LoadMenu(_filePath);
 	CreateMenu();
 }
@@ -72,7 +75,7 @@ void Menu::LoadMenu(std::string _filepath) {
 								}
 								if (m_keywords[i] == "Button:") {
 
-									menuItem.Button = new Button();
+									menuItem.Button = new Button(m_Renderer);
 
 									if (m_keywords[i + 1] == ";") {		//Kein Parameter = generischer Button
 										i++;
@@ -85,7 +88,7 @@ void Menu::LoadMenu(std::string _filepath) {
 										menuItem.Button->Height = 100;
 										menuItem.Button->TextureIndex = std::stoi(m_keywords[i + 1]);
 										i += 2;
-										break;
+										continue;
 									} else if (m_keywords[i + 4] == ";") {
 
 										AutoWidth(menuItem.Button);
@@ -93,7 +96,7 @@ void Menu::LoadMenu(std::string _filepath) {
 										menuItem.Button->Width = std::stoi(m_keywords[i + 1]);
 										menuItem.Button->TextureIndex = std::stoi(m_keywords[i + 3]);
 										i += 4;
-										break;
+										continue;
 									} else if (m_keywords[i + 6] == ";") {
 
 										AutoWidth(menuItem.Button);
@@ -101,33 +104,33 @@ void Menu::LoadMenu(std::string _filepath) {
 										menuItem.Button->Width = std::stoi(m_keywords[i + 3]);
 										menuItem.Button->TextureIndex = std::stoi(m_keywords[i + 5]);
 										i += 6;
-										break;
+										continue;
 									} else if (m_keywords[i + 8] == ";") {
 
-										menuItem.Button->xPos = std::stoi(m_keywords[i + 1]);
-										menuItem.Button->yPos = std::stoi(m_keywords[i + 1]);
+										menuItem.Button->PosX = std::stoi(m_keywords[i + 1]);
+										menuItem.Button->PosY = std::stoi(m_keywords[i + 1]);
 										menuItem.Button->Height = std::stoi(m_keywords[i + 3]);
 										menuItem.Button->Width = std::stoi(m_keywords[i + 5]);
 										menuItem.Button->TextureIndex = std::stoi(m_keywords[i + 7]);
 										i += 8;
-										break;
+										continue;
 									} else if (m_keywords[i + 10] == ";") {
 
-										menuItem.Button->xPos = std::stoi(m_keywords[i + 1]);
-										menuItem.Button->yPos = std::stoi(m_keywords[i + 3]);
+										menuItem.Button->PosX = std::stoi(m_keywords[i + 1]);
+										menuItem.Button->PosY = std::stoi(m_keywords[i + 3]);
 										menuItem.Button->Height = std::stoi(m_keywords[i + 5]);
 										menuItem.Button->Width = std::stoi(m_keywords[i + 7]);
 										menuItem.Button->TextureIndex = std::stoi(m_keywords[i + 9]);
 										i += 10;
-										break;
+										continue;
 									} else {
 										//TODO Parser Exceptions
 										return;
 									}
 								}
 								if (m_keywords[i] == "}") {
-									m_MenuItems.push_back(menuItem);
 									i++;
+									m_MenuItems.push_back(menuItem);
 									break;
 								}
 							}
@@ -145,20 +148,56 @@ void Menu::LoadMenu(std::string _filepath) {
 			}
 		}
 	}
-				test = 0;	
+	loadFont("");
 }
 
 void Menu::CreateMenu() {
+
+	m_BackgroundImage = m_ImageLoader->GetTextures(m_SpriteIndices[0].Index);
+	std::vector<int> m_indices;
+	for (int i = 0; i < m_MenuItems.size(); i++) {
+
+		Texture* m_textTexture = new Texture(m_Renderer);
+
+		m_MenuItems[i].Button->SetTexture(m_ImageLoader->GetTextures(m_MenuItems[i].Button->TextureIndex));
+		SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, m_MenuItems[i].ItemName.c_str(), m_Color);
+		m_textTexture->CreateFromSurface(textSurface);
+
+		m_MenuItems[i].Button->m_textTexture = m_textTexture;
+		TTF_SizeText(m_font, m_MenuItems[i].ItemName.c_str(), &m_textTexture->Width, &m_textTexture->Height);	//TODO Breite des Textes an Button oder vice versa anpassen
+		m_textTexture->PosX = m_MenuItems[i].Button->PosX;
+		m_textTexture->PosY = m_MenuItems[i].Button->PosY;
+		SDL_FreeSurface(textSurface);
+	}
+
+	m_Sprites = m_ImageLoader->GetTextures(m_indices);
+
+	Render();
 }
 
 void Menu::AutoWidth(Button* _button) {
 
 	if (m_MenuItems.size() == 0) {
 
-		_button->xPos = 50;
-		_button->yPos = 50;
+		_button->PosX = 50;
+		_button->PosY = 50;
 	} else {
-		_button->xPos = LastButton->xPos + LastButton->Height + 10;
-		_button->yPos = LastButton->yPos;
+		_button->PosX = LastButton->PosX;
+		_button->PosY = LastButton->PosY + LastButton->Height + 10;
 	}
+}
+
+void Menu::Render() {
+	m_BackgroundImage->Render(-1,-1,600,800);
+	for (int i = 0; i < m_MenuItems.size(); i++) {
+
+		m_MenuItems[i].Button->Render();
+		m_MenuItems[i].Button->m_textTexture->Render();
+	}
+	SDL_RenderPresent(m_Renderer);
+}
+
+void Menu::loadFont(std::string _path) {
+
+	m_font = TTF_OpenFont("OpenSans-Regular.ttf", 28);
 }

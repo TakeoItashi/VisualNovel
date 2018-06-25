@@ -40,13 +40,10 @@ void Game::Init() {
 
 	std::vector<int> testIndicies;
 
-	testIndicies.push_back(0);
-	//testIndicies.push_back(1);
-
 	m_textLoader = new TextLoader();
 	m_keywords = m_textLoader->LoadText("Storyboard.txt");
 
-	m_MainMenu = new MainMenu(m_ImageLoader, "MainMenu.txt");
+	m_MainMenu = new MainMenu(m_Renderer, m_ImageLoader, "MainMenu.txt");
 	Load();
 }
 

@@ -78,6 +78,12 @@ void Panel::ShowLine(int _lineIndex) {
 
 void Panel::LoadImages() {
 
-	m_SpriteList = m_ImageLoader->GetTextures(m_SpriteIndexList);
+	std::vector<int> indices;
+
+	for (int i = 0; i < m_SpriteIndexList.size(); i++) {
+
+		indices.push_back(m_SpriteIndexList[i].Index);
+	}
+	m_SpriteList = m_ImageLoader->GetTextures(indices);
 	m_BackgroundImage = m_SpriteList[m_SpriteIndexList[0].Index];
 }

@@ -1,6 +1,6 @@
 #include "MainMenu.h"
 
-MainMenu::MainMenu(ImageLoader* _imageLoader, std::string _filePath) : Menu(_imageLoader, _filePath) {
+MainMenu::MainMenu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, std::string _filePath) : Menu(_renderer, _imageLoader, _filePath) {
 
 	auto test = 0;
 }

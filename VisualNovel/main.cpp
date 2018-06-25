@@ -10,8 +10,8 @@ int main(int argc, char* argv[]) {
 	//Main loop
 	bool quit = false;
 	SDL_Event eventHandler;
-	newGame->Render();
-	SDL_RenderPresent(newGame->m_Renderer);
+	//newGame->Render();
+	//SDL_RenderPresent(newGame->m_Renderer);
 	while(!quit){
 
 		while (SDL_PollEvent(&eventHandler) != 0) {

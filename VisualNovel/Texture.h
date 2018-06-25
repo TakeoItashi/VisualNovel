@@ -36,7 +36,7 @@ class Texture {
 			   _height: The Height of the Texture. If no Value is set the Textures own Height will be used
 			   _hidth: The Width of the Texture. If no Value is set the Textures own Width will be used
 		*/
-		void Render(int x, int y, int _height, int _width);
+		void Render(int x = -1, int y=-1, int _height= -1, int _width = -1);
 		/**
 		Allocates a Texture from a given filepath to the m_Texture Variable
 		@param _path: The Path of the image file
@@ -47,7 +47,9 @@ class Texture {
 		@param _path: The Surface that will be turned into a Texture
 		*/
 		void CreateFromSurface(SDL_Surface* _surface);
-	private:
+
+		void SetTexture(Texture* _texture);
+	protected:
 		SDL_Renderer* m_Renderer;
 		SDL_Texture* m_Texture;
 };

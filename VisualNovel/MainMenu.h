@@ -3,7 +3,7 @@
 
 class MainMenu : public Menu {
 public:
-	MainMenu(ImageLoader* _imageLoader, std::string _filePath);
+	MainMenu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, std::string _filePath);
 	~MainMenu();
 };
 

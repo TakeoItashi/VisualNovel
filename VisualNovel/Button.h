@@ -1,20 +1,14 @@
 #pragma once
 #include "Texture.h"
-class Button {
+class Button : public Texture {
 
 	public:
 
-		Button();
+		Button(SDL_Renderer*);
 		~Button();
 
-		int xPos;
-		int yPos;
-		int Height;
-		int Width;
 		int TextureIndex;
-		Texture m_Texture = NULL;
-
+		Texture* m_textTexture;
 		void SetPosition(int _x, int _y);
 		void HandleEvent(SDL_Event _event);
-		void Render();
 };

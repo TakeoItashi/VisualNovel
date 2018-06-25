@@ -33,16 +33,21 @@ int ImageLoader::LoadTextures()
 	return imageCount;
 }
 
-std::vector<Texture*> ImageLoader::GetTextures(std::vector<SpritePosition> indicies)
+std::vector<Texture*> ImageLoader::GetTextures(std::vector<int> indicies)
 {
 	std::vector<Texture*> newList;
 
 	for (int i = 0; i < indicies.size(); i++) {
 
-		newList.push_back(m_loadedTextures[indicies[i].Index]);
+		newList.push_back(m_loadedTextures[indicies[i]]);
 	}
 
 	//TODO newList löschen?
 
 	return newList;
+}
+
+Texture * ImageLoader::GetTextures(int _indicie) {
+
+	return m_loadedTextures[_indicie];
 }
