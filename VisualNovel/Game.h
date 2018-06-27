@@ -38,7 +38,7 @@ class Game {
 		/**
 		Updates the current Process
 		*/
-		void Update();
+		void Update(SDL_Event* _eventHandler);
 		/**
 		Renders all the Current Sprites
 		*/

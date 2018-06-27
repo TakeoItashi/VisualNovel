@@ -19,9 +19,9 @@ int main(int argc, char* argv[]) {
 
 				quit = true;
 			}
-			if (eventHandler.type == SDL_MOUSEBUTTONUP || eventHandler.type == SDL_KEYDOWN) {
-
-				newGame->Update();
+			if (eventHandler.type == SDL_MOUSEBUTTONUP || eventHandler.type == SDL_KEYDOWN || eventHandler.type == SDL_MOUSEBUTTONDOWN || eventHandler.type == SDL_MOUSEBUTTONUP) {
+			
+				newGame->Update(&eventHandler);
 				newGame->Render();
 				SDL_RenderPresent(newGame->m_Renderer);
 			}

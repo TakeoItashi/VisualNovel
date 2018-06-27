@@ -9,6 +9,6 @@ class Button : public Texture {
 
 		int TextureIndex;
 		Texture* m_textTexture;
-		void SetPosition(int _x, int _y);
-		void HandleEvent(SDL_Event _event);
+
+		bool HandleEvent(SDL_Event* _event);
 };

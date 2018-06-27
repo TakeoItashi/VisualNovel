@@ -52,7 +52,12 @@ void Game::NewGame() {
 
 }
 
-void Game::Update() {
+void Game::Update(SDL_Event* _eventhandler) {
+
+	for (int i = 0; i < m_MainMenu->m_MenuItems.size(); i++) {
+		
+		m_MainMenu->m_MenuItems[i].Button-> ->HandleEvent(_eventhandler);
+	} 
 
 	m_CurrentLine++;
 
