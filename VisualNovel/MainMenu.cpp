@@ -9,3 +9,18 @@ MainMenu::MainMenu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, std::stri
 MainMenu::~MainMenu() {
 
 }
+
+void MainMenu::StartGame() {
+}
+
+void MainMenu::LoadGame() {
+}
+
+void MainMenu::OpenGallery() {
+}
+
+void MainMenu::OpenSettings() {
+}
+
+void MainMenu::Quit() {
+}

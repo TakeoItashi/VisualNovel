@@ -29,8 +29,6 @@ void Game::Init() {
 
 	SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-	//TODO Game Loop? In der Init?
-
 	m_ImageLoader = new ImageLoader(m_Renderer);
 	m_ImageLoader->LoadTextures();
 
@@ -56,7 +54,7 @@ void Game::Update(SDL_Event* _eventhandler) {
 
 	for (int i = 0; i < m_MainMenu->m_MenuItems.size(); i++) {
 		
-		m_MainMenu->m_MenuItems[i].Button-> ->HandleEvent(_eventhandler);
+		m_MainMenu->m_MenuItems[i].Button->HandleEvent(_eventhandler);
 	} 
 
 	m_CurrentLine++;
@@ -65,6 +63,11 @@ void Game::Update(SDL_Event* _eventhandler) {
 
 		m_CurrentPanel++;
 		m_CurrentLine = 0;
+	}
+
+	if (m_CurrentPanel >= m_PanelList.size()) {
+
+		_eventhandler->quit;
 	}
 }
 

@@ -50,3 +50,6 @@ bool Button::HandleEvent(SDL_Event* _event) {
 		}
 	}
 }
+
+void Button::Update(DelegateFunction _function) {
+}
