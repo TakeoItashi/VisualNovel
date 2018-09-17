@@ -12,7 +12,7 @@
 class Game {
 
 	public:
-		Game(Settings* _initialSettings);
+		Game(Settings* _initialSettings, SDL_Event* _eventHandler);
 		~Game();
 
 		MainMenu* m_MainMenu = nullptr;
@@ -21,11 +21,13 @@ class Game {
 		TextBox* m_TextBox = nullptr;
 		SDL_Window* m_Window = nullptr;
 		SDL_Renderer* m_Renderer = nullptr;
+		SDL_Event* m_EventHandler = nullptr;
 		std::vector<Panel*> m_PanelList;
 		TextLoader* m_textLoader = nullptr;
 		std::vector<std::string> m_keywords;		//TODO eventuell in seperate Klasse aussondern, zusammen mit der LoadStory Funktion
 		int m_CurrentLine;
 		int m_CurrentPanel;
+		bool m_quit = false;
 
 		/**
 		Initializes the Game Libraries and Variables
@@ -38,7 +40,7 @@ class Game {
 		/**
 		Updates the current Process
 		*/
-		void Update(SDL_Event* _eventHandler);
+		void Update();
 		/**
 		Renders all the Current Sprites
 		*/

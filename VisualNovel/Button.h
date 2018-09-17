@@ -1,14 +1,25 @@
 #pragma once
 #include "Texture.h"
+#include <functional>
+
 class Button : public Texture {
 
 	public:
-
-		Button(SDL_Renderer*);
+		//Standard Constructor
+		//Creates a new Instance of a Button
+		//@param _Renderer: The Renderer, that renders this Button
+		//@param _callBack: The Adress of a function that is called when the Button is pressed.
+		Button(SDL_Renderer* _Renderer); //Button(SDL_Renderer* _Renderer, ButtonCallBack _callBack);
+		//Standard Deconstructor
 		~Button();
-
+		//The index of the Texture in the Texture define file
 		int TextureIndex;
+		//The Texture of the Button
 		Texture* m_textTexture;
-
-		bool HandleEvent(SDL_Event* _event);
+		//Handles the Events for the Button
+		//@param A pointer to the event that is passed to the Button
+		//@return true for a Button press
+		void* HandleEvent(SDL_Event* _event);
+		std::function<void*(void*)> m_delegateFunction;
+	private:
 };

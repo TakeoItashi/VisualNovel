@@ -3,29 +3,17 @@
 
 int main(int argc, char* argv[]) {
 
-	Game* newGame = new Game(new Settings("Test"));
+	SDL_Event* eventHandler = new SDL_Event();
+	Game* newGame = new Game(new Settings("Test"), eventHandler);
 	newGame->Init();
 	newGame->NewGame();
 
 	//Main loop
 	bool quit = false;
-	SDL_Event eventHandler;
-	//newGame->Render();
-	//SDL_RenderPresent(newGame->m_Renderer);
 	while(!quit){
 
-		while (SDL_PollEvent(&eventHandler) != 0) {
-			if (eventHandler.type == SDL_QUIT) {
-
-				quit = true;
-			}
-			if (eventHandler.type == SDL_MOUSEBUTTONUP || eventHandler.type == SDL_KEYDOWN || eventHandler.type == SDL_MOUSEBUTTONDOWN || eventHandler.type == SDL_MOUSEBUTTONUP) {
-			
-				newGame->Update(&eventHandler);
-				newGame->Render();
-				SDL_RenderPresent(newGame->m_Renderer);
-			}
-		}
+		newGame->Update();
+		
 	}
 	delete newGame;
 	newGame = nullptr;

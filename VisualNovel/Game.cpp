@@ -1,7 +1,8 @@
 #include "Game.h"
 
-Game::Game(Settings* _initialSettings) {
+Game::Game(Settings* _initialSettings, SDL_Event* _eventHandler) {
 
+	m_EventHandler = _eventHandler;
 }
 
 Game::~Game() {
@@ -30,7 +31,6 @@ void Game::Init() {
 	SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
 	//TODO Game Loop? In der Init?
-
 	m_ImageLoader = new ImageLoader(m_Renderer);
 	m_ImageLoader->LoadTextures();
 
@@ -52,19 +52,29 @@ void Game::NewGame() {
 
 }
 
-void Game::Update(SDL_Event* _eventhandler) {
+void Game::Update() {
 
-	for (int i = 0; i < m_MainMenu->m_MenuItems.size(); i++) {
-		
-		m_MainMenu->m_MenuItems[i].Button-> ->HandleEvent(_eventhandler);
-	} 
+	while (SDL_PollEvent(m_EventHandler) != 0) {
+		if (m_EventHandler->type == SDL_QUIT) {
 
-	m_CurrentLine++;
+			m_quit = true;
+		}
+		if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYDOWN || m_EventHandler->type == SDL_MOUSEBUTTONDOWN || m_EventHandler->type == SDL_MOUSEBUTTONUP) {
 
-	if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
+			Render();
+			SDL_RenderPresent(m_Renderer);
 
-		m_CurrentPanel++;
-		m_CurrentLine = 0;
+			for (int i = 0; i < m_MainMenu->m_MenuItems.size(); i++) {
+
+				m_MainMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+			}
+
+			if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
+
+				m_CurrentPanel++;
+				m_CurrentLine = 0;
+			}
+		}
 	}
 }
 

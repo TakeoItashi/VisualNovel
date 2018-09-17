@@ -26,10 +26,12 @@ private:
 	void AutoWidth(Button* _button);
 	void Render();
 	void loadFont(std::string _path = "");
+	virtual void AddFunctions(Button* _button, int _type);
 
 	TTF_Font* m_font;
 	SDL_Color m_Color;
 	TextLoader* m_textLoader;
 	std::vector<std::string> m_keywords;
 	std::vector<Texture*> m_Texture;
+	bool ButtonPress();
 };

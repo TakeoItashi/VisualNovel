@@ -1,12 +1,14 @@
 #include "Button.h"
 
-Button::Button(SDL_Renderer* _Renderer) : Texture(_Renderer) {
+Button::Button(SDL_Renderer* _Renderer /*, std::function<void*(void*)> _delegate*/) : Texture(_Renderer) {
+	//m_callBack = _callBack;
+	//m_delegateFunction = _delegate;
 }
 
 Button::~Button() {
 }
 
-bool Button::HandleEvent(SDL_Event* _event) {
+void* Button::HandleEvent(SDL_Event* _event) {
 
 	if (_event->type == SDL_MOUSEMOTION || _event->type == SDL_MOUSEBUTTONDOWN || _event->type == SDL_MOUSEBUTTONUP) {
 
@@ -15,6 +17,7 @@ bool Button::HandleEvent(SDL_Event* _event) {
 
 		bool mouseover = true;
 
+		//Check the Mouse Position, whether it's over the Button
 		if (x < PosX) {
 
 			mouseover = false;
@@ -31,20 +34,22 @@ bool Button::HandleEvent(SDL_Event* _event) {
 
 		if (!mouseover) {
 
-			//TODO normal sprite. possibly change alpha
+			//TODO normal sprite
 		} else {
 	
 			switch (_event->type) {
 			
 				case SDL_MOUSEMOTION:
-					//TODO Mouse over sprite. possibly change alpha
+					//TODO Mouse over sprite
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					//TODO Mouse down sprite
 					break;
+				//if the button is pressed, call the delegate function;
 				case SDL_MOUSEBUTTONUP:
 					//TODO 
-					return true;
+					//Return the result from the delagate function
+					return m_delegateFunction(nullptr);
 					break;
 			}
 		}
