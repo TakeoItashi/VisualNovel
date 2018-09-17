@@ -52,29 +52,24 @@ void Game::NewGame() {
 
 }
 
-void Game::Update() {
-
-	while (SDL_PollEvent(m_EventHandler) != 0) {
-		if (m_EventHandler->type == SDL_QUIT) {
-
-			m_quit = true;
-		}
-		if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYDOWN || m_EventHandler->type == SDL_MOUSEBUTTONDOWN || m_EventHandler->type == SDL_MOUSEBUTTONUP) {
-
-			Render();
-			SDL_RenderPresent(m_Renderer);
+void Game::Update(SDL_Event* _eventhandler) {
 
 			for (int i = 0; i < m_MainMenu->m_MenuItems.size(); i++) {
 
 				m_MainMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
 			}
 
-			if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
+	m_CurrentLine++;
 
-				m_CurrentPanel++;
-				m_CurrentLine = 0;
-			}
-		}
+	if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
+
+		m_CurrentPanel++;
+		m_CurrentLine = 0;
+	}
+
+	if (m_CurrentPanel >= m_PanelList.size()) {
+
+		_eventhandler->quit;
 	}
 }
 
