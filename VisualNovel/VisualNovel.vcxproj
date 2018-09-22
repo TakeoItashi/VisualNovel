@@ -142,6 +142,10 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="GoblinMage.png" />
+    <Image Include="square-rounded-empty-outlined-button-shapeByKatarinaStefanikova.png" />
+    <Image Include="square-rounded-Full-outlined-button-shapeByKatarinaStefanikova.png" />
+    <Image Include="summerBackground.png" />
     <Image Include="TanyaPortrait01.png" />
     <Image Include="wallpaper.jpg" />
   </ItemGroup>
@@ -153,7 +157,9 @@
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuItem.h" />
+    <ClInclude Include="MenuItemType.h" />
     <ClInclude Include="Panel.h" />
+    <ClInclude Include="Save.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SpritePosition.h" />
     <ClInclude Include="TextBox.h" />

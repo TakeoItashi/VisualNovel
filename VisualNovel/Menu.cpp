@@ -8,8 +8,6 @@ Menu::Menu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, std::string _file
 	m_ImageLoader = _imageLoader;
 	m_Renderer = _renderer;
 	m_Color = SDL_Color{ 0, 0, 0 };
-	LoadMenu(_filePath);
-	CreateMenu();
 }
 
 Menu::~Menu() {
@@ -26,7 +24,7 @@ void Menu::LoadMenu(std::string _filepath) {
 	m_keywords = m_textLoader->LoadText("MainMenu.txt");
 	auto test = 0;
 	//TODO while schleifen benutzen
-	for (int i = 0; i < m_keywords.size()-1; i++) {
+	for (int i = 0; i < m_keywords.size() - 1; i++) {
 
 		if (m_keywords[i] == "Menu" && m_keywords[i + 1] == "{") {
 			i = i + 2;
@@ -60,7 +58,7 @@ void Menu::LoadMenu(std::string _filepath) {
 				if (m_keywords[i] == "Items" && m_keywords[i + 1] == "{") {
 					i = i + 2;
 					// Iterate over all Buttons
-					for (i; i < m_keywords.size()-1; i) {
+					for (i; i < m_keywords.size() - 1; i) {
 						// Check for end of Line
 						if (m_keywords[i] == ";") {
 
@@ -71,8 +69,8 @@ void Menu::LoadMenu(std::string _filepath) {
 						if (m_keywords[i] == "Item" && m_keywords[i + 1] == "{") {
 
 							MenuItem menuItem;
-							i+=2;
-							for (i; i < m_keywords.size()-1;) {
+							i += 2;
+							for (i; i < m_keywords.size() - 1;) {
 								// Check for the end of Line
 								if (m_keywords[i] == ";") {
 
@@ -88,9 +86,9 @@ void Menu::LoadMenu(std::string _filepath) {
 								}
 								// Parse the design of the button
 								if (m_keywords[i] == "Button:") {
-									
-									
-									menuItem.Button = new Button(m_Renderer);
+
+									std::function<void(Button*)> f;
+									menuItem.Button = new Button(m_Renderer, f);
 
 									if (m_keywords[i + 1] == ";") {		//No Parameter = generic Button
 										i++;
@@ -105,7 +103,7 @@ void Menu::LoadMenu(std::string _filepath) {
 										menuItem.Button->TextureIndex = std::stoi(m_keywords[i + 1]);
 										i += 2;
 										continue;
-									// 2 Button Parameters = first parameter is the position on x & y Axis; second parameter is the texture index 
+										// 2 Button Parameters = first parameter is the position on x & y Axis; second parameter is the texture index 
 									} else if (m_keywords[i + 4] == ";") {
 
 										AutoWidth(menuItem.Button);
@@ -114,9 +112,9 @@ void Menu::LoadMenu(std::string _filepath) {
 										menuItem.Button->TextureIndex = std::stoi(m_keywords[i + 3]);
 										i += 4;
 										continue;
-									// 3 Button Parameters = first parameter is the Position on x Axis
-									//						 second Parameter is the Position on y Axis
-									//                       third parameter is the texture index 
+										// 3 Button Parameters = first parameter is the Position on x Axis
+										//						 second Parameter is the Position on y Axis
+										//                       third parameter is the texture index 
 									} else if (m_keywords[i + 6] == ";") {
 
 										AutoWidth(menuItem.Button);
@@ -125,10 +123,10 @@ void Menu::LoadMenu(std::string _filepath) {
 										menuItem.Button->TextureIndex = std::stoi(m_keywords[i + 5]);
 										i += 6;
 										continue;
-									// 4 Button Parameters = first parameter is the Position on x Axis
-									//						 second Parameter is the Position on y Axis
-									//                       third parameter is the width and height
-									//                       fourth parameter is the texture index 
+										// 4 Button Parameters = first parameter is the Position on x Axis
+										//						 second Parameter is the Position on y Axis
+										//                       third parameter is the width and height
+										//                       fourth parameter is the texture index 
 									} else if (m_keywords[i + 8] == ";") {
 
 										menuItem.Button->PosX = std::stoi(m_keywords[i + 1]);
@@ -138,11 +136,11 @@ void Menu::LoadMenu(std::string _filepath) {
 										menuItem.Button->TextureIndex = std::stoi(m_keywords[i + 7]);
 										i += 8;
 										continue;
-									// 4 Button Parameters = first parameter is the Position on x Axis
-									//						 second Parameter is the Position on y Axis
-									//                       third parameter is the height
-									//                       fourth parameter is the width
-									//                       fifth parameter is the texture index 
+										// 4 Button Parameters = first parameter is the Position on x Axis
+										//						 second Parameter is the Position on y Axis
+										//                       third parameter is the height
+										//                       fourth parameter is the width
+										//                       fifth parameter is the texture index 
 									} else if (m_keywords[i + 10] == ";") {
 
 										menuItem.Button->PosX = std::stoi(m_keywords[i + 1]);
@@ -160,7 +158,11 @@ void Menu::LoadMenu(std::string _filepath) {
 								// Check for
 								if (m_keywords[i] == "Type:") {
 
+
+
 									AddFunctions(menuItem.Button, atoi(m_keywords[i + 1].c_str()));
+									i += 2;
+									continue;
 								}
 								// Check for end of Iteration
 								if (m_keywords[i] == "}") {
@@ -209,7 +211,9 @@ void Menu::CreateMenu() {
 
 	m_Sprites = m_ImageLoader->GetTextures(m_indices);
 
+	SDL_RenderClear(m_Renderer);
 	Render();
+	SDL_RenderPresent(m_Renderer);
 }
 
 void Menu::AutoWidth(Button* _button) {
@@ -225,7 +229,7 @@ void Menu::AutoWidth(Button* _button) {
 }
 
 void Menu::Render() {
-	m_BackgroundImage->Render(-1,-1,600,800);
+	m_BackgroundImage->Render(0, 0, 600, 800);
 	for (int i = 0; i < m_MenuItems.size(); i++) {
 
 		m_MenuItems[i].Button->Render();
@@ -240,4 +244,27 @@ void Menu::loadFont(std::string _path) {
 }
 
 void Menu::AddFunctions(Button* _button, int _type) {
+
+	if (_type == MenuItemType::StartGame) {
+
+		_button->m_delegateFunction = std::bind(&Game::GetInstance()->NewGame, _button);
+		//_button->m_delegateFunction = []() {Game::GetInstance()->NewGame(_button)};
+	} else if (_type == MenuItemType::LoadGame) {
+
+		_button->m_delegateFunction = std::bind(&Game::GetInstance()->LoadGame, _button);
+	} else if (_type == MenuItemType::Gallery) {
+
+		_button->m_delegateFunction = std::bind(&Game::GetInstance()->Gallery, _button);
+		//_button->m_delegateFunction = std::bind(&Game::Gallery, _button);
+	} else if (_type == MenuItemType::Options) {
+
+		_button->m_delegateFunction = std::bind(&Game::GetInstance()->Gallery, _button);
+	} else if (_type == MenuItemType::QuitGame) {
+
+		_button->m_delegateFunction = std::bind(&Game::GetInstance()->Quit, _button);
+	} else if (_type == MenuItemType::Custom) {
+
+		_button->m_delegateFunction = std::bind(&Game::GetInstance()->LoadCustomMethod, _button);
+		//TODO implement custom Main menu Buttons
+	}
 }

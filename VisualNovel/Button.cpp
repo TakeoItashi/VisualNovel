@@ -1,6 +1,7 @@
 #include "Button.h"
 
-Button::Button(SDL_Renderer* _Renderer /*, std::function<void*(void*)> _delegate*/) : Texture(_Renderer) {
+Button::Button(SDL_Renderer* _Renderer , std::function<void(Button*)> _delegate)
+	: Texture(_Renderer) {
 	//m_callBack = _callBack;
 	//m_delegateFunction = _delegate;
 }
@@ -8,9 +9,9 @@ Button::Button(SDL_Renderer* _Renderer /*, std::function<void*(void*)> _delegate
 Button::~Button() {
 }
 
-void* Button::HandleEvent(SDL_Event* _event) {
+void Button::HandleEvent(SDL_Event* _event) {
 
-	if (_event->type == SDL_MOUSEMOTION || _event->type == SDL_MOUSEBUTTONDOWN || _event->type == SDL_MOUSEBUTTONUP) {
+	if (_event->type == SDL_MOUSEMOTION || _event->type == SDL_MOUSEBUTTONUP) {
 
 		int x, y;
 		SDL_GetMouseState(&x, &y);
@@ -33,28 +34,28 @@ void* Button::HandleEvent(SDL_Event* _event) {
 		}
 
 		if (!mouseover) {
-
+			SetAlpha(255);
 			//TODO normal sprite
 		} else {
 	
 			switch (_event->type) {
 			
 				case SDL_MOUSEMOTION:
+					SetAlpha(0);
 					//TODO Mouse over sprite
 					break;
 				case SDL_MOUSEBUTTONDOWN:
+					SetAlpha(128);
 					//TODO Mouse down sprite
 					break;
 				//if the button is pressed, call the delegate function;
 				case SDL_MOUSEBUTTONUP:
 					//TODO 
+					SetAlpha(255);
 					//Return the result from the delagate function
-					return m_delegateFunction(nullptr);
+					m_delegateFunction(this);
 					break;
 			}
 		}
 	}
-}
-
-void Button::Update(DelegateFunction _function) {
 }

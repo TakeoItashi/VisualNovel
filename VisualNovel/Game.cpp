@@ -1,8 +1,30 @@
 #include "Game.h"
 
-Game::Game(Settings* _initialSettings, SDL_Event* _eventHandler) {
+Game* Game::m_gamePointer = nullptr;			//required for singleton
+MainMenu* Game::m_MainMenu;						//
+Settings* Game::m_GameSettings;					//
+ImageLoader* Game::m_ImageLoader;				//
+TextBox* Game::m_TextBox;						//
+SDL_Window* Game::m_Window;						//
+SDL_Renderer* Game::m_Renderer;					// Defining the static members is required since it is in a static context
+SDL_Event* Game::m_EventHandler;				//
+TextLoader* Game::m_textLoader;					//
+std::vector<Panel*> Game::m_PanelList;			//
+std::vector<std::string> Game::m_keywords;		//
+int Game::m_CurrentLine;						//
+int Game::m_CurrentPanel;						//
 
-	m_EventHandler = _eventHandler;
+
+Game::Game() {
+
+	m_MainMenu = nullptr;
+	m_GameSettings = nullptr;
+	m_ImageLoader = nullptr;
+	m_TextBox = nullptr;
+	m_Window = nullptr;
+	m_Renderer = nullptr;
+	m_EventHandler = nullptr;
+	m_textLoader = nullptr;
 }
 
 Game::~Game() {
@@ -19,7 +41,9 @@ Game::~Game() {
 	SDL_Quit();
 }
 
-void Game::Init() {
+void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
+
+	m_EventHandler = _eventHandler;
 
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
@@ -44,32 +68,54 @@ void Game::Init() {
 	m_keywords = m_textLoader->LoadText("Storyboard.txt");
 
 	m_MainMenu = new MainMenu(m_Renderer, m_ImageLoader, "MainMenu.txt");
-	Load();
+
+	LoadStoryBoard();
 }
 
-void Game::NewGame() {
+void Game::NewGame(Button* _butt) {
 
 
 }
 
-void Game::Update(SDL_Event* _eventhandler) {
+void Game::Update(SDL_Event* _eventhandler, bool* _quitCondition) {
 
-			for (int i = 0; i < m_MainMenu->m_MenuItems.size(); i++) {
+	while (SDL_PollEvent(m_EventHandler) != 0) {
 
-				m_MainMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+		if (m_EventHandler->type == SDL_QUIT) {
+
+			*_quitCondition = true;
+			return;
+		}
+
+		//if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_MOUSEMOTION) {
+
+		for (int i = 0; i < m_MainMenu->m_MenuItems.size(); i++) {
+
+			m_MainMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+
+			SDL_RenderPresent(m_Renderer);
+		}
+
+		if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYUP) {
+
+			if (m_CurrentPanel >= m_PanelList.size()) {
+
+				_eventhandler->quit;
 			}
 
-	m_CurrentLine++;
+			//Render();
+			//SDL_RenderPresent(m_Renderer);
+			//m_CurrentLine++;
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Next Line triggered.",
+				"Next Line triggered.", NULL);
 
-	if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
+			if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
 
-		m_CurrentPanel++;
-		m_CurrentLine = 0;
-	}
+				m_CurrentPanel++;
+				m_CurrentLine = 0;
+			}
 
-	if (m_CurrentPanel >= m_PanelList.size()) {
-
-		_eventhandler->quit;
+		}
 	}
 }
 
@@ -80,7 +126,11 @@ void Game::Render() {
 	m_PanelList[m_CurrentPanel]->ShowLine(m_CurrentLine);
 }
 
-void Game::Load() {
+void Game::LoadGame(Button* _buttonCallback) {
+
+}
+
+void Game::LoadStoryBoard() {
 
 	//TODO while schleifen benutzen
 	for (int i = 0; i < m_keywords.size(); i++) {
@@ -211,6 +261,28 @@ void Game::Load() {
 	}
 }
 
+void Game::LoadCustomMethod(Button* _buttonCallback) {
+
+}
+
 void Game::ChangeSettings(Settings* NewSettings) {
 
+}
+
+void Game::Gallery(Button* _buttonCallback) {
+
+}
+
+void Game::OpenOptions(Button* _buttonCallback) {
+
+}
+
+void Game::Quit(Button* _buttonCallback) {
+
+	SDL_FlushEvents(0, UINT32_MAX);
+	SDL_Event* quitEvent = new SDL_Event();
+	quitEvent->type = SDL_QUIT;
+	//TODO Quit Message vlt noch to Menu
+	SDL_PushEvent(quitEvent);
+	return;
 }

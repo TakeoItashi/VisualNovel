@@ -19,19 +19,18 @@ public:
 	Texture* m_BackgroundImage;
 	ImageLoader* m_ImageLoader;
 	std::vector<Texture*> m_Sprites;
-private:
-
-	void LoadMenu(std::string _filepath);
 	void CreateMenu();
+	void LoadMenu(std::string _filepath);
 	void AutoWidth(Button* _button);
 	void Render();
 	void loadFont(std::string _path = "");
 	virtual void AddFunctions(Button* _button, int _type);
+
+private:
 
 	TTF_Font* m_font;
 	SDL_Color m_Color;
 	TextLoader* m_textLoader;
 	std::vector<std::string> m_keywords;
 	std::vector<Texture*> m_Texture;
-	bool ButtonPress();
 };

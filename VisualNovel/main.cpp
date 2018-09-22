@@ -3,19 +3,17 @@
 
 int main(int argc, char* argv[]) {
 
-	SDL_Event* eventHandler = new SDL_Event();
-	Game* newGame = new Game(new Settings("Test"), eventHandler);
-	newGame->Init();
-	newGame->NewGame();
+	SDL_Event* eventHandler = new SDL_Event();	//TODO in game verschieben
+	Game::GetInstance()->Init(new Settings("Test"), eventHandler);
 
 	//Main loop
-	bool quit = false;
-	while(!quit){
+	bool* quit = new bool;
+	*quit = false;
+	while(!*quit){
 
-		newGame->Update();
+		Game::GetInstance()->Update(eventHandler, quit);
 		
 	}
-	delete newGame;
-	newGame = nullptr;
+	SDL_Quit();
 	return 0;
 }

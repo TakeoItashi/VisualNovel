@@ -57,6 +57,18 @@
     <Image Include="wallpaper.jpg">
       <Filter>Ressourcendateien</Filter>
     </Image>
+    <Image Include="GoblinMage.png">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="square-rounded-empty-outlined-button-shapeByKatarinaStefanikova.png">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="square-rounded-Full-outlined-button-shapeByKatarinaStefanikova.png">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="summerBackground.png">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -96,6 +108,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuItemType.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Save.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
