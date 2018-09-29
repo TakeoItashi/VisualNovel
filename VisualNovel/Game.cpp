@@ -9,6 +9,7 @@ SDL_Window* Game::m_Window;						//
 SDL_Renderer* Game::m_Renderer;					// Defining the static members is required since it is in a static context
 SDL_Event* Game::m_EventHandler;				//
 TextLoader* Game::m_textLoader;					//
+Save* Game::m_save;
 std::vector<Panel*> Game::m_PanelList;			//
 std::vector<std::string> Game::m_keywords;		//
 int Game::m_CurrentLine;						//
@@ -74,7 +75,25 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 
 void Game::NewGame(Button* _butt) {
 
-
+	//Test for save game serialization. must be removed
+	m_save = new Save();
+	m_save->m_currentLine = 8;
+	m_save->m_currentPanel = 15;
+	m_save->m_decimals.push_back(5.5f);
+	m_save->m_decimals.push_back(0.2f);
+	m_save->m_decimals.push_back(33.7f);
+	m_save->m_decimals.push_back(28.1f);
+	m_save->m_decimals.push_back(87.4f);
+	m_save->m_triggers.push_back(true);
+	m_save->m_triggers.push_back(false);
+	m_save->m_triggers.push_back(false);
+	m_save->m_triggers.push_back(true);
+	m_save->m_variables.push_back(6);
+	m_save->m_variables.push_back(7);
+	m_save->m_variables.push_back(11);
+	m_save->m_variables.push_back(17);
+	m_save->m_variables.push_back(91);
+	m_save->Serialize();
 }
 
 void Game::Update(SDL_Event* _eventhandler, bool* _quitCondition) {
@@ -96,26 +115,26 @@ void Game::Update(SDL_Event* _eventhandler, bool* _quitCondition) {
 			SDL_RenderPresent(m_Renderer);
 		}
 
-		if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYUP) {
-
-			if (m_CurrentPanel >= m_PanelList.size()) {
-
-				_eventhandler->quit;
-			}
-
-			//Render();
-			//SDL_RenderPresent(m_Renderer);
-			//m_CurrentLine++;
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Next Line triggered.",
-				"Next Line triggered.", NULL);
-
-			if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
-
-				m_CurrentPanel++;
-				m_CurrentLine = 0;
-			}
-
-		}
+		//if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYUP) {
+		//
+		//	if (m_CurrentPanel >= m_PanelList.size()) {
+		//
+		//		_eventhandler->quit;
+		//	}
+		//
+		//	//Render();
+		//	//SDL_RenderPresent(m_Renderer);
+		//	//m_CurrentLine++;
+		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Next Line triggered.",
+		//		"Next Line triggered.", NULL);
+		//
+		//	if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
+		//
+		//		m_CurrentPanel++;
+		//		m_CurrentLine = 0;
+		//	}
+		//
+		//}
 	}
 }
 
@@ -128,6 +147,12 @@ void Game::Render() {
 
 void Game::LoadGame(Button* _buttonCallback) {
 
+	if (m_save == nullptr) {
+
+		m_save = new Save();
+	}
+	std::string test;
+	m_save->Deserialize();
 }
 
 void Game::LoadStoryBoard() {
@@ -282,7 +307,7 @@ void Game::Quit(Button* _buttonCallback) {
 	SDL_FlushEvents(0, UINT32_MAX);
 	SDL_Event* quitEvent = new SDL_Event();
 	quitEvent->type = SDL_QUIT;
-	//TODO Quit Message vlt noch to Menu
+	//TODO nachfaregn, ob man schließen will. vlt noch zum Menü leiten
 	SDL_PushEvent(quitEvent);
 	return;
 }

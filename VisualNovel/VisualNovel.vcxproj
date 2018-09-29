@@ -136,6 +136,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="Save.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TextLoader.cpp" />

@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include "Game.h"
+#include "Save.h"
 #include <functional>
 #define LastButton m_MenuItems[m_MenuItems.size()-1].Button
 

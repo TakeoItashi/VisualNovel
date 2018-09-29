@@ -8,6 +8,7 @@
 #include "TextBox.h"
 #include "TextLoader.h"
 #include "MainMenu.h"
+#include "Save.h"
 
 class Game {
 
@@ -22,6 +23,7 @@ public:
 	static SDL_Renderer* m_Renderer;
 	static SDL_Event* m_EventHandler;
 	static TextLoader* m_textLoader;
+	static Save* m_save;
 	static std::vector<Panel*> m_PanelList;
 	static std::vector<std::string> m_keywords;		//TODO eventuell in seperate Klasse aussondern, zusammen mit der LoadStory Funktion
 	static int m_CurrentLine;
