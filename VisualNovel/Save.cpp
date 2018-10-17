@@ -19,33 +19,39 @@ void Save::Serialize(std::string _path) {
 		//Serialize the current Panel
 		SDL_RWwrite(file, &m_currentPanel, sizeof(int), 1);
 
-		int triggerSize = m_triggers.size();
-		//Serialize the count of all triggers for deserialization
-		SDL_RWwrite(file, &triggerSize, sizeof(int), 1);
-		//Serialize the triggers(bools)
-		for (int i = 0; i <= triggerSize - 1; i++) {
+		int valueSize = m_values.size();
 
-			SDL_RWwrite(file, &m_triggers[i], sizeof(bool), 1);
+		SDL_RWwrite(file, &valueSize, sizeof(int), 1);
+
+
+		for (int i = 0; i <= valueSize-1; i++) {
+
+			SDL_RWwrite(file, &m_values[i]->m_Name, sizeof(std::string), 1);
+		
+			unsigned long long size = 0;
+
+			switch (m_values[i]->m_Type) {
+
+				case DataValueType::trigger:
+					SDL_RWwrite(file, &m_values[i]->m_Type, sizeof(int), 1);
+					size = sizeof(bool);
+					break;
+				case DataValueType::variable:
+					SDL_RWwrite(file, &m_values[i]->m_Type, sizeof(int), 1);
+					size = sizeof(int);
+					break;
+				case DataValueType::decimal:
+					SDL_RWwrite(file, &m_values[i]->m_Type, sizeof(int), 1);
+					size = sizeof(float);
+					break;
+				default:
+					//TODO Fehler meldung, falls der Datentyp nicht bekannt ist
+					break;
+			}
+			//SDL_RWwrite(file, &m_values[i], size, 1);
+			SDL_RWwrite(file, &m_values[i]->m_Value, size, 1);
 		}
-
-		int variableSize = m_variables.size();
-		//Serialize the count of all variables for deserialization
-		SDL_RWwrite(file, &variableSize, sizeof(int), 1);
-		//Serialize the variables(ints)
-		for (int i = 0; i <= variableSize - 1; i++) {
-
-			SDL_RWwrite(file, &m_variables[i], sizeof(int), 1);
-		}
-
-		int decimalSize = m_decimals.size();
-		//Serialize the count of all decimals for deserialization
-		SDL_RWwrite(file, &decimalSize, sizeof(int), 1);
-		//Serialize the decimals(floats)
-		for (int i = 0; i <= decimalSize - 1; i++) {
-
-			SDL_RWwrite(file, &m_decimals[i], sizeof(float), 1);
-		}
-
+		
 		SDL_RWclose(file);
 	}
 }
@@ -63,48 +69,38 @@ void Save::Deserialize(std::string _path) {
 		//Deserialize the currentline
 		SDL_RWread(file, &m_currentPanel, sizeof(int), 1);
 
+		int valueSize = 0;
+		SDL_RWread(file, &valueSize, sizeof(int), 1);
 
-		int triggerSize;
-		//Deserialize the number of all triggers
-		SDL_RWread(file, &triggerSize, sizeof(int), 1);
-		std::vector<bool> newTriggerList;
-		//deserialize all the triggers into a new list
-		for (int i = 0; i <= triggerSize - 1; ++i) {
-
-			bool newValue;
-			SDL_RWread(file, &newValue, sizeof(bool), 1);
-			newTriggerList.push_back(newValue);
+		for (int i = 0; i <= valueSize - 1; i++) {
+		
+			unsigned long long size = 0;
+			DataValue* newValue = new DataValue;
+		
+			SDL_RWread(file, &newValue->m_Name, sizeof(std::string), 1);
+		
+			SDL_RWread(file, &newValue->m_Type, sizeof(int), 1);
+		
+			switch (newValue->m_Type) {
+		
+			case DataValueType::trigger:
+				size = sizeof(bool);
+				break;
+			case DataValueType::variable:
+				size = sizeof(int);
+				break;
+			case DataValueType::decimal:
+				size = sizeof(float);
+				break;
+			default:
+				//TODO Fehler meldung, falls der Datentyp nicht bekannt ist
+				break;
+			}
+		
+			SDL_RWread(file, &newValue->m_Value, size, 1);
+			m_values.push_back(newValue);
 		}
-		//assign all the trigger values to the public list
-		m_triggers = newTriggerList;
 
-		int variableSize;
-		//Deserialize the number of all variables
-		SDL_RWread(file, &variableSize, sizeof(int), 1);
-		std::vector<int> newIntList;
-		//deserialize all the variables into a new list
-		for (int i = 0; i <= variableSize - 1; ++i) {
-
-			int newValue;
-			SDL_RWread(file, &newValue, sizeof(int), 1);
-			newIntList.push_back(newValue);
-		}
-		//assign all the variables values to the public list
-		m_variables = newIntList;
-
-		int decimalSize;
-		//Deserialize the number of all decimals
-		SDL_RWread(file, &decimalSize, sizeof(int), 1);
-		std::vector<float> newDecimalList;
-		//deserialize all the decimals into a new list
-		for (int i = 0; i <= decimalSize - 1; ++i) {
-
-			float newValue;
-			SDL_RWread(file, &newValue, sizeof(float), 1);
-			newDecimalList.push_back(newValue);
-		}
-		//assign all the decimals values to the public list
-		m_decimals = newDecimalList;
 		SDL_RWclose(file);
 	}
 }

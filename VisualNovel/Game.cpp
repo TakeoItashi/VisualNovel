@@ -63,8 +63,6 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 	m_TextBox->ApplySettings("");
 	m_TextBox->loadFont();
 
-	std::vector<int> testIndicies;
-
 	m_textLoader = new TextLoader();
 	m_keywords = m_textLoader->LoadText("Storyboard.txt");
 
@@ -75,24 +73,42 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 
 void Game::NewGame(Button* _butt) {
 
-	//Test for save game serialization. must be removed
+	////Test for save game serialization. must be removed
 	m_save = new Save();
 	m_save->m_currentLine = 8;
 	m_save->m_currentPanel = 15;
-	m_save->m_decimals.push_back(5.5f);
-	m_save->m_decimals.push_back(0.2f);
-	m_save->m_decimals.push_back(33.7f);
-	m_save->m_decimals.push_back(28.1f);
-	m_save->m_decimals.push_back(87.4f);
-	m_save->m_triggers.push_back(true);
-	m_save->m_triggers.push_back(false);
-	m_save->m_triggers.push_back(false);
-	m_save->m_triggers.push_back(true);
-	m_save->m_variables.push_back(6);
-	m_save->m_variables.push_back(7);
-	m_save->m_variables.push_back(11);
-	m_save->m_variables.push_back(17);
-	m_save->m_variables.push_back(91);
+	DataValue* testValue = new DataValue();
+	testValue->m_Name = "TestTrigger1";
+	testValue->m_Type = DataValueType::trigger;
+	testValue->m_Value = (void*)true;
+	m_save->m_values.push_back(testValue);
+
+	testValue = new DataValue();
+	testValue->m_Name = "TestValue1";
+	testValue->m_Type = DataValueType::variable;
+	testValue->m_Value = (void*)42;
+	m_save->m_values.push_back(testValue);
+
+	testValue = new DataValue();
+	testValue->m_Name = "TestDecimal1";
+	testValue->m_Type = DataValueType::decimal;
+	float testfloat = 4.2f;
+	testValue->m_Value = (void*)&testfloat;
+	m_save->m_values.push_back(testValue);
+	//m_save->m_decimals.push_back(5.5f);
+	//m_save->m_decimals.push_back(0.2f);
+	//m_save->m_decimals.push_back(33.7f);
+	//m_save->m_decimals.push_back(28.1f);
+	//m_save->m_decimals.push_back(87.4f);
+	//m_save->m_triggers.push_back(true);
+	//m_save->m_triggers.push_back(false);
+	//m_save->m_triggers.push_back(false);
+	//m_save->m_triggers.push_back(true);
+	//m_save->m_variables.push_back(6);
+	//m_save->m_variables.push_back(7);
+	//m_save->m_variables.push_back(11);
+	//m_save->m_variables.push_back(17);
+	//m_save->m_variables.push_back(91);
 	m_save->Serialize();
 }
 

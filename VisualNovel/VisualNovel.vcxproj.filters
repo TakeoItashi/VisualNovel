@@ -13,127 +13,172 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Headerdateien\UI">
+      <UniqueIdentifier>{92ba87ff-e48f-4afc-b8e3-58d743a20a00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Serialization">
+      <UniqueIdentifier>{99a2f578-788b-4251-8a5d-26c340d3f173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Panels">
+      <UniqueIdentifier>{78de29cc-8a42-4b16-91ca-c3adc77d1bfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Loaders">
+      <UniqueIdentifier>{d43a1025-095f-4060-a16b-955761f216cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Settings">
+      <UniqueIdentifier>{56584e22-f7bd-4d22-8b7b-717595b11ef2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Loaders">
+      <UniqueIdentifier>{ab9e941a-973e-451b-ba2b-71dc3b5d5f6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Settings">
+      <UniqueIdentifier>{08c0275d-b6a7-42ba-ad3e-c1ca71ee15a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Panels">
+      <UniqueIdentifier>{9845eaac-06d2-496e-a996-e898f7e345cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Serialization">
+      <UniqueIdentifier>{f4b2c1f4-c4d9-40e7-99fe-3f4e9eacbb6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\UI">
+      <UniqueIdentifier>{f24f0e2f-3ae7-4097-85b7-9bebaa8f5ad7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ressourcendateien\Images">
+      <UniqueIdentifier>{d25133c1-f2d0-474c-9465-168c4474875e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ressourcendateien\TextFiles">
+      <UniqueIdentifier>{af4cc7f9-fe5d-4e38-902c-ec2cfdfdd41e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ressourcendateien\Font">
+      <UniqueIdentifier>{d1eb834b-810d-466b-b73a-845df1a537a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="DialogueLine.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Panel.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Settings.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="ImageLoader.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="TextBox.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Loaders</Filter>
     </ClCompile>
     <ClCompile Include="TextLoader.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Loaders</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Quelldateien\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="DialogueLine.cpp">
+      <Filter>Quelldateien\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="Panel.cpp">
+      <Filter>Quelldateien\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="TextBox.cpp">
+      <Filter>Quelldateien\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Quelldateien\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Save.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Quelldateien\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Quelldateien\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Quelldateien\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="TanyaPortrait01.png">
-      <Filter>Ressourcendateien</Filter>
-    </Image>
-    <Image Include="wallpaper.jpg">
-      <Filter>Ressourcendateien</Filter>
-    </Image>
-    <Image Include="GoblinMage.png">
-      <Filter>Ressourcendateien</Filter>
-    </Image>
     <Image Include="square-rounded-empty-outlined-button-shapeByKatarinaStefanikova.png">
-      <Filter>Ressourcendateien</Filter>
+      <Filter>Ressourcendateien\Images</Filter>
     </Image>
     <Image Include="square-rounded-Full-outlined-button-shapeByKatarinaStefanikova.png">
-      <Filter>Ressourcendateien</Filter>
+      <Filter>Ressourcendateien\Images</Filter>
+    </Image>
+    <Image Include="TanyaPortrait01.png">
+      <Filter>Ressourcendateien\Images</Filter>
     </Image>
     <Image Include="summerBackground.png">
-      <Filter>Ressourcendateien</Filter>
+      <Filter>Ressourcendateien\Images</Filter>
+    </Image>
+    <Image Include="wallpaper.jpg">
+      <Filter>Ressourcendateien\Images</Filter>
+    </Image>
+    <Image Include="GoblinMage.png">
+      <Filter>Ressourcendateien\Images</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Panel.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="DialogueLine.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageLoader.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="TextBox.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="TextLoader.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="SpritePosition.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuItem.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Button.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Headerdateien\UI</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Headerdateien\UI</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenu.h">
-      <Filter>Headerdateien</Filter>
+    <ClInclude Include="MenuItem.h">
+      <Filter>Headerdateien\UI</Filter>
     </ClInclude>
     <ClInclude Include="MenuItemType.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Headerdateien\UI</Filter>
     </ClInclude>
     <ClInclude Include="Save.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Headerdateien\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="DataValueType.h">
+      <Filter>Headerdateien\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Headerdateien\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="TextBox.h">
+      <Filter>Headerdateien\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="SpritePosition.h">
+      <Filter>Headerdateien\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Headerdateien\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="TextLoader.h">
+      <Filter>Headerdateien\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLoader.h">
+      <Filter>Headerdateien\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogueLine.h">
+      <Filter>Headerdateien\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Headerdateien\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Headerdateien\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="DataValue.h">
+      <Filter>Headerdateien\Serialization</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ImageImports.txt">
-      <Filter>Ressourcendateien</Filter>
-    </Text>
-    <Text Include="Storyboard.txt">
-      <Filter>Ressourcendateien</Filter>
+      <Filter>Ressourcendateien\TextFiles</Filter>
     </Text>
     <Text Include="MainMenu.txt">
-      <Filter>Ressourcendateien</Filter>
+      <Filter>Ressourcendateien\TextFiles</Filter>
+    </Text>
+    <Text Include="Storyboard.txt">
+      <Filter>Ressourcendateien\TextFiles</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
     <Font Include="ttf\OpenSans-Regular.ttf">
-      <Filter>Ressourcendateien</Filter>
+      <Filter>Ressourcendateien\Font</Filter>
     </Font>
   </ItemGroup>
 </Project>

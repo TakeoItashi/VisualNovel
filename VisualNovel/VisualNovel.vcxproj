@@ -152,6 +152,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="DataValue.h" />
+    <ClInclude Include="DataValueType.h" />
     <ClInclude Include="DialogueLine.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ImageLoader.h" />

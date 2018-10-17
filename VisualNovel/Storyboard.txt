@@ -4,6 +4,26 @@ Panel {
 
 	BGIndex: 0;					## Background Image Index
 	
+	##Condition {
+	##	
+	##	DataValues{
+	##		
+	##		DataValue {
+	##			
+	##			Name: StoryTrigger1;
+	##			Type: trigger;
+	##			Value: true;
+	##		}
+	##
+	##		DataValue {
+	##			
+	##			Name: StoryVariable1;
+	##			Type: variable;
+	##			Value: 3;
+	##		}
+	##	}
+	##}
+
 	Sprites {
 	
 		Sprite: 1;				## Sprite_Index n;
@@ -26,7 +46,7 @@ Panel {
 }
 Panel {
 
-	Name: "Panel 1";			## Used Internally. HAs no effect on the Game
+	Name: "Panel 2";			## Used Internally. HAs no effect on the Game
 
 	BGIndex: 0;					## Background Image Index
 	

@@ -4,7 +4,7 @@
 class Settings {
 
 	public:
-		Settings(std::string Setting1);
+		Settings(std::string Settings);
 		~Settings();
 
 		//Screen Variables

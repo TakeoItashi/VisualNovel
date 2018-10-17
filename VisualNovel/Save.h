@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "DataValue.h"
 
 class Save {
 public:
@@ -8,6 +9,7 @@ public:
 
 	int m_currentLine;
 	int m_currentPanel;
+	std::vector<DataValue*> m_values;
 	std::vector<bool> m_triggers;	//TODO eigene Value Klasse mit ID zum erstellen.
 	std::vector<int> m_variables;	//	   Wert wird als void pointer abgespeichert um alle Datentypen annehmen zu können
 	std::vector<float> m_decimals;	//	   Datentyp des Wertes wird in einem Enum dargestellt

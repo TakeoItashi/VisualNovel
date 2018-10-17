@@ -204,7 +204,7 @@ void Menu::CreateMenu() {
 		m_textTexture->CreateFromSurface(textSurface);
 
 		m_MenuItems[i].Button->m_textTexture = m_textTexture;
-		TTF_SizeText(m_font, m_MenuItems[i].ItemName.c_str(), &m_textTexture->Width, &m_textTexture->Height);	//TODO Breite des Textes an Button oder vice versa anpassen
+		TTF_SizeText(m_font, m_MenuItems[i].ItemName.c_str(), &m_MenuItems[i].Button->Width, &m_MenuItems[i].Button->Height);	//TODO Breite des Textes an Button oder vice versa anpassen
 		m_textTexture->PosX = m_MenuItems[i].Button->PosX;
 		m_textTexture->PosY = m_MenuItems[i].Button->PosY;
 		SDL_FreeSurface(textSurface);
