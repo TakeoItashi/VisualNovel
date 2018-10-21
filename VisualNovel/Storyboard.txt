@@ -4,25 +4,22 @@ Panel {
 
 	BGIndex: 0;					## Background Image Index
 	
-	##Condition {
-	##	
-	##	DataValues{
-	##		
-	##		DataValue {
-	##			
-	##			Name: StoryTrigger1;
-	##			Type: trigger;
-	##			Value: true;
-	##		}
-	##
-	##		DataValue {
-	##			
-	##			Name: StoryVariable1;
-	##			Type: variable;
-	##			Value: 3;
-	##		}
-	##	}
-	##}
+	Condition {
+		
+		DataValue {
+			
+			Name: StoryTrigger1;
+			Type: trigger;
+			Value: true;
+		}
+		
+		DataValue {
+			
+			Name: StoryVariable1;
+			Type: variable;
+			Value: 3;
+		}
+	}
 
 	Sprites {
 	

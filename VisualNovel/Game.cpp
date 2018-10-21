@@ -79,21 +79,17 @@ void Game::NewGame(Button* _butt) {
 	m_save->m_currentPanel = 15;
 	DataValue* testValue = new DataValue();
 	testValue->m_Name = "TestTrigger1";
-	testValue->m_Type = DataValueType::trigger;
-	testValue->m_Value = (void*)true;
+	testValue->SetValue(true);
 	m_save->m_values.push_back(testValue);
 
 	testValue = new DataValue();
 	testValue->m_Name = "TestValue1";
-	testValue->m_Type = DataValueType::variable;
-	testValue->m_Value = (void*)42;
+	testValue->SetValue(42);
 	m_save->m_values.push_back(testValue);
 
 	testValue = new DataValue();
 	testValue->m_Name = "TestDecimal1";
-	testValue->m_Type = DataValueType::decimal;
-	float testfloat = 4.2f;
-	testValue->m_Value = (void*)&testfloat;
+	testValue->SetValue(6.9f);
 	m_save->m_values.push_back(testValue);
 	//m_save->m_decimals.push_back(5.5f);
 	//m_save->m_decimals.push_back(0.2f);
@@ -201,7 +197,93 @@ void Game::LoadStoryBoard() {
 					i = i + 2;
 					continue;
 				}
+				if (m_keywords[i] == "Condition" && m_keywords[i + 1] == "{") {
+
+					Condition* newCondition = new Condition;
+					i = i + 2;
+					for (i; i < m_keywords.size(); i) {
+
+						if (m_keywords[i] == "DataValue" && m_keywords[i + 1] == "{") {
+
+							i = i + 2;
+							DataValue newValue;
+							DataValueType newType;
+
+							for (i; i < m_keywords.size(); i) {
+
+								if (m_keywords[i] == ";") {
+
+									i++;
+									continue;
+								}
+								if (m_keywords[i] == "Name:") {
+
+									newValue.m_Name = m_keywords[i + 1];
+									i = i + 2;
+									continue;
+								}
+								if (m_keywords[i] == "Type:") {
+
+									if (m_keywords[i + 1] == "trigger") {
+
+										newType = DataValueType::trigger;
+										i = i + 2;
+									} else if (m_keywords[i + 1] == "variable") {
+
+										newType = DataValueType::variable;
+										i = i + 2;
+									} else if (m_keywords[i + 1] == "decimal") {
+
+										newType = DataValueType::decimal;
+										i = i + 2;
+									} else {
+										//TODO Fehlermeldung
+									}
+									continue;
+								}
+								if (m_keywords[i] == "Value:") {
+
+									switch (newType) {
+										case DataValueType::trigger:
+											if (m_keywords[i + 1] == "true") {
+
+												newValue.SetValue(true);
+											} else {
+
+												newValue.SetValue(false);
+											}
+											i = i + 2;
+											break;
+										case DataValueType::variable:
+											newValue.SetValue(atoi(m_keywords[i + 1].c_str()));
+											i = i + 2;
+											break;
+										case DataValueType::decimal:
+											newValue.SetValue((float)atof(m_keywords[i + 1].c_str()));
+											i = i + 2;
+											break;
+									}
+									if (m_keywords[i] == "}") {
+										i++;
+										break;
+									}
+								}
+								if (m_keywords[i] == "}") {
+									i++;
+									break;
+								}
+							}
+						}
+						if (m_keywords[i] == "}") {
+							i++;
+							break;
+						}
+					}
+					newPanel->m_PanelCondition = newCondition;
+					continue;
+				}
 				if (m_keywords[i] == "Sprites" && m_keywords[i + 1] == "{") {
+
 					i = i + 2;
 					for (i; i < m_keywords.size(); i) {
 
@@ -210,7 +292,6 @@ void Game::LoadStoryBoard() {
 							i++;
 							continue;
 						}
-
 						if (m_keywords[i] == "Sprite:") {
 							SpritePosition spritePosition;
 							spritePosition.Index = std::stoi(m_keywords[i + 1]);

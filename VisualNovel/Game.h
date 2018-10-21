@@ -1,14 +1,15 @@
 #pragma once
-#include "Panel.h"
-#include "Settings.h"
-#include <vector>
 #include "include\SDL.h"
 #include "include\SDL_image.h"
 #include "ImageLoader.h"
+#include "Condition.h"
+#include "MainMenu.h"
+#include "Panel.h"
+#include "Save.h"
+#include "Settings.h"
 #include "TextBox.h"
 #include "TextLoader.h"
-#include "MainMenu.h"
-#include "Save.h"
+#include <vector>
 
 class Game {
 

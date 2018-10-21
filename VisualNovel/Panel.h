@@ -6,6 +6,8 @@
 #include "DialogueLine.h"
 #include "SpritePosition.h"
 #include "ImageLoader.h"
+#include "Condition.h"
+
 class Panel {
 
 	public:
@@ -16,6 +18,7 @@ class Panel {
 		Texture* m_BackgroundImage = nullptr;
 		TextBox* m_TextBox = nullptr;
 		ImageLoader* m_ImageLoader;							//TODO statische Image Loader Referenz
+		Condition* m_PanelCondition;
 		std::string m_PanelName;
 		std::vector<DialogueLine*> m_DialogueLines;
 		std::vector<SpritePosition> m_SpriteIndexList;		//TODO Liste wieder auf ints zurueck setzen

@@ -91,6 +91,12 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Quelldateien\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Condition.cpp">
+      <Filter>Quelldateien\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="DataValue.cpp">
+      <Filter>Quelldateien\Serialization</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="square-rounded-empty-outlined-button-shapeByKatarinaStefanikova.png">
@@ -163,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="DataValue.h">
       <Filter>Headerdateien\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="Condition.h">
+      <Filter>Headerdateien\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

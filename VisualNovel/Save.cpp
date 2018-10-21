@@ -30,26 +30,29 @@ void Save::Serialize(std::string _path) {
 		
 			unsigned long long size = 0;
 
-			switch (m_values[i]->m_Type) {
+			DataValueType ValueReference;
+			switch (m_values[i]->GetType()) {
 
 				case DataValueType::trigger:
-					SDL_RWwrite(file, &m_values[i]->m_Type, sizeof(int), 1);
+					ValueReference = trigger;
+					SDL_RWwrite(file, &ValueReference, sizeof(int), 1);
 					size = sizeof(bool);
 					break;
 				case DataValueType::variable:
-					SDL_RWwrite(file, &m_values[i]->m_Type, sizeof(int), 1);
+					ValueReference = variable;
+					SDL_RWwrite(file, &ValueReference, sizeof(int), 1);
 					size = sizeof(int);
 					break;
 				case DataValueType::decimal:
-					SDL_RWwrite(file, &m_values[i]->m_Type, sizeof(int), 1);
+					ValueReference = decimal;
+					SDL_RWwrite(file, &ValueReference, sizeof(int), 1);
 					size = sizeof(float);
 					break;
 				default:
 					//TODO Fehler meldung, falls der Datentyp nicht bekannt ist
 					break;
 			}
-			//SDL_RWwrite(file, &m_values[i], size, 1);
-			SDL_RWwrite(file, &m_values[i]->m_Value, size, 1);
+			SDL_RWwrite(file, m_values[i]->GetPointer(), size, 1);
 		}
 		
 		SDL_RWclose(file);
@@ -79,28 +82,51 @@ void Save::Deserialize(std::string _path) {
 		
 			SDL_RWread(file, &newValue->m_Name, sizeof(std::string), 1);
 		
-			SDL_RWread(file, &newValue->m_Type, sizeof(int), 1);
+			DataValueType valueType;
+			SDL_RWread(file, &valueType, sizeof(int), 1);
 		
-			switch (newValue->m_Type) {
+			switch (valueType) {
 		
 			case DataValueType::trigger:
 				size = sizeof(bool);
+				newValue->SetValue(false);
 				break;
 			case DataValueType::variable:
 				size = sizeof(int);
+				newValue->SetValue(0);
 				break;
 			case DataValueType::decimal:
 				size = sizeof(float);
+				newValue->SetValue(0.0f);
 				break;
 			default:
 				//TODO Fehler meldung, falls der Datentyp nicht bekannt ist
 				break;
 			}
-		
-			SDL_RWread(file, &newValue->m_Value, size, 1);
+			SDL_RWread(file, newValue->GetPointer(), size, 1);
 			m_values.push_back(newValue);
 		}
+		int testInt;
+		bool testbool;
+		float testfloat;
+		for each (DataValue* value in m_values) {
+			
+			switch (value->GetType()) {
 
+			case DataValueType::trigger:
+				testbool = value->GetBool();
+				break;
+			case DataValueType::variable:
+				testInt = value->GetInt();
+				break;
+			case DataValueType::decimal:
+				testfloat = value->GetFloat();
+				break;
+			default:
+				//TODO Fehler meldung, falls der Datentyp nicht bekannt ist
+				break;
+			}
+		}
 		SDL_RWclose(file);
 	}
 }

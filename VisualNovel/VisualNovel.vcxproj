@@ -129,6 +129,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Condition.cpp" />
+    <ClCompile Include="DataValue.cpp" />
     <ClCompile Include="DialogueLine.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
@@ -152,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Condition.h" />
     <ClInclude Include="DataValue.h" />
     <ClInclude Include="DataValueType.h" />
     <ClInclude Include="DialogueLine.h" />
