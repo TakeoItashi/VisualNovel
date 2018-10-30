@@ -1,0 +1,12 @@
+WindowWidth: 800;
+WindowHeight: 600;
+TextBoxRed: 0;
+TextBoxGreen: 0;
+TextBoxBlue: 255;
+TextBoxAlpha: 255;
+##TODO Variables
+## TextBoxColor
+## TextBoxTextColor		
+## TextBoxSpeed
+## SkipUnseenText
+## SoundSettings

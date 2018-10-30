@@ -50,17 +50,18 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
 
-	m_Window = SDL_CreateWindow("Visual Novel", 100, 50, 800, 600, SDL_WINDOW_SHOWN);
+	_initialSettings->LoadSettings();
+
+	m_Window = SDL_CreateWindow("Visual Novel", 100, 50, _initialSettings->m_WindowWidth, _initialSettings->m_WindowHeight, SDL_WINDOW_SHOWN);
 	m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
 
 	SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-	//TODO Game Loop? In der Init?
 	m_ImageLoader = new ImageLoader(m_Renderer);
 	m_ImageLoader->LoadTextures();
 
 	m_TextBox = new TextBox(m_Renderer);
-	m_TextBox->ApplySettings("");
+	m_TextBox->ApplySettings(_initialSettings);
 	m_TextBox->loadFont();
 
 	m_textLoader = new TextLoader();
@@ -91,20 +92,7 @@ void Game::NewGame(Button* _butt) {
 	testValue->m_Name = "TestDecimal1";
 	testValue->SetValue(6.9f);
 	m_save->m_values.push_back(testValue);
-	//m_save->m_decimals.push_back(5.5f);
-	//m_save->m_decimals.push_back(0.2f);
-	//m_save->m_decimals.push_back(33.7f);
-	//m_save->m_decimals.push_back(28.1f);
-	//m_save->m_decimals.push_back(87.4f);
-	//m_save->m_triggers.push_back(true);
-	//m_save->m_triggers.push_back(false);
-	//m_save->m_triggers.push_back(false);
-	//m_save->m_triggers.push_back(true);
-	//m_save->m_variables.push_back(6);
-	//m_save->m_variables.push_back(7);
-	//m_save->m_variables.push_back(11);
-	//m_save->m_variables.push_back(17);
-	//m_save->m_variables.push_back(91);
+
 	m_save->Serialize();
 }
 
