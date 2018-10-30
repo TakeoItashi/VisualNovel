@@ -3,6 +3,10 @@
 #include "include\SDL.h"
 #include "include\SDL_image.h"
 
+class SDL_Renderer;
+class SDL_Surface;
+class SDL_Texture;
+
 class Texture {
 
 	public:

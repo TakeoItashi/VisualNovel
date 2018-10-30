@@ -1,6 +1,10 @@
 #pragma once
+#include <string>
+#include <SDL.h>
 #include "Menu.h"
-#include "MenuItemType.h"
+
+class SDL_Renderer;
+class ImageLoader;
 
 class MainMenu : public Menu {
 public:

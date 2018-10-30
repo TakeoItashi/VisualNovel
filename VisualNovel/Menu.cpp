@@ -1,7 +1,13 @@
-#include "Menu.h"
 #include "Game.h"
 #include "Save.h"
-#include <functional>
+#include "MenuItem.h"
+#include "MenuItemType.h"
+#include "Texture.h"
+#include "ImageLoader.h"
+#include "TextLoader.h"
+#include "SpritePosition.h"
+#include "Menu.h"
+
 #define LastButton m_MenuItems[m_MenuItems.size()-1].Button
 
 Menu::Menu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, std::string _filePath) {

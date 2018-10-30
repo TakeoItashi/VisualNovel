@@ -1,10 +1,11 @@
 #pragma once
 #include <vector>
-#include "Texture.h"
+#include <string>
 #include <fstream>
 #include <sstream>
-#include <string>
-#include "SpritePosition.h"
+
+class SDL_Renderer;
+class Texture;
 
 class ImageLoader {
 

@@ -1,15 +1,18 @@
 #pragma once
-#include "include\SDL.h"
-#include "include\SDL_image.h"
-#include "ImageLoader.h"
-#include "Condition.h"
-#include "MainMenu.h"
-#include "Panel.h"
-#include "Save.h"
-#include "Settings.h"
-#include "TextBox.h"
-#include "TextLoader.h"
 #include <vector>
+#include <SDL.h>
+#include <SDL_ttf.h>
+
+class MainMenu;
+class Settings;
+class ImageLoader;
+class TextBox;
+class TextLoader;
+class Save;
+class Panel;
+class Settings;
+class Button;
+class OptionsMenu;
 
 class Game {
 

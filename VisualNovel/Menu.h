@@ -1,10 +1,16 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "MenuItem.h"
-#include "Texture.h"
-#include "ImageLoader.h"
-#include "TextLoader.h"
+#include <functional>
+#include <SDL_ttf.h>
+
+class ImageLaoder;
+class Texture;
+class Button;
+class TextLoader;
+class ImageLoader;
+class MenuItem;
+class SpritePosition;
 
 class Menu{
 	//TODO Menu von Panel erben lassen?

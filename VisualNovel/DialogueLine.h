@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
-#include <list>
 #include <vector>
-#include "SpritePosition.h"
+
+class SpritePosition;
 
 class DialogueLine {
 

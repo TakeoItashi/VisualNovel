@@ -1,12 +1,13 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Texture.h"
-#include "TextBox.h"
-#include "DialogueLine.h"
-#include "SpritePosition.h"
-#include "ImageLoader.h"
-#include "Condition.h"
+
+class TextBox;
+class ImageLoader;
+class Texture;
+class Condition;
+class DialogueLine;
+class SpritePosition;
 
 class Panel {
 

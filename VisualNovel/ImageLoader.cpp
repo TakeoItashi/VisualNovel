@@ -1,3 +1,5 @@
+#include "SpritePosition.h"
+#include "Texture.h"
 #include "ImageLoader.h"
 
 ImageLoader::ImageLoader(SDL_Renderer* _renderer)

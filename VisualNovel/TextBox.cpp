@@ -1,6 +1,7 @@
+#include "DialogueLine.h"
+#include "Texture.h"
+#include "Settings.h"
 #include "TextBox.h"
-#include <algorithm>
-#include <vector>
 
 TextBox::TextBox(SDL_Renderer* _renderer) {
 	m_renderer = _renderer;
@@ -101,13 +102,14 @@ void TextBox::loadFont(std::string _path) {
 }
 
 //TODO Use Configured Background Settings
-void TextBox::ApplySettings(std::string _settings) {
+void TextBox::ApplySettings(Settings* _settings) {
 	SDL_Surface* backgroundSurface = SDL_CreateRGBSurface(0, Width, Height, 32, 0, 0, 0, 0);
 
-	SDL_FillRect(backgroundSurface, NULL, SDL_MapRGB(backgroundSurface->format, 0, 0, 255));
+	SDL_FillRect(backgroundSurface, NULL, SDL_MapRGB(backgroundSurface->format, _settings->m_TextBoxRed, _settings->m_TextBoxGreen, _settings->m_TextBoxBlue));
 	m_boxBackground->CreateFromSurface(backgroundSurface);
 
 	//TODO checke Settings auf Alpha für TextBox
 	m_boxBackground->SetBlendMode(SDL_BLENDMODE_BLEND);
-	m_boxBackground->SetAlpha((255 * 0.5));
+	//TODO SetAlpha Änderungen spiegeln sich nicht in der Textbox wieder.
+	m_boxBackground->SetAlpha((_settings->m_TextBoxAlpha * 0.5));
 }

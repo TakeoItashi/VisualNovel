@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
-#include "DataValue.h"
+#include <SDL.h>
+
+class DataValue;
 
 class Save {
 public:

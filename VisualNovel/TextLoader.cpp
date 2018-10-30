@@ -1,3 +1,4 @@
+#include "Panel.h"
 #include "TextLoader.h"
 
 TextLoader::TextLoader() {

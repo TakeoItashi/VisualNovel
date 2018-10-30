@@ -1,3 +1,9 @@
+#include "Texture.h"
+#include "TextBox.h"
+#include "DialogueLine.h"
+#include "SpritePosition.h"
+#include "ImageLoader.h"
+#include "Condition.h"
 #include "Panel.h"
 
 #define CurrentSprite m_DialogueLines[_lineIndex]->m_SpritesShown[i]

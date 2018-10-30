@@ -1,8 +1,13 @@
 #pragma once
-#include "Texture.h"
-#include "DialogueLine.h"
+#include <vector>
 #include <string>
+#include <algorithm>
 #include <SDL_ttf.h>
+
+class DialogueLine;
+class Settings;
+class Texture;
+
 class TextBox {
 
 	public:

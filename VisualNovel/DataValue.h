@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
-#include "DataValueType.h"
+
+enum DataValueType;
 
 class DataValue {
 	public:

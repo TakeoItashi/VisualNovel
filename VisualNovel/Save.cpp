@@ -1,5 +1,6 @@
+#include "DataValue.h"
+#include "DataValueType.h"
 #include "Save.h"
-#include "SDL.h"
 
 Save::Save() {
 	m_currentLine = 0;

@@ -1,7 +1,23 @@
+#include "Condition.h"
+#include "Panel.h"
+#include "Save.h"
+#include "Settings.h"
+#include "TextLoader.h"
+#include "Button.h"
+#include "DataValue.h"
+#include "MenuItem.h"
+#include "SpritePosition.h"
+#include "DialogueLine.h"
+#include "DataValueType.h"
+#include "TextBox.h"
+#include "OptionsMenu.h"
+#include "MainMenu.h"
+#include "ImageLoader.h"
 #include "Game.h"
 
 Game* Game::m_gamePointer = nullptr;			//required for singleton
 MainMenu* Game::m_MainMenu;						//
+OptionsMenu* Game::m_OptionsMenu;				//
 Settings* Game::m_GameSettings;					//
 ImageLoader* Game::m_ImageLoader;				//
 TextBox* Game::m_TextBox;						//
