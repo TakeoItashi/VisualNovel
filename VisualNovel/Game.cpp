@@ -35,6 +35,7 @@ int Game::m_CurrentPanel;						//
 Game::Game() {
 
 	m_MainMenu = nullptr;
+	m_OptionsMenu = nullptr;
 	m_GameSettings = nullptr;
 	m_ImageLoader = nullptr;
 	m_TextBox = nullptr;
@@ -85,6 +86,8 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 
 	m_MainMenu = new MainMenu(m_Renderer, m_ImageLoader, "MainMenu.txt");
 
+	m_OptionsMenu = new OptionsMenu(m_Renderer, m_ImageLoader, "OptionsMenu.txt");
+
 	LoadStoryBoard();
 }
 
@@ -124,33 +127,32 @@ void Game::Update(SDL_Event* _eventhandler, bool* _quitCondition) {
 
 		//if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_MOUSEMOTION) {
 
-		for (int i = 0; i < m_MainMenu->m_MenuItems.size(); i++) {
 
-			m_MainMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+		if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYUP) {
 
-			SDL_RenderPresent(m_Renderer);
+			if (m_PanelList[m_CurrentPanel]->m_PanelCondition->isMet(m_save->m_values)) {
+
+				//if (m_CurrentPanel >= m_PanelList.size()) {
+				//
+				//	_eventhandler->quit;
+				//}
+				//
+				////Render();
+				////SDL_RenderPresent(m_Renderer);
+				////m_CurrentLine++;
+				//SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Next Line triggered.", "Next Line triggered.", NULL);
+				//
+				//if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
+				//
+				//m_CurrentPanel++;
+				//m_CurrentLine = 0;
+				//}
+			} else {
+				//m_CurrentPanel++;
+				//m_CurrentLine = 0;
+				//
+			}
 		}
-
-		//if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYUP) {
-		//
-		//	if (m_CurrentPanel >= m_PanelList.size()) {
-		//
-		//		_eventhandler->quit;
-		//	}
-		//
-		//	//Render();
-		//	//SDL_RenderPresent(m_Renderer);
-		//	//m_CurrentLine++;
-		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Next Line triggered.",
-		//		"Next Line triggered.", NULL);
-		//
-		//	if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
-		//
-		//		m_CurrentPanel++;
-		//		m_CurrentLine = 0;
-		//	}
-		//
-		//}
 	}
 }
 
@@ -411,4 +413,31 @@ void Game::Quit(Button* _buttonCallback) {
 	//TODO nachfaregn, ob man schließen will. vlt noch zum Menü leiten
 	SDL_PushEvent(quitEvent);
 	return;
+}
+
+void Game::ChangeResolution(Button * _buttonCallback) {
+
+	SDL_RenderClear(m_Renderer);
+
+	for (int i = 0; i < m_OptionsMenu->m_MenuItems.size(); i++) {
+
+		m_OptionsMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+
+		SDL_RenderPresent(m_Renderer);
+	}
+}
+
+void Game::ToggleFullscreen(Button * _buttonCallback) {
+}
+
+void Game::RenderMainMenu(Button* _buttonCallback) {
+
+	SDL_RenderClear(m_Renderer);
+
+	for (int i = 0; i < m_MainMenu->m_MenuItems.size(); i++) {
+
+		m_MainMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+
+	}
+	SDL_RenderPresent(m_Renderer);
 }

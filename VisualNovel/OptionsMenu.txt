@@ -1,0 +1,36 @@
+Menu {
+
+	Name: "Main Menu";
+
+	BGIndex: 4
+
+	Items {
+		Item {
+			Text: "800 x 600";
+			Button: 50,50, 50, 100, 4;
+			Type: 6;
+		}
+		Item {
+			Text: "1280 x 720";
+			Button: 50, 110, 50, 100, 4;
+			Type: 6;
+		}
+		Item {
+			Text: "1366 x 768";
+			Button: 50, 170, 50, 100, 4;
+			Type: 6;
+		}
+		Item {
+			Text: "FullScreen";
+			Button: 50, 170, 50, 100, 4;
+			Type: 7;
+		}
+		Item {
+			Text: "Back";
+			Button: 50, 230, 50, 100, 4;
+			Type: 8;
+		}
+		##Syntax: Item { Text: "[Text on the Button]"; Button: [XPos], [YPos], [Height], [Width], [ImageIndex]; Type: [TypeIndex]; ##Button & Type parameter Optional}
+		##MenuItemTypes: StartGame, LoadGame, Gallery, Options, QuitGame, Resolution, Fullscreen, Back, Custom
+	}
+}

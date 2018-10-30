@@ -28,7 +28,7 @@ bool ButtonPress() {
 
 void Menu::LoadMenu(std::string _filepath) {
 
-	m_keywords = m_textLoader->LoadText("MainMenu.txt");
+	m_keywords = m_textLoader->LoadText(_filepath);
 	auto test = 0;
 	//TODO while schleifen benutzen
 	for (int i = 0; i < m_keywords.size() - 1; i++) {
@@ -252,26 +252,34 @@ void Menu::loadFont(std::string _path) {
 
 void Menu::AddFunctions(Button* _button, int _type) {
 
-	if (_type == MenuItemType::StartGame) {
-
+	switch (_type) {
+	StartGame:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->NewGame, _button);
-		//_button->m_delegateFunction = []() {Game::GetInstance()->NewGame(_button)};
-	} else if (_type == MenuItemType::LoadGame) {
-
+		break;
+	LoadGame:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->LoadGame, _button);
-	} else if (_type == MenuItemType::Gallery) {
-
+		break;
+	Gallery:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->Gallery, _button);
-		//_button->m_delegateFunction = std::bind(&Game::Gallery, _button);
-	} else if (_type == MenuItemType::Options) {
-
+		break;
+	Options:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->Gallery, _button);
-	} else if (_type == MenuItemType::QuitGame) {
-
+		break;
+	QuitGame:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->Quit, _button);
-	} else if (_type == MenuItemType::Custom) {
-
+		break;
+	Resolution:
+		_button->m_delegateFunction = std::bind(&Game::GetInstance()->ChangeResolution, _button);
+		break;
+	Fullscreen:
+		_button->m_delegateFunction = std::bind(&Game::GetInstance()->ToggleFullscreen, _button);
+		break;
+	Back:
+		_button->m_delegateFunction = std::bind(&Game::GetInstance()->Quit, _button);
+		break;
+	Custom:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->LoadCustomMethod, _button);
 		//TODO implement custom Main menu Buttons
+		break;
 	}
 }

@@ -57,7 +57,9 @@ std::vector<std::string> TextLoader::LoadText(std::string _filepath) {
 				if (currentCharacter == '#') {
 
 					while (currentCharacter != '\n') {
-
+						if (!fin.good()) {
+							goto endloop;
+						}
 						fin.get(currentCharacter);
 					}
 				}
@@ -92,6 +94,7 @@ std::vector<std::string> TextLoader::LoadText(std::string _filepath) {
 	}
 
 	keywords.push_back(currentKeyword);
+	endloop:
 	currentKeyword.clear();
 
 	if (keywords.back() == "}}") {

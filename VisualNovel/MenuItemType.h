@@ -6,6 +6,9 @@ enum MenuItemType {
 	LoadGame,
 	Gallery,
 	Options,
-	QuitGame,
+	QuitGame, 
+	Resolution, 
+	Fullscreen, 
+	Back,
 	Custom
 };

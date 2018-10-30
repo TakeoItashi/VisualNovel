@@ -20,6 +20,7 @@ public:
 	~Game();
 
 	static MainMenu* m_MainMenu;
+	static OptionsMenu* m_OptionsMenu;
 	static Settings* m_GameSettings;
 	static ImageLoader* m_ImageLoader;
 	static TextBox* m_TextBox;
@@ -28,6 +29,7 @@ public:
 	static SDL_Event* m_EventHandler;
 	static TextLoader* m_textLoader;
 	static Save* m_save;
+	static Menu* m_CurrentMenu;
 	static std::vector<Panel*> m_PanelList;
 	static std::vector<std::string> m_keywords;		//TODO eventuell in seperate Klasse aussondern, zusammen mit der LoadStory Funktion
 	static int m_CurrentLine;
@@ -65,6 +67,12 @@ public:
 
 	static void Quit(Button* _buttonCallback);
 
+	static void ChangeResolution(Button* _buttonCallback);
+
+	static void ToggleFullscreen(Button* _buttonCallback);
+
+	static void RenderMainMenu(Button* _buttonCallback);
+
 	static void LoadStoryBoard();
 
 	static void LoadCustomMethod(Button* _buttonCallback);
@@ -74,4 +82,5 @@ public:
 private:
 	Game();
 	static Game* m_gamePointer;
+
 };

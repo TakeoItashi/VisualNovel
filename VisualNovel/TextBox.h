@@ -33,7 +33,7 @@ class TextBox {
 		Loads the Settings for the Textbox and spplies them
 		@param _settings: The Settings for the TextBox
 		*/
-		void ApplySettings(std::string _settings);
+		void ApplySettings(Settings* _settings);
 	private:
 		SDL_Renderer* m_renderer;
 		Texture* m_boxBackground;
