@@ -97,6 +97,9 @@
     <ClCompile Include="DataValue.cpp">
       <Filter>Quelldateien\Serialization</Filter>
     </ClCompile>
+    <ClCompile Include="OptionsMenu.cpp">
+      <Filter>Quelldateien\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="square-rounded-empty-outlined-button-shapeByKatarinaStefanikova.png">
@@ -173,6 +176,9 @@
     <ClInclude Include="Condition.h">
       <Filter>Headerdateien\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="OptionsMenu.h">
+      <Filter>Headerdateien\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ImageImports.txt">
@@ -182,6 +188,18 @@
       <Filter>Ressourcendateien\TextFiles</Filter>
     </Text>
     <Text Include="Storyboard.txt">
+      <Filter>Ressourcendateien\TextFiles</Filter>
+    </Text>
+    <Text Include="options.txt">
+      <Filter>Ressourcendateien\TextFiles</Filter>
+    </Text>
+    <Text Include="OptionsMenu.txt">
+      <Filter>Ressourcendateien\TextFiles</Filter>
+    </Text>
+    <Text Include="MenuSyntax.txt">
+      <Filter>Ressourcendateien\TextFiles</Filter>
+    </Text>
+    <Text Include="StoryboardSyntax.txt">
       <Filter>Ressourcendateien\TextFiles</Filter>
     </Text>
   </ItemGroup>

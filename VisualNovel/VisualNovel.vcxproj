@@ -137,6 +137,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="OptionsMenu.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Save.cpp" />
     <ClCompile Include="Settings.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuItem.h" />
     <ClInclude Include="MenuItemType.h" />
+    <ClInclude Include="OptionsMenu.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="Settings.h" />
@@ -175,7 +177,11 @@
   <ItemGroup>
     <Text Include="ImageImports.txt" />
     <Text Include="MainMenu.txt" />
+    <Text Include="MenuSyntax.txt" />
+    <Text Include="options.txt" />
+    <Text Include="OptionsMenu.txt" />
     <Text Include="Storyboard.txt" />
+    <Text Include="StoryboardSyntax.txt" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ttf\OpenSans-Regular.ttf" />
