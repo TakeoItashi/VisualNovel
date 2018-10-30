@@ -1,0 +1,31 @@
+Panel {
+
+	Name: "[Name of the Panel";
+
+	BGIndex: [Index of the Background Image];
+	
+	Condition {
+		
+		DataValue {
+			
+			Name: [Name of the DataValue];
+			Type: [Type of the DataValue];
+			Value: [Value that triggers the Condition];
+		}
+	}
+
+	Sprites {
+	
+		Sprite: [Index in the Image File of the Sprite];
+	}
+	
+	Texts {
+		## A generic number of Sprite Positions can be used
+		Text: "[Name of the Character]", "[Text Shown in the Textbox]", [SpritePosition]{, [SpritePosition]};	
+		## Sprite Position Syntax: [Sprite Index]([Position on X-Axis, Position on Y-Axis])
+	}
+	
+	Animation_Placeholder {
+	
+	}	
+}
