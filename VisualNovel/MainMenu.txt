@@ -7,13 +7,8 @@ Menu {
 	Items {
 		Item {
 			Text: "Start Game";
-			Button: 50,50, 50, 100, 4; ## + 10
+			Button: 50,50, 50, 100, 4;
 			Type: 0;
-			##Button: ;					
-			##Button: 5;				
-			##Button: 100, 5;			
-			##Button: 50, 100, 5;		
-			##Button: 50, 50, 100, 5;
 		}
 		Item {
 			Text: "Load Game";
@@ -35,6 +30,5 @@ Menu {
 			Button: 50, 290, 50, 100, 4;
 			Type: 4;
 		}
-		##Syntax: Item { Text: "[Text on the Button]"; Button: [XPos], [YPos], [Height], [Width], [ImageIndex]; Type: [TypeIndex]; ##Button & Type parameter Optional}
 	}
 }

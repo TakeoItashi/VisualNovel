@@ -1,16 +1,30 @@
-Menu {
-
-	Name: "[Name of the Menu]";
-
-	BGIndex: [Index of the Background Image]
-
-	Items {
-		Item {
-			Text: "[Text on the Button]";
-			Button: [XPos], [YPos], [Height], [Width], [ImageIndex];
-			Type: [TypeIndex];
-		}
-	}
-}
-##Syntax: Item { Text: "[Text on the Button]"; Button: [XPos], [YPos], [Height], [Width], [ImageIndex]; Type: [TypeIndex]; ##Button & Type parameter Optional}
-##MenuItemTypes: StartGame, LoadGame, Gallery, Options, QuitGame, Resolution, Back, Custom
+## Menu {
+## 
+## 		Name: "[Name of the Menu]";
+## 
+## 		BGIndex: [Index of the Background Image]
+## 
+## 		Items {
+## 			Item {
+## 				Text: "[Text on the Button]";
+## 				Button: [XPos], [YPos], [Height], [Width], [ImageIndex];
+## 				Type: [TypeIndex];
+## 			}
+## 		}
+## }
+## Syntax: 
+## 		Item {
+## 			Text: "[Text on the Button]"; 
+## 			Button: [XPos], [YPos], [Height], [Width], [ImageIndex]; 
+## 			Type: [TypeIndex]; 
+## 			##Button & Type parameter Optional
+## 	}
+## MenuItemTypes: 
+##		0 = StartGame, 
+##		1 = LoadGame, 
+##		2 = Gallery, 
+##		3 = Options, 
+##		4 = QuitGame, 
+##		5 = Resolution, 
+##		6 = Back,
+##		7 = Custom

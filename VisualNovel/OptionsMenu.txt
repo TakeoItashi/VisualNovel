@@ -1,6 +1,6 @@
 Menu {
 
-	Name: "Main Menu";
+	Name: "Options Menu";
 
 	BGIndex: 4
 
@@ -30,7 +30,5 @@ Menu {
 			Button: 50, 230, 50, 100, 4;
 			Type: 8;
 		}
-		##Syntax: Item { Text: "[Text on the Button]"; Button: [XPos], [YPos], [Height], [Width], [ImageIndex]; Type: [TypeIndex]; ##Button & Type parameter Optional}
-		##MenuItemTypes: StartGame, LoadGame, Gallery, Options, QuitGame, Resolution, Fullscreen, Back, Custom
 	}
 }

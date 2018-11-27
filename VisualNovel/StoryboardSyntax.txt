@@ -1,31 +1,32 @@
-Panel {
-
-	Name: "[Name of the Panel";
-
-	BGIndex: [Index of the Background Image];
-	
-	Condition {
-		
-		DataValue {
-			
-			Name: [Name of the DataValue];
-			Type: [Type of the DataValue];
-			Value: [Value that triggers the Condition];
-		}
-	}
-
-	Sprites {
-	
-		Sprite: [Index in the Image File of the Sprite];
-	}
-	
-	Texts {
-		## A generic number of Sprite Positions can be used
-		Text: "[Name of the Character]", "[Text Shown in the Textbox]", [SpritePosition]{, [SpritePosition]};	
-		## Sprite Position Syntax: [Sprite Index]([Position on X-Axis, Position on Y-Axis])
-	}
-	
-	Animation_Placeholder {
-	
-	}	
-}
+##Panel {
+##
+##		Name: "[Name of the Panel";		Used Internally. HAs no effect on the Game
+##
+##		BGIndex: [Index of the Background Image];	Background Image Index -> See ImageImports.txt
+##		
+##		Condition {
+##			
+##			DataValue {
+##				
+##				Name: [Name of the DataValue];
+##				Type: [Type of the DataValue];
+##				Value: [Value that triggers the Condition];
+##			}
+##		}
+##		
+##		Sprites {
+##			##TODO Einen identifier (Index oder Name) für die Sprites definieren, den man für die SpritePositions benutzen kann
+##			Sprite: [Index in the Image File of the Sprite];	Any number of Sprites can be used
+##		}
+##		
+##		Texts {
+##			
+##			Text: "[Name of the Character]", "[Text Shown in the Textbox]", [SpritePosition], [SpritePosition];		Any number of Sprite Positions can be used
+##			## Sprite Position Syntax: [Sprite Index as defined in the sprite Bracket] ( [Position on X-Axis, Position on Y-Axis] )
+##			## Example: "2(70,400)"  
+##		}
+##		
+##		Animation_Placeholder {
+##	
+##		}	
+##}
