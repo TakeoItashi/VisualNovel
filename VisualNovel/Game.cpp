@@ -1,3 +1,4 @@
+#include "Menu.h"
 #include "Condition.h"
 #include "Panel.h"
 #include "Save.h"
@@ -30,6 +31,8 @@ std::vector<Panel*> Game::m_PanelList;			//
 std::vector<std::string> Game::m_keywords;		//
 int Game::m_CurrentLine;						//
 int Game::m_CurrentPanel;						//
+Menu* Game::m_CurrentMenu;
+
 
 
 Game::Game() {
@@ -43,6 +46,8 @@ Game::Game() {
 	m_Renderer = nullptr;
 	m_EventHandler = nullptr;
 	m_textLoader = nullptr;
+	m_CurrentMenu = nullptr;
+
 }
 
 Game::~Game() {
@@ -85,6 +90,8 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 	m_keywords = m_textLoader->LoadText("Storyboard.txt");
 
 	m_MainMenu = new MainMenu(m_Renderer, m_ImageLoader, "MainMenu.txt");
+	m_CurrentMenu = m_MainMenu;
+	m_CurrentMenu->Render();
 
 	m_OptionsMenu = new OptionsMenu(m_Renderer, m_ImageLoader, "OptionsMenu.txt");
 
@@ -117,6 +124,15 @@ void Game::NewGame(Button* _butt) {
 
 void Game::Update(SDL_Event* _eventhandler, bool* _quitCondition) {
 
+	if (m_CurrentMenu != nullptr) {
+
+		for (int i = 0; i < m_CurrentMenu->m_MenuItems.size(); i++) {
+
+			m_CurrentMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+
+		}
+	}
+
 	while (SDL_PollEvent(m_EventHandler) != 0) {
 
 		if (m_EventHandler->type == SDL_QUIT) {
@@ -127,32 +143,32 @@ void Game::Update(SDL_Event* _eventhandler, bool* _quitCondition) {
 
 		//if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_MOUSEMOTION) {
 
-
-		if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYUP) {
-
-			if (m_PanelList[m_CurrentPanel]->m_PanelCondition->isMet(m_save->m_values)) {
-
-				//if (m_CurrentPanel >= m_PanelList.size()) {
-				//
-				//	_eventhandler->quit;
-				//}
-				//
-				////Render();
-				////SDL_RenderPresent(m_Renderer);
-				////m_CurrentLine++;
-				//SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Next Line triggered.", "Next Line triggered.", NULL);
-				//
-				//if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
-				//
-				//m_CurrentPanel++;
-				//m_CurrentLine = 0;
-				//}
-			} else {
-				//m_CurrentPanel++;
-				//m_CurrentLine = 0;
-				//
-			}
-		}
+		//TODO Update neu strukturieren:
+		//if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYUP) {
+		//
+		//	if (m_PanelList[m_CurrentPanel]->m_PanelCondition->isMet(m_save->m_values)) {
+		//
+		//		//if (m_CurrentPanel >= m_PanelList.size()) {
+		//		//
+		//		//	_eventhandler->quit;
+		//		//}
+		//		//
+		//		////Render();
+		//		////SDL_RenderPresent(m_Renderer);
+		//		////m_CurrentLine++;
+		//		//SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Next Line triggered.", "Next Line triggered.", NULL);
+		//		//
+		//		//if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
+		//		//
+		//		//m_CurrentPanel++;
+		//		//m_CurrentLine = 0;
+		//		//}
+		//	} else {
+		//		//m_CurrentPanel++;
+		//		//m_CurrentLine = 0;
+		//		//
+		//	}
+		//}
 	}
 }
 
@@ -298,6 +314,8 @@ void Game::LoadStoryBoard() {
 							i++;
 							continue;
 						}
+						//TODO Einen identifier (Index oder Name) für die Sprites definieren, den man für die SpritePositions benutzen kann. Dieser muss dann hier geparst werden
+
 						if (m_keywords[i] == "Sprite:") {
 							SpritePosition spritePosition;
 							spritePosition.Index = std::stoi(m_keywords[i + 1]);
@@ -403,6 +421,8 @@ void Game::Gallery(Button* _buttonCallback) {
 
 void Game::OpenOptions(Button* _buttonCallback) {
 
+	m_CurrentMenu = m_OptionsMenu;
+	m_CurrentMenu->Render();
 }
 
 void Game::Quit(Button* _buttonCallback) {
@@ -430,13 +450,21 @@ void Game::ChangeResolution(Button * _buttonCallback) {
 void Game::ToggleFullscreen(Button * _buttonCallback) {
 }
 
-void Game::RenderMainMenu(Button* _buttonCallback) {
+void Game::OpenMainMenu(Button * _buttonCallback) {
+
+	m_CurrentMenu = m_MainMenu;
+	m_CurrentMenu->Render();
+}
+
+void Game::RenderCurrentMenu() {
 
 	SDL_RenderClear(m_Renderer);
 
-	for (int i = 0; i < m_MainMenu->m_MenuItems.size(); i++) {
+	m_CurrentMenu->Render();
 
-		m_MainMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+	for (int i = 0; i < m_CurrentMenu->m_MenuItems.size(); i++) {
+
+		m_CurrentMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
 
 	}
 	SDL_RenderPresent(m_Renderer);

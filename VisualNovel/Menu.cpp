@@ -217,10 +217,6 @@ void Menu::CreateMenu() {
 	}
 
 	m_Sprites = m_ImageLoader->GetTextures(m_indices);
-
-	SDL_RenderClear(m_Renderer);
-	Render();
-	SDL_RenderPresent(m_Renderer);
 }
 
 void Menu::AutoWidth(Button* _button) {
@@ -236,6 +232,8 @@ void Menu::AutoWidth(Button* _button) {
 }
 
 void Menu::Render() {
+
+	SDL_RenderClear(m_Renderer);
 	m_BackgroundImage->Render(0, 0, 600, 800);
 	for (int i = 0; i < m_MenuItems.size(); i++) {
 
@@ -253,31 +251,31 @@ void Menu::loadFont(std::string _path) {
 void Menu::AddFunctions(Button* _button, int _type) {
 
 	switch (_type) {
-	StartGame:
+	case MenuItemType::StartGame:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->NewGame, _button);
 		break;
-	LoadGame:
+	case MenuItemType::LoadGame:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->LoadGame, _button);
 		break;
-	Gallery:
+	case MenuItemType::Gallery:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->Gallery, _button);
 		break;
-	Options:
-		_button->m_delegateFunction = std::bind(&Game::GetInstance()->Gallery, _button);
+	case MenuItemType::Options:
+		_button->m_delegateFunction = std::bind(&Game::GetInstance()->OpenOptions, _button);
 		break;
-	QuitGame:
+	case MenuItemType::QuitGame:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->Quit, _button);
 		break;
-	Resolution:
+	case MenuItemType::Resolution:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->ChangeResolution, _button);
 		break;
-	Fullscreen:
+	case MenuItemType::Fullscreen:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->ToggleFullscreen, _button);
 		break;
-	Back:
-		_button->m_delegateFunction = std::bind(&Game::GetInstance()->Quit, _button);
+	case MenuItemType::Back:
+		_button->m_delegateFunction = std::bind(&Game::GetInstance()->OpenMainMenu, _button);
 		break;
-	Custom:
+	case MenuItemType::Custom:
 		_button->m_delegateFunction = std::bind(&Game::GetInstance()->LoadCustomMethod, _button);
 		//TODO implement custom Main menu Buttons
 		break;

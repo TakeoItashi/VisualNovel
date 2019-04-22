@@ -12,10 +12,10 @@ int main(int argc, char* argv[]) {
 	//Main loop
 	bool* quit = new bool;
 	*quit = false;
-	while(!*quit){
+	while (!*quit) {
 
 		Game::GetInstance()->Update(eventHandler, quit);
-		
+
 	}
 	SDL_Quit();
 	return 0;

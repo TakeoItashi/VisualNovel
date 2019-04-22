@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+class Menu;
 class MainMenu;
 class Settings;
 class ImageLoader;
@@ -71,13 +72,14 @@ public:
 
 	static void ToggleFullscreen(Button* _buttonCallback);
 
-	static void RenderMainMenu(Button* _buttonCallback);
-
-	static void LoadStoryBoard();
+	static void OpenMainMenu(Button* _buttonCallback);
 
 	static void LoadCustomMethod(Button* _buttonCallback);
 
-	inline static Game* GetInstance() { if ( m_gamePointer == nullptr) { m_gamePointer = new Game(); } return m_gamePointer; };
+	static void RenderCurrentMenu();
+
+	static void LoadStoryBoard();
+	inline static Game* GetInstance() { if (m_gamePointer == nullptr) { m_gamePointer = new Game(); } return m_gamePointer; };
 
 private:
 	Game();

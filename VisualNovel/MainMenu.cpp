@@ -1,5 +1,5 @@
-#include "MenuItemType.h"
 #include "Game.h"
+#include "MenuItemType.h"
 #include "ImageLoader.h"
 #include "MainMenu.h"
 
