@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:VisualNovelInterface"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <local:TestViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -39,12 +42,31 @@
                             </Grid.ColumnDefinitions>
                             <Border Grid.Column="0"
                                     BorderBrush="Gray" BorderThickness="0,0,1,0">
-                                <Grid>
-
-                                </Grid>
+                                <TabControl>
+                                    <TabItem Header="Story Tree">
+                                        <Grid/>
+                                    </TabItem>
+                                    <TabItem Header="Panel View">
+                                        <Grid/>
+                                    </TabItem>
+                                </TabControl>
                             </Border>
+                            <Grid Grid.Column="1">
+                                <Rectangle Margin="10,200,10,10" Stroke="#FFC12F2F"/>
+                                <TextBlock Margin="15,205,15,15" Text="{Binding StringProperty, Mode=OneWay}"/>
+                            </Grid>
                         </Grid>
                     </Border>
+                    <Grid Grid.Row="1">
+                        <DockPanel>
+                            <Label DockPanel.Dock="Top">
+                                TextBox:
+                            </Label>
+                            <TextBox Margin="10,0,10,10" Text="{Binding StringProperty, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" >
+                                
+                            </TextBox>
+                        </DockPanel>
+                    </Grid>
                 </Grid>
             </Border>
         </Grid>
