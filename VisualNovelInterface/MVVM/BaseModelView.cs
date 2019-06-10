@@ -8,18 +8,25 @@ using System.Threading.Tasks;
 
 namespace VisualNovelInterface.MVVM
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public BaseViewModel()
+        public BaseObject()
         {
 
         }
-        
-        protected void OnPropertyChanged(string propertyName = "")
+
+
+        protected void SetProperty<T>(ref T _propertyReference, T _value, [CallerMemberName]string _propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _propertyReference = _value;
+            OnPropertyChanged(_propertyName);
+        }
+        
+        protected void OnPropertyChanged([CallerMemberName]string _propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(_propertyName));
         }
     }
 }

@@ -1,21 +1,90 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using VisualNovelInterface.Models;
 using VisualNovelInterface.MVVM;
+using System.Windows.Forms;
+using System.Drawing;
+using Panel = VisualNovelInterface.Models.Panel;
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
+using System.Windows.Media.Imaging;
 
 namespace VisualNovelInterface
 {
-    public class TestViewModel : BaseViewModel
+    public class TestViewModel : BaseObject
     {
-        string stringProperty;
+        private DialogueLine DialogueLine;
+        private DialogueLine selectedLine;
+        private Panel selectedPanel;
+        private Project currentProject;
+        private ICommand addBackgroundImageCommand;
+        private bool canExecute;
+        private int selectedPanelIndex;
+        private Image testImage;
 
+        #region Properties
         public string StringProperty {
-            get => stringProperty;
-            set {
-                stringProperty = value;
-                OnPropertyChanged(nameof(stringProperty));
+            get => DialogueLine.textShown;
+            set => SetProperty(ref selectedLine.textShown, value);
+        }
+
+        public string NameProperty {
+            get => DialogueLine.characterName;
+            set => SetProperty(ref selectedLine.characterName, value);
+        }
+
+        public Project CurrentProject {
+            get => currentProject;
+            set => SetProperty(ref currentProject, value);
+        }
+        public Panel SelectedPanel {
+            get => selectedPanel;
+            set => SetProperty(ref selectedPanel, value);
+        }
+        public DialogueLine SelectedLine {
+            get => selectedLine;
+            set => SetProperty(ref selectedLine, value);
+        }
+        public ICommand AddBackgroundImageCommand {
+            get => addBackgroundImageCommand;
+            set => SetProperty(ref addBackgroundImageCommand, value);
+        }
+        public int SelectedPanelIndex {
+            get => selectedPanelIndex;
+            set => SetProperty(ref selectedPanelIndex, value);
+        }
+        public Image TestImage {
+            get => testImage;
+            set => SetProperty(ref testImage, value);
+        }
+        #endregion
+
+        public TestViewModel()
+        {
+            canExecute = true;
+            currentProject = new Project();
+            DialogueLine = new DialogueLine();
+            SelectedLine = new DialogueLine();
+            AddBackgroundImageCommand = new RelayCommand(AddBackgroundImage, parameter => canExecute);
+        }
+
+        public void AddBackgroundImage(object obj)
+        {
+            using (OpenFileDialog newFile = new OpenFileDialog()) {
+
+                newFile.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
+                newFile.Filter = "image files (*.png; *.jpg)|*.png; *.jpg";
+
+                if (newFile.ShowDialog() == DialogResult.OK) {
+
+                    string path = newFile.FileName;
+                    Image newImage = Image.FromFile(path);
+                    TestImage = newImage;
+                }
             }
         }
     }
