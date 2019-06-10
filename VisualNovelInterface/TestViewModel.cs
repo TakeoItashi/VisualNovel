@@ -24,7 +24,7 @@ namespace VisualNovelInterface
         private ICommand addBackgroundImageCommand;
         private bool canExecute;
         private int selectedPanelIndex;
-        private Image testImage;
+        private BitmapSource testImage;
 
         #region Properties
         public string StringProperty {
@@ -57,7 +57,7 @@ namespace VisualNovelInterface
             get => selectedPanelIndex;
             set => SetProperty(ref selectedPanelIndex, value);
         }
-        public Image TestImage {
+        public BitmapSource TestImage {
             get => testImage;
             set => SetProperty(ref testImage, value);
         }
@@ -82,8 +82,10 @@ namespace VisualNovelInterface
                 if (newFile.ShowDialog() == DialogResult.OK) {
 
                     string path = newFile.FileName;
-                    Image newImage = Image.FromFile(path);
-                    TestImage = newImage;
+                    Bitmap newImage =  (Bitmap) Bitmap.FromFile(path);
+                    TestImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(newImage.GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                    //TestImage = newImage;
+                    //BitmapConversion.BitmapToBitmapSource(
                 }
             }
         }
