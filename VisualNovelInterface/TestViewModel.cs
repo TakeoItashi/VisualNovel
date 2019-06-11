@@ -22,6 +22,7 @@ namespace VisualNovelInterface
         private Panel selectedPanel;
         private Project currentProject;
         private ICommand addBackgroundImageCommand;
+        private ICommand onSelectionChangedCommand;
         private bool canExecute;
         private int selectedPanelIndex;
         private BitmapSource testImage;
@@ -53,10 +54,16 @@ namespace VisualNovelInterface
             get => addBackgroundImageCommand;
             set => SetProperty(ref addBackgroundImageCommand, value);
         }
+
+        public ICommand OnSelectionChangedCommand {
+            get => onSelectionChangedCommand;
+            set => SetProperty(ref onSelectionChangedCommand, value);
+        }
         public int SelectedPanelIndex {
             get => selectedPanelIndex;
             set => SetProperty(ref selectedPanelIndex, value);
         }
+        //TODO: The Image should be saved as string and a preview should be saved as a BitmapSource
         public BitmapSource TestImage {
             get => testImage;
             set => SetProperty(ref testImage, value);
@@ -70,6 +77,7 @@ namespace VisualNovelInterface
             DialogueLine = new DialogueLine();
             SelectedLine = new DialogueLine();
             AddBackgroundImageCommand = new RelayCommand(AddBackgroundImage, parameter => canExecute);
+            OnSelectionChangedCommand = new RelayCommand(OnSelectionChanged, paramater => canExecute);
         }
 
         public void AddBackgroundImage(object obj)
@@ -82,12 +90,15 @@ namespace VisualNovelInterface
                 if (newFile.ShowDialog() == DialogResult.OK) {
 
                     string path = newFile.FileName;
-                    Bitmap newImage =  (Bitmap) Bitmap.FromFile(path);
+                    Bitmap newImage =  (Bitmap) Image.FromFile(path);
                     TestImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(newImage.GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                    //TestImage = newImage;
-                    //BitmapConversion.BitmapToBitmapSource(
                 }
             }
+        }
+
+        public void OnSelectionChanged(object obj)
+        {
+            Console.Write("");
         }
     }
 }
