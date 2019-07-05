@@ -68,8 +68,7 @@
                                 </TabControl>
                             </Border>
                             <Grid Grid.Column="1">
-                                <Image Source="{Binding TestImage}"/>
-                                <!--<Image Source="C:\Users\root\Desktop\Projekte\VisualNovel\VisualNovelInterface\bin\Debug\wallpaper.jpg"/>-->
+                                <Image Source="{Binding SelectedPanel.BackgroundImage}" VerticalAlignment="Center" />
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="10*"/>
