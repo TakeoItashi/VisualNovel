@@ -15,16 +15,18 @@ using System.Windows.Media.Imaging;
 
 namespace VisualNovelInterface
 {
-	public class TestViewModel : BaseObject
-	{
-		private DialogueLine DialogueLine;
-		private DialogueLine selectedLine;
-		private Panel selectedPanel;
-		private Project currentProject;
-		private ICommand addBackgroundImageCommand;
-		private bool canExecute;
-		private int selectedPanelIndex;
-		private string testImage;
+    public class TestViewModel : BaseObject
+    {
+        private DialogueLine DialogueLine;
+        private DialogueLine selectedLine;
+        private Panel selectedPanel;
+        private Project currentProject;
+        private ICommand addBackgroundImageCommand;
+        private ICommand onSelectionChangedCommand;
+        private bool canExecute;
+        private int selectedPanelIndex;
+        private BitmapSource testImage;
+	private string testImage;
 
 		#region Properties
 		public string StringProperty {
@@ -56,6 +58,10 @@ namespace VisualNovelInterface
 			get => addBackgroundImageCommand;
 			set => SetProperty(ref addBackgroundImageCommand, value);
 		}
+ public ICommand OnSelectionChangedCommand {
+            get => onSelectionChangedCommand;
+            set => SetProperty(ref onSelectionChangedCommand, value);
+        }
 		public int SelectedPanelIndex {
 			get => selectedPanelIndex;
 			set => SetProperty(ref selectedPanelIndex, value);
@@ -66,14 +72,14 @@ namespace VisualNovelInterface
 		}
 		#endregion
 
-		public TestViewModel()
-		{
-			canExecute = true;
-			currentProject = new Project();
-			DialogueLine = new DialogueLine();
-			SelectedLine = new DialogueLine();
-			AddBackgroundImageCommand = new RelayCommand(AddBackgroundImage, parameter => canExecute);
-		}
+        public TestViewModel()
+        {
+            canExecute = true;
+            currentProject = new Project();
+            DialogueLine = new DialogueLine();
+            SelectedLine = new DialogueLine();
+            AddBackgroundImageCommand = new RelayCommand(AddBackgroundImage, parameter => canExecute);
+        }
 
 		public void AddBackgroundImage(object obj)
 		{
@@ -84,9 +90,17 @@ namespace VisualNovelInterface
 
 				if (newFile.ShowDialog() == DialogResult.OK) {
 
-					SelectedPanel.BackgroundImage = newFile.FileName;
-				}
-			}
-		}
-	}
+                    string path = newFile.FileName;
+                    Bitmap newImage =  (Bitmap) Image.FromFile(path);
+                    TestImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(newImage.GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+				SelectedPanel.BackgroundImage = newFile.FileName;
+}
+            }
+        }
+
+        public void OnSelectionChanged(object obj)
+        {
+            Console.Write("");
+        }
+    }
 }

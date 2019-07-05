@@ -45,7 +45,7 @@
                                 <TabControl>
                                     <TabItem Header="Story Tree">
                                         <Grid>
-                                            <ListBox ItemsSource="{Binding CurrentProject.Panels}" DataContext="{Binding Mode=OneWay}" SelectedIndex="0" SelectedItem="{Binding SelectedPanel}">
+                                            <ListBox ItemsSource="{Binding CurrentProject.Panels}" DataContext="{Binding Mode=OneWay}" SelectedIndex="0" SelectedItem="{Binding SelectedPanel}" SelectionChanged="{Binding OnSelectionChangedCommand}">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <TextBlock Text="{Binding PanelName}"/>
