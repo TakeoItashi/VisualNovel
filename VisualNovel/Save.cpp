@@ -27,7 +27,7 @@ void Save::Serialize(std::string _path) {
 
 		for (int i = 0; i <= valueSize-1; i++) {
 
-			SDL_RWwrite(file, &m_values[i]->m_Name, sizeof(std::string), 1);
+			SDL_RWwrite(file, &m_values[i]->m_name, sizeof(std::string), 1);
 		
 			unsigned long long size = 0;
 
@@ -81,7 +81,7 @@ void Save::Deserialize(std::string _path) {
 			unsigned long long size = 0;
 			DataValue* newValue = new DataValue;
 		
-			SDL_RWread(file, &newValue->m_Name, sizeof(std::string), 1);
+			SDL_RWread(file, &newValue->m_name, sizeof(std::string), 1);
 		
 			DataValueType valueType;
 			SDL_RWread(file, &valueType, sizeof(int), 1);

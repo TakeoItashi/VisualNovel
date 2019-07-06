@@ -6,6 +6,13 @@ DataValue::DataValue() {
 	m_Value = nullptr;
 }
 
+DataValue::DataValue(std::string _name, DataValueType _type, void* _value)
+{
+	m_name = _name;
+	m_Type = _type;
+	m_Value = _value;
+}
+
 DataValue::~DataValue() {
 
 	if (m_Value != nullptr) {

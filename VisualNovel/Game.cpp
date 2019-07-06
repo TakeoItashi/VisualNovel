@@ -32,6 +32,7 @@ std::vector<std::string> Game::m_keywords;		//
 int Game::m_CurrentLine;						//
 int Game::m_CurrentPanel;						//
 Menu* Game::m_CurrentMenu;
+bool Game::m_GameIsRunning;
 
 
 
@@ -47,7 +48,7 @@ Game::Game() {
 	m_EventHandler = nullptr;
 	m_textLoader = nullptr;
 	m_CurrentMenu = nullptr;
-
+	m_GameIsRunning = nullptr;
 }
 
 Game::~Game() {
@@ -96,6 +97,7 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 	m_OptionsMenu = new OptionsMenu(m_Renderer, m_ImageLoader, "OptionsMenu.txt");
 
 	LoadStoryBoard();
+	m_GameIsRunning = false;
 }
 
 void Game::NewGame(Button* _butt) {
@@ -105,21 +107,22 @@ void Game::NewGame(Button* _butt) {
 	m_save->m_currentLine = 8;
 	m_save->m_currentPanel = 15;
 	DataValue* testValue = new DataValue();
-	testValue->m_Name = "TestTrigger1";
+	testValue->m_name = "StoryTrigger1";
 	testValue->SetValue(true);
 	m_save->m_values.push_back(testValue);
 
 	testValue = new DataValue();
-	testValue->m_Name = "TestValue1";
-	testValue->SetValue(42);
+	testValue->m_name = "StoryVariable1";
+	testValue->SetValue(3);
 	m_save->m_values.push_back(testValue);
 
 	testValue = new DataValue();
-	testValue->m_Name = "TestDecimal1";
+	testValue->m_name = "TestDecimal1";
 	testValue->SetValue(6.9f);
 	m_save->m_values.push_back(testValue);
 
 	m_save->Serialize();
+	m_GameIsRunning = true;
 }
 
 void Game::Update(SDL_Event* _eventhandler, bool* _quitCondition) {
@@ -129,7 +132,6 @@ void Game::Update(SDL_Event* _eventhandler, bool* _quitCondition) {
 		for (int i = 0; i < m_CurrentMenu->m_MenuItems.size(); i++) {
 
 			m_CurrentMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
-
 		}
 	}
 
@@ -141,32 +143,35 @@ void Game::Update(SDL_Event* _eventhandler, bool* _quitCondition) {
 			return;
 		}
 
-		if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_MOUSEMOTION) {
+		if (m_GameIsRunning) {
 
-			//TODO Update neu strukturieren:
-			if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYUP) {
+			if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_MOUSEMOTION || true) {
 
-				if (m_PanelList[m_CurrentPanel]->m_PanelCondition->isMet(m_save->m_values)) {
+				//TODO Update neu strukturieren:
+				if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYUP|| true) {
 
-					if (m_CurrentPanel >= m_PanelList.size()) {
+					if (m_PanelList[m_CurrentPanel]->m_PanelCondition->isMet(m_save->m_values)) {
 
-						_eventhandler->quit;
+						if (m_CurrentPanel >= m_PanelList.size()) {
+
+							_eventhandler->quit;
+						}
+
+						Render();
+						SDL_RenderPresent(m_Renderer);
+						m_CurrentLine++;
+						SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Next Line triggered.", "Next Line triggered.", NULL);
+
+						if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
+
+							m_CurrentPanel++;
+							m_CurrentLine = 0;
+						}
 					}
-
-					Render();
-					SDL_RenderPresent(m_Renderer);
-					m_CurrentLine++;
-					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Next Line triggered.", "Next Line triggered.", NULL);
-
-					if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
-
+					else {
 						m_CurrentPanel++;
 						m_CurrentLine = 0;
 					}
-				}
-				else {
-					m_CurrentPanel++;
-					m_CurrentLine = 0;
 				}
 			}
 		}
@@ -228,9 +233,11 @@ void Game::LoadStoryBoard() {
 
 						if (m_keywords[i] == "DataValue" && m_keywords[i + 1] == "{") {
 
+							DataValue* newDataValue;
 							i = i + 2;
-							DataValue newValue;
 							DataValueType newType;
+							std::string newName;
+							void* newValue = new void*;
 
 							for (i; i < m_keywords.size(); i) {
 
@@ -241,7 +248,7 @@ void Game::LoadStoryBoard() {
 								}
 								if (m_keywords[i] == "Name:") {
 
-									newValue.m_Name = m_keywords[i + 1];
+									newName = m_keywords[i + 1];
 									i = i + 2;
 									continue;
 								}
@@ -273,20 +280,20 @@ void Game::LoadStoryBoard() {
 									case DataValueType::trigger:
 										if (m_keywords[i + 1] == "true") {
 
-											newValue.SetValue(true);
+											(*(bool*)newValue) = true;
 										}
 										else {
 
-											newValue.SetValue(false);
+											(*(bool*)newValue) = false;
 										}
 										i = i + 2;
 										break;
 									case DataValueType::variable:
-										newValue.SetValue(atoi(m_keywords[i + 1].c_str()));
+										(*(int*)newValue) = atoi(m_keywords[i + 1].c_str());
 										i = i + 2;
 										break;
 									case DataValueType::decimal:
-										newValue.SetValue((float)atof(m_keywords[i + 1].c_str()));
+										(*(float*)newValue) = (float)atof(m_keywords[i + 1].c_str());
 										i = i + 2;
 										break;
 									}
@@ -296,6 +303,8 @@ void Game::LoadStoryBoard() {
 									}
 								}
 								if (m_keywords[i] == "}") {
+									newDataValue = new DataValue(newName, newType, newValue);
+									newCondition->m_RequiredValues[newDataValue->m_name] = newDataValue;
 									i++;
 									break;
 								}
@@ -412,6 +421,7 @@ void Game::LoadStoryBoard() {
 		m_PanelList[i]->LoadImages();
 	}
 }
+
 
 void Game::LoadCustomMethod(Button * _buttonCallback) {
 

@@ -36,7 +36,7 @@ public:
 	static std::vector<std::string> m_keywords;		//TODO eventuell in seperate Klasse aussondern, zusammen mit der LoadStory Funktion
 	static int m_CurrentLine;
 	static int m_CurrentPanel;
-
+	static bool m_GameIsRunning;
 	/**
 	Initializes the Game Libraries and Variables
 	*/
@@ -80,10 +80,10 @@ public:
 	static void RenderCurrentMenu();
 
 	static void LoadStoryBoard();
+
 	inline static Game* GetInstance() { if (m_gamePointer == nullptr) { m_gamePointer = new Game(); } return m_gamePointer; };
 
 private:
 	Game();
 	static Game* m_gamePointer;
-
 };
