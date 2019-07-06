@@ -141,34 +141,35 @@ void Game::Update(SDL_Event* _eventhandler, bool* _quitCondition) {
 			return;
 		}
 
-		//if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_MOUSEMOTION) {
+		if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_MOUSEMOTION) {
 
-		//TODO Update neu strukturieren:
-		//if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYUP) {
-		//
-		//	if (m_PanelList[m_CurrentPanel]->m_PanelCondition->isMet(m_save->m_values)) {
-		//
-		//		//if (m_CurrentPanel >= m_PanelList.size()) {
-		//		//
-		//		//	_eventhandler->quit;
-		//		//}
-		//		//
-		//		////Render();
-		//		////SDL_RenderPresent(m_Renderer);
-		//		////m_CurrentLine++;
-		//		//SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Next Line triggered.", "Next Line triggered.", NULL);
-		//		//
-		//		//if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
-		//		//
-		//		//m_CurrentPanel++;
-		//		//m_CurrentLine = 0;
-		//		//}
-		//	} else {
-		//		//m_CurrentPanel++;
-		//		//m_CurrentLine = 0;
-		//		//
-		//	}
-		//}
+			//TODO Update neu strukturieren:
+			if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYUP) {
+
+				if (m_PanelList[m_CurrentPanel]->m_PanelCondition->isMet(m_save->m_values)) {
+
+					if (m_CurrentPanel >= m_PanelList.size()) {
+
+						_eventhandler->quit;
+					}
+
+					Render();
+					SDL_RenderPresent(m_Renderer);
+					m_CurrentLine++;
+					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Next Line triggered.", "Next Line triggered.", NULL);
+
+					if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
+
+						m_CurrentPanel++;
+						m_CurrentLine = 0;
+					}
+				}
+				else {
+					m_CurrentPanel++;
+					m_CurrentLine = 0;
+				}
+			}
+		}
 	}
 }
 
@@ -250,15 +251,18 @@ void Game::LoadStoryBoard() {
 
 										newType = DataValueType::trigger;
 										i = i + 2;
-									} else if (m_keywords[i + 1] == "variable") {
+									}
+									else if (m_keywords[i + 1] == "variable") {
 
 										newType = DataValueType::variable;
 										i = i + 2;
-									} else if (m_keywords[i + 1] == "decimal") {
+									}
+									else if (m_keywords[i + 1] == "decimal") {
 
 										newType = DataValueType::decimal;
 										i = i + 2;
-									} else {
+									}
+									else {
 										//TODO Fehlermeldung
 									}
 									continue;
@@ -266,24 +270,25 @@ void Game::LoadStoryBoard() {
 								if (m_keywords[i] == "Value:") {
 
 									switch (newType) {
-										case DataValueType::trigger:
-											if (m_keywords[i + 1] == "true") {
+									case DataValueType::trigger:
+										if (m_keywords[i + 1] == "true") {
 
-												newValue.SetValue(true);
-											} else {
+											newValue.SetValue(true);
+										}
+										else {
 
-												newValue.SetValue(false);
-											}
-											i = i + 2;
-											break;
-										case DataValueType::variable:
-											newValue.SetValue(atoi(m_keywords[i + 1].c_str()));
-											i = i + 2;
-											break;
-										case DataValueType::decimal:
-											newValue.SetValue((float)atof(m_keywords[i + 1].c_str()));
-											i = i + 2;
-											break;
+											newValue.SetValue(false);
+										}
+										i = i + 2;
+										break;
+									case DataValueType::variable:
+										newValue.SetValue(atoi(m_keywords[i + 1].c_str()));
+										i = i + 2;
+										break;
+									case DataValueType::decimal:
+										newValue.SetValue((float)atof(m_keywords[i + 1].c_str()));
+										i = i + 2;
+										break;
 									}
 									if (m_keywords[i] == "}") {
 										i++;
@@ -346,7 +351,8 @@ void Game::LoadStoryBoard() {
 							newPanel->m_DialogueLines.push_back(newLine);
 							i++;
 							continue;
-						} else if (m_keywords[i] == ",") {
+						}
+						else if (m_keywords[i] == ",") {
 							i++;
 							SpritePosition spritePosition;
 							spritePosition.Index = std::stoi(m_keywords[i]);
@@ -407,25 +413,25 @@ void Game::LoadStoryBoard() {
 	}
 }
 
-void Game::LoadCustomMethod(Button* _buttonCallback) {
+void Game::LoadCustomMethod(Button * _buttonCallback) {
 
 }
 
-void Game::ChangeSettings(Settings* NewSettings) {
+void Game::ChangeSettings(Settings * NewSettings) {
 
 }
 
-void Game::Gallery(Button* _buttonCallback) {
+void Game::Gallery(Button * _buttonCallback) {
 
 }
 
-void Game::OpenOptions(Button* _buttonCallback) {
+void Game::OpenOptions(Button * _buttonCallback) {
 
 	m_CurrentMenu = m_OptionsMenu;
 	m_CurrentMenu->Render();
 }
 
-void Game::Quit(Button* _buttonCallback) {
+void Game::Quit(Button * _buttonCallback) {
 
 	SDL_FlushEvents(0, UINT32_MAX);
 	SDL_Event* quitEvent = new SDL_Event();
