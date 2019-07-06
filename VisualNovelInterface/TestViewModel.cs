@@ -25,8 +25,6 @@ namespace VisualNovelInterface
         private ICommand onSelectionChangedCommand;
         private bool canExecute;
         private int selectedPanelIndex;
-        private BitmapSource testImage;
-	private string testImage;
 
 		#region Properties
 		public string StringProperty {
@@ -58,17 +56,9 @@ namespace VisualNovelInterface
 			get => addBackgroundImageCommand;
 			set => SetProperty(ref addBackgroundImageCommand, value);
 		}
- public ICommand OnSelectionChangedCommand {
-            get => onSelectionChangedCommand;
-            set => SetProperty(ref onSelectionChangedCommand, value);
-        }
 		public int SelectedPanelIndex {
 			get => selectedPanelIndex;
 			set => SetProperty(ref selectedPanelIndex, value);
-		}
-		public string TestImage {
-			get => testImage;
-			set => SetProperty(ref testImage, value);
 		}
 		#endregion
 
@@ -92,8 +82,7 @@ namespace VisualNovelInterface
 
                     string path = newFile.FileName;
                     Bitmap newImage =  (Bitmap) Image.FromFile(path);
-                    TestImage = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(newImage.GetHbitmap(), IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-				SelectedPanel.BackgroundImage = newFile.FileName;
+					SelectedPanel.BackgroundImage = newFile.FileName;
 }
             }
         }
