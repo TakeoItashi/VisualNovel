@@ -1,6 +1,8 @@
+//TODO: Weg finden ifdef von .exe oder .dll abhängig machen
+#if 0
+#include <SDL.h>
 #include <iostream>
 #include "Game.h"
-#include <SDL.h>
 #include "TextLoader.h"
 #include "Settings.h"
 
@@ -20,3 +22,4 @@ int main(int argc, char* argv[]) {
 	SDL_Quit();
 	return 0;
 }
+#endif

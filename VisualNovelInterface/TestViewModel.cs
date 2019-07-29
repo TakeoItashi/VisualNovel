@@ -12,19 +12,19 @@ using System.Drawing;
 using Panel = VisualNovelInterface.Models.Panel;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using System.Windows.Media.Imaging;
+using System.Runtime.InteropServices;
 
 namespace VisualNovelInterface
 {
-    public class TestViewModel : BaseObject
-    {
-        private DialogueLine DialogueLine;
-        private DialogueLine selectedLine;
-        private Panel selectedPanel;
-        private Project currentProject;
-        private ICommand addBackgroundImageCommand;
-        private ICommand onSelectionChangedCommand;
-        private bool canExecute;
-        private int selectedPanelIndex;
+	public class TestViewModel : BaseObject
+	{
+		private DialogueLine DialogueLine;
+		private DialogueLine selectedLine;
+		private Panel selectedPanel;
+		private Project currentProject;
+		private ICommand addBackgroundImageCommand;
+		private bool canExecute;
+		private int selectedPanelIndex;
 
 		#region Properties
 		public string StringProperty {
@@ -62,14 +62,33 @@ namespace VisualNovelInterface
 		}
 		#endregion
 
-        public TestViewModel()
-        {
-            canExecute = true;
-            currentProject = new Project();
-            DialogueLine = new DialogueLine();
-            SelectedLine = new DialogueLine();
-            AddBackgroundImageCommand = new RelayCommand(AddBackgroundImage, parameter => canExecute);
-        }
+
+		public TestViewModel()
+		{
+			canExecute = true;
+			currentProject = new Project();
+			DialogueLine = new DialogueLine();
+			SelectedLine = new DialogueLine();
+			AddBackgroundImageCommand = new RelayCommand(AddBackgroundImage, parameter => canExecute);
+
+			IntPtr handle = DLLImporter.CreateDataValue_bool("newTrigger", true);
+			Console.WriteLine($"The Adress is: 0x{handle.ToString("X16")}");
+			bool value = DLLImporter.ReadDataValue_bool(handle);
+			Console.WriteLine($"The Value after start is: {value}");
+			DLLImporter.SetDataValue_bool(handle, false);
+			Console.WriteLine("The Value of the handle was set differently.");
+			bool value2 = DLLImporter.ReadDataValue_bool(handle);
+			Console.WriteLine($"The new Value is {value2}");
+			DLLImporter.FreeDataValue(handle);
+			Console.WriteLine("The new Value is was now set free");
+			Console.WriteLine($"The Adress is now is 0x{handle.ToString("X16")}");
+			bool? value3 = DLLImporter.ReadDataValue_bool(handle);
+			Console.WriteLine($"The new Value is {value3}");
+
+			//DLLImporter.CreateDataValue_int("newVariable", 1, 3);
+			//DLLImporter.CreateDataValue_float("newVariable", 1, 3.0f);
+			//DLLImporter.CreateDataValue_string("newDecimal", 2, "dfvds");
+		}
 
 		public void AddBackgroundImage(object obj)
 		{
@@ -80,16 +99,16 @@ namespace VisualNovelInterface
 
 				if (newFile.ShowDialog() == DialogResult.OK) {
 
-                    string path = newFile.FileName;
-                    Bitmap newImage =  (Bitmap) Image.FromFile(path);
+					string path = newFile.FileName;
+					Bitmap newImage = (Bitmap)Image.FromFile(path);
 					SelectedPanel.BackgroundImage = newFile.FileName;
-}
-            }
-        }
+				}
+			}
+		}
 
-        public void OnSelectionChanged(object obj)
-        {
-            Console.Write("");
-        }
-    }
+		public void OnSelectionChanged(object obj)
+		{
+			Console.Write("");
+		}
+	}
 }

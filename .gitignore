@@ -328,3 +328,8 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+#Zip archives
+.zip
+SDL2-2.0.9/
+*.zip

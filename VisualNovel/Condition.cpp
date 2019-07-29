@@ -7,28 +7,36 @@ bool Condition::isMet(std::map<std::string, DataValue*> _matchingData) {
 	//TODO eine bessere Lösung für die isMet schleife finden: die Länge sollte von den Required Values abhängig sein und nicht von der Matching Data
 	for (search = m_RequiredValues.begin(); search != m_RequiredValues.end(); search++) {
 
-		search = m_RequiredValues.find(_matchingData[i]->m_name);
-		DataValue test = *m_RequiredValues[_matchingData[i]->m_name];
+		std::map<std::string, DataValue*>::iterator matchingItem = _matchingData.find(search->first);
+		//search = m_RequiredValues.find(_matchingData[i]->m_name);
+		DataValue test = *m_RequiredValues[matchingItem->first];
 		DataValueType type = test.GetType();
 
 		if (type == DataValueType::trigger) {
 
-			bool requiredvalue = (*(bool*)m_RequiredValues[_matchingData[i]->m_name]->GetPointer());
-			bool givenValue = (*(bool*)_matchingData[i]->GetPointer());
+			bool requiredvalue = m_RequiredValues[matchingItem->first]->GetBool();
+			bool givenValue = _matchingData[matchingItem->first]->GetBool();
 
 			ConditionMet = requiredvalue == givenValue;
 		}
 		else if (type == DataValueType::variable) {
 
-			int requiredvalue = (*(int*)m_RequiredValues[_matchingData[i]->m_name]->GetPointer());
-			int givenValue = (*(int*)_matchingData[i]->GetPointer());
+			int requiredvalue = m_RequiredValues[matchingItem->first]->GetInt();
+			int givenValue = _matchingData[matchingItem->first]->GetInt();
 
 			ConditionMet = requiredvalue == givenValue;
 		}
 		else if (type == DataValueType::decimal) {
 
-			float requiredvalue = (*(float*)m_RequiredValues[_matchingData[i]->m_name]->GetPointer());
-			float givenValue = (*(float*)_matchingData[i]->GetPointer());
+			float requiredvalue = m_RequiredValues[matchingItem->first]->GetFloat();
+			float givenValue = _matchingData[matchingItem->first]->GetFloat();
+
+			ConditionMet = requiredvalue == givenValue;
+		}
+		else if (type == DataValueType::text) {
+
+			std::string requiredvalue = m_RequiredValues[matchingItem->first]->GetString();
+			std::string givenValue =_matchingData[matchingItem->first]->GetString();
 
 			ConditionMet = requiredvalue == givenValue;
 		}

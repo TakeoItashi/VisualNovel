@@ -48,7 +48,7 @@ Game::Game() {
 	m_EventHandler = nullptr;
 	m_textLoader = nullptr;
 	m_CurrentMenu = nullptr;
-	m_GameIsRunning = nullptr;
+	m_GameIsRunning = false;
 }
 
 Game::~Game() {
@@ -109,17 +109,17 @@ void Game::NewGame(Button* _butt) {
 	DataValue* testValue = new DataValue();
 	testValue->m_name = "StoryTrigger1";
 	testValue->SetValue(true);
-	m_save->m_values.push_back(testValue);
+	m_save->m_values.insert({testValue->m_name, testValue });
 
 	testValue = new DataValue();
 	testValue->m_name = "StoryVariable1";
 	testValue->SetValue(3);
-	m_save->m_values.push_back(testValue);
+	m_save->m_values.insert({ testValue->m_name, testValue });
 
 	testValue = new DataValue();
 	testValue->m_name = "TestDecimal1";
 	testValue->SetValue(6.9f);
-	m_save->m_values.push_back(testValue);
+	m_save->m_values.insert({ testValue->m_name, testValue });
 
 	m_save->Serialize();
 	m_GameIsRunning = true;
