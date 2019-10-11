@@ -100,11 +100,18 @@
                 <StackPanel Margin="10">
                     <Button Content="Add Background Image" Command="{Binding AddBackgroundImageCommand}"/>
                     <DockPanel>
-                        <Label>
+                        <Label DockPanel.Dock="Top">
                             Variables:
                         </Label>
-                        <ListBox>
-                            
+                        <ListBox MinHeight="50" ItemsSource="{Binding Variables}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <Label Content="{Binding Name}"/>
+                                        <Label Content="{Binding Value}"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
                     </DockPanel>
                 </StackPanel>
