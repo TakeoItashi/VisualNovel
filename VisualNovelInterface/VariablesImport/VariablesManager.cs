@@ -7,22 +7,17 @@ using VisualNovelInterface.MVVM;
 
 namespace VisualNovelInterface.VariablesImport
 {
-	public class VariablesManager : BaseObject
+	public class VariableManagerViewModel : BaseObject
 	{
 		private List<DataValue> m_variables;
 
-		private static VariablesManager m_instance;
-		public static VariablesManager Instance {
-			get {
-				if (m_instance == null)
-					m_instance = new VariablesManager();
-				return m_instance;
-			}
-		}
-
-		public VariablesManager()
+		public VariableManagerViewModel()
 		{
-
+			m_variables = new List<DataValue> {
+				new DataValue("testBool", new Tuple<DataValueType, object>(DataValueType.trigger, true)),
+				new DataValue("testInt", new Tuple<DataValueType, object>(DataValueType.variable, 24)),
+				new DataValue("testString", new Tuple<DataValueType, object>(DataValueType.text, "test test"))
+			};
 		}
 
 		public List<DataValue> Variables {

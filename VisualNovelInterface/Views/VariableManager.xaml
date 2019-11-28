@@ -6,20 +6,20 @@
         xmlns:import="clr-namespace:VisualNovelInterface.VariablesImport"
         mc:Ignorable="d"
         Title="VariableManager" Height="400" Width="400">
-    <Window.DataContext>
-        <import:VariablesManager/>
-    </Window.DataContext>
+    <!--<Window.DataContext>
+        <import:VariableManagerViewModel/>
+    </Window.DataContext>-->
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
-        <ListView Margin="0,0,10,0">
+        <ListView Margin="0,0,10,0" ItemsSource="{Binding Variables}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name"/>
-                    <GridViewColumn Header="Data Type"/>
-                    <GridViewColumn Header="Starting Value"/>
+                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Data Type" Width="100" DisplayMemberBinding="{Binding Value.Item1}"/>
+                    <GridViewColumn Header="Starting Value" DisplayMemberBinding="{Binding Value.Item2}"/>
                 </GridView>
             </ListView.View>
         </ListView>
