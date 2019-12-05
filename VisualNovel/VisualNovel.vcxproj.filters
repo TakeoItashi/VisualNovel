@@ -100,6 +100,9 @@
     <ClCompile Include="OptionsMenu.cpp">
       <Filter>Quelldateien\UI</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteSheetTexture.cpp">
+      <Filter>Quelldateien\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="square-rounded-empty-outlined-button-shapeByKatarinaStefanikova.png">
@@ -118,6 +121,9 @@
       <Filter>Ressourcendateien\Images</Filter>
     </Image>
     <Image Include="GoblinMage.png">
+      <Filter>Ressourcendateien\Images</Filter>
+    </Image>
+    <Image Include="ButtonSpriteState.png">
       <Filter>Ressourcendateien\Images</Filter>
     </Image>
   </ItemGroup>
@@ -179,6 +185,12 @@
     <ClInclude Include="OptionsMenu.h">
       <Filter>Headerdateien\UI</Filter>
     </ClInclude>
+    <ClInclude Include="ButtonSpriteState.h">
+      <Filter>Headerdateien\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteSheetTexture.h">
+      <Filter>Headerdateien\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ImageImports.txt">
@@ -200,6 +212,9 @@
       <Filter>Ressourcendateien\TextFiles</Filter>
     </Text>
     <Text Include="StoryboardSyntax.txt">
+      <Filter>Ressourcendateien\TextFiles</Filter>
+    </Text>
+    <Text Include="SpriteImports.txt">
       <Filter>Ressourcendateien\TextFiles</Filter>
     </Text>
   </ItemGroup>
