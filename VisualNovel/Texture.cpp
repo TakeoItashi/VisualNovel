@@ -6,6 +6,7 @@ Texture::Texture(SDL_Renderer* _renderer) {
 	Width = 0;
 	Height = 0;
 	m_Renderer = _renderer;
+	SetBlendMode(SDL_BLENDMODE_BLEND);
 }
 
 Texture::~Texture() {
@@ -17,9 +18,9 @@ void Texture::SetBlendMode(SDL_BlendMode _blending)
 	SDL_SetTextureBlendMode(m_Texture, _blending);
 }
 
-void Texture::SetAlpha(Uint8 _alpha)
+int Texture::SetAlpha(Uint8 _alpha)
 {
-	SDL_SetTextureAlphaMod(m_Texture, _alpha);
+	return SDL_SetTextureAlphaMod(m_Texture, _alpha);
 }
 
 void Texture::Free() {

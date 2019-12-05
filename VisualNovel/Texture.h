@@ -28,7 +28,7 @@ class Texture {
 		Sets the Alpha value for this Texture
 		@param _alpha: the alpha value this Texture should use. 0 means transparent and 255 means solid
 		*/
-		void SetAlpha(Uint8 _alpha);
+		int SetAlpha(Uint8 _alpha);
 		/**
 		Deallocates this Texture
 		*/
