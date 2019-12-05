@@ -331,3 +331,6 @@ ASALocalRun/
 .zip
 SDL2-2.0.9/
 *.zip
+
+#Visual Novel Save Files
+*.sg
