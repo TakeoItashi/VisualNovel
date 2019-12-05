@@ -1,12 +1,13 @@
 #pragma once
-#include "Texture.h"
+#include "ButtonSpriteState.h"
+#include "SpriteSheetTexture.h"
 #include <functional>
 #include <SDL.h>
 
 class SDL_Renderer;
 union SDL_Event;
 
-class Button : public Texture {
+class Button : public SpriteSheetTexture {
 
 	public:
 		//Standard Constructor

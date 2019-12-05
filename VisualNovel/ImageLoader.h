@@ -6,6 +6,7 @@
 
 class SDL_Renderer;
 class Texture;
+class SpriteSheetTexture;
 
 class ImageLoader {
 
@@ -23,10 +24,12 @@ class ImageLoader {
 		//Returns a single Texture specified by an index
 		//@param _index: the Index of the desired Texture
 		//@return The pointer to the desired Texture
-		Texture* GetTextures(int _index);
+		Texture* GetTexture(int _index);
+		SpriteSheetTexture* GetSprite(int _index);
 	private:
 		//A List of Pointers to all the loaded Textures
 		std::vector<Texture*> m_loadedTextures;
-		
+		std::vector<SpriteSheetTexture*> m_loadedSprites;
+
 		SDL_Renderer* m_Renderer;
 };

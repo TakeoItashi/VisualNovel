@@ -7,27 +7,27 @@ Menu {
 	Items {
 		Item {
 			Text: "Start Game";
-			Button: 50,50, 50, 100, 4;
+			Button: 50,50, 50, 100, 0;
 			Type: 0;
 		}
 		Item {
 			Text: "Load Game";
-			Button: 50, 110, 50, 100, 4;
+			Button: 50, 110, 50, 100, 0;
 			Type: 1;
 		}
 		Item {
 			Text: "Gallery";
-			Button: 50, 170, 50, 100, 4;
+			Button: 50, 170, 50, 100, 0;
 			Type: 2;
 		}
 		Item {
 			Text: "Options";
-			Button: 50, 230, 50, 100, 4;
+			Button: 50, 230, 50, 100, 0;
 			Type: 3;
 		}
 		Item {
 			Text: "Quit Game";
-			Button: 50, 290, 50, 100, 4;
+			Button: 50, 290, 50, 100, 0;
 			Type: 4;
 		}
 	}

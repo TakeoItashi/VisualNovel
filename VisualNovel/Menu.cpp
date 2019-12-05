@@ -199,13 +199,13 @@ void Menu::LoadMenu(std::string _filepath) {
 
 void Menu::CreateMenu() {
 
-	m_BackgroundImage = m_ImageLoader->GetTextures(m_SpriteIndices[0].Index);
+	m_BackgroundImage = m_ImageLoader->GetTexture(m_SpriteIndices[0].Index);
 	std::vector<int> m_indices;
 	for (int i = 0; i < m_MenuItems.size(); i++) {
 
 		Texture* m_textTexture = new Texture(m_Renderer);
 
-		m_MenuItems[i].Button->SetTexture(m_ImageLoader->GetTextures(m_MenuItems[i].Button->TextureIndex));
+		m_MenuItems[i].Button->SetSprite(m_ImageLoader->GetSprite(m_MenuItems[i].Button->TextureIndex));
 		SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, m_MenuItems[i].ItemName.c_str(), m_Color);
 		m_textTexture->CreateFromSurface(textSurface);
 

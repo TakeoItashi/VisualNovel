@@ -6,7 +6,7 @@ Texture::Texture(SDL_Renderer* _renderer) {
 	Width = 0;
 	Height = 0;
 	m_Renderer = _renderer;
-	SetBlendMode(SDL_BLENDMODE_BLEND);
+	//SetBlendMode(SDL_BLENDMODE_BLEND);
 }
 
 Texture::~Texture() {

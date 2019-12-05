@@ -22,17 +22,17 @@ bool SpriteSheetTexture::LoadMedia(std::string _path)
 	m_SpriteClips[0].x = 0;
 	m_SpriteClips[0].y = 0;
 	m_SpriteClips[0].w = 512;
-	m_SpriteClips[0].w = 512;
+	m_SpriteClips[0].h = 512;
 
 	m_SpriteClips[1].x = 512;
 	m_SpriteClips[1].y = 0;
 	m_SpriteClips[1].w = 512;
-	m_SpriteClips[1].w = 512;
+	m_SpriteClips[1].h = 512;
 
 	m_SpriteClips[2].x = 0;
 	m_SpriteClips[2].y = 512;
 	m_SpriteClips[2].w = 512;
-	m_SpriteClips[2].w = 512;
+	m_SpriteClips[2].h = 512;
 
 	Width = loadedSurface->w;
 	Height = loadedSurface->h;
@@ -60,7 +60,7 @@ void SpriteSheetTexture::Render(int x, int y, int _Height, int _Width, ButtonSpr
 
 	SDL_Rect renderQuad = { x, y, _Width, _Height };
 
-	SDL_RenderCopy(m_Renderer, m_Texture, &m_SpriteClips[_State], &renderQuad);
+	SDL_RenderCopy(m_Renderer, m_Texture, &m_SpriteClips[m_currentSprite], &renderQuad);
 
 	//SDL_RenderCopy(m_Renderer, m_Texture, NULL, &renderQuad);
 }

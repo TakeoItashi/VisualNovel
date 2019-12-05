@@ -45,7 +45,7 @@ class Texture {
 		Allocates a Texture from a given filepath to the m_Texture Variable
 		@param _path: The Path of the image file
 		*/
-		bool LoadMedia(std::string _path);
+		virtual bool LoadMedia(std::string _path);
 		/**
 		Allocates a Texture from a given Surface to the m_Texture Variable
 		@param _path: The Surface that will be turned into a Texture
