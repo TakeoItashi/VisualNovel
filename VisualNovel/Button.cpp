@@ -37,11 +37,11 @@ void Button::HandleEvent(SDL_Event* _event) {
 			SetAlpha(255);
 			//TODO normal sprite
 		} else {
-			int test;
+	
 			switch (_event->type) {
 			
 				case SDL_MOUSEMOTION:
-					test = SetAlpha(0);
+					SetAlpha(0);
 					//TODO Mouse over sprite
 					break;
 				case SDL_MOUSEBUTTONDOWN:

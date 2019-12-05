@@ -133,8 +133,6 @@ void Game::Update(SDL_Event* _eventhandler, bool* _quitCondition) {
 
 			m_CurrentMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
 		}
-		SDL_RenderClear(m_Renderer);
-		m_CurrentMenu->Render();
 	}
 
 	while (SDL_PollEvent(m_EventHandler) != 0) {
