@@ -14,16 +14,20 @@ using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using System.Windows.Media.Imaging;
 using System.Runtime.InteropServices;
 using VisualNovelInterface.VariablesImport;
+using VisualNovelInterface.Views;
+using VisualNovelInterface.Models.Enums;
+using GalaSoft.MvvmLight.Command;
+using System.Collections.ObjectModel;
 
-namespace VisualNovelInterface
+namespace VisualNovelInterface.ViewModels
 {
-	public class TestViewModel : BaseObject
+	public class MainViewModel : BaseObject
 	{
+		private VariableManagerViewModel m_variablesManager;
 		private DialogueLine DialogueLine;
 		private DialogueLine selectedLine;
 		private Panel selectedPanel;
 		private Project currentProject;
-		private ICommand addBackgroundImageCommand;
 		private bool canExecute;
 		private int selectedPanelIndex;
 		private List<DataValue> m_variables;
@@ -55,49 +59,50 @@ namespace VisualNovelInterface
 			set => SetProperty(ref selectedLine, value);
 		}
 		public ICommand AddBackgroundImageCommand {
-			get => addBackgroundImageCommand;
-			set => SetProperty(ref addBackgroundImageCommand, value);
+			get;
+			set;
+		}
+		public ICommand OpenVariableManagerCommand {
+			get;
+			set;
 		}
 		public int SelectedPanelIndex {
 			get => selectedPanelIndex;
 			set => SetProperty(ref selectedPanelIndex, value);
 		}
-		public List<DataValue> Variables {
-			get => m_variables;
-			set => SetProperty(ref m_variables, value);
+		public ObservableCollection<DataValue> Variables {
+			get => m_variablesManager.Variables;
+			set => m_variablesManager.Variables = value;
 		}
 		#endregion
 
 
-		public TestViewModel()
+		public MainViewModel()
 		{
 			canExecute = true;
 			currentProject = new Project();
 			DialogueLine = new DialogueLine();
 			SelectedLine = new DialogueLine();
-			AddBackgroundImageCommand = new RelayCommand(AddBackgroundImage, parameter => canExecute);
-			Variables = new List<DataValue>();
+			AddBackgroundImageCommand = new RelayCommand(AddBackgroundImage);
+			OpenVariableManagerCommand = new RelayCommand(OpenVariableManager);
+			m_variablesManager = new VariableManagerViewModel();
 
-			IntPtr handle = DLLImporter.CreateDataValue_bool("newTrigger", true);
-			Console.WriteLine($"The Adress is: 0x{handle.ToString("X16")}");
-			bool value = DLLImporter.ReadDataValue_bool(handle);
-			Console.WriteLine($"The Value after start is: {value}");
-			DLLImporter.SetDataValue_bool(handle, false);
-			Console.WriteLine("The Value of the handle was set differently.");
-			bool value2 = DLLImporter.ReadDataValue_bool(handle);
-			Console.WriteLine($"The new Value is {value2}");
-			DLLImporter.FreeDataValue(handle);
-			Console.WriteLine("The new Value is was now set free");
-			DataValue newValue = new DataValue("TestBool", new Tuple<DataValueType, object>(DataValueType.trigger, true));
-			Variables.Add(newValue);
-			newValue = new DataValue("TestInt", new Tuple<DataValueType, object>(DataValueType.variable, 20));
-			Variables.Add(newValue);
+			//IntPtr handle = DLLImporter.CreateDataValue_bool("newTrigger", true);
+			//Console.WriteLine($"The Adress is: 0x{handle.ToString("X16")}");
+			//bool value = DLLImporter.ReadDataValue_bool(handle);
+			//Console.WriteLine($"The Value after start is: {value}");
+			//DLLImporter.SetDataValue_bool(handle, false);
+			//Console.WriteLine("The Value of the handle was set differently.");
+			//bool value2 = DLLImporter.ReadDataValue_bool(handle);
+			//Console.WriteLine($"The new Value is {value2}");
+			//DLLImporter.FreeDataValue(handle);
+			//Console.WriteLine("The new Value is was now set free");
 			//DLLImporter.CreateDataValue_int("newVariable", 1, 3);
 			//DLLImporter.CreateDataValue_float("newVariable", 1, 3.0f);
 			//DLLImporter.CreateDataValue_string("newDecimal", 2, "dfvds");
 		}
 
-		public void AddBackgroundImage(object obj)
+		public void AddBackgroundImage()
 		{
 			using (OpenFileDialog newFile = new OpenFileDialog()) {
 
@@ -111,6 +116,13 @@ namespace VisualNovelInterface
 					SelectedPanel.BackgroundImage = newFile.FileName;
 				}
 			}
+		}
+
+		public void OpenVariableManager()
+		{
+			VariableManager vm = new VariableManager();
+			vm.DataContext = m_variablesManager;
+			vm.Show();
 		}
 
 		public void OnSelectionChanged(object obj)

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisualNovelInterface.VariablesImport
+namespace VisualNovelInterface.Models.Enums
 {
-	public enum DataValueType
+	public enum DataValueTypeEnum
 	{
 		trigger,    //TODO byte statt ints benutzen?
 		variable,
-		decimalCCPlus,
+		decimalCCPlus,	//Name is stupid, but decimal is a reserved keyword
 		text
 	}
 }
