@@ -4,29 +4,45 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VisualNovelInterface.MVVM;
+using VisualNovelInterface.ViewModels;
 
 namespace VisualNovelInterface.Models {
-    public class Project {
-        private string settings;
-        private ObservableCollection<Panel> panels;
+	public class Project : BaseObject {
+		private string m_settings;
+		private ObservableCollection<Panel> m_panels;
+		private VariableManagerViewModel m_variableManagerViewModel;
 
-        public string Settings {
-            get => settings;
-            set => settings = value;
-        }
+		private Panel m_selectedPanel;
 
-        public ObservableCollection<Panel> Panels {
-            get => panels;
-            set => panels = value;
-        }
+		public string Settings {
+			get => m_settings;
+			set => m_settings = value;
+		}
+
+		public ObservableCollection<Panel> Panels {
+			get => m_panels;
+			set => m_panels = value;
+		}
+
+		public VariableManagerViewModel VariableManagerViewModel{
+			get => m_variableManagerViewModel;
+			set => m_variableManagerViewModel = value;
+		}
+
+		public Panel SelectedPanel {
+			get => m_selectedPanel;
+			set => SetProperty(ref m_selectedPanel, value);
+		}
 
         public Project()
         {
-            panels = new ObservableCollection<Panel>();
+            m_panels = new ObservableCollection<Panel>();
+			m_variableManagerViewModel = new VariableManagerViewModel();
 #if DEBUG
-            panels.Add(new Panel("NewPanel_01"));
-            panels.Add(new Panel("NewPanel_02"));
-            panels.Add(new Panel("NewPanel_03"));
+            m_panels.Add(new Panel("NewPanel_01"));
+            m_panels.Add(new Panel("NewPanel_02"));
+            m_panels.Add(new Panel("NewPanel_03"));
 #endif
         }
     }

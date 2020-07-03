@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace VisualNovelInterface.Views
 {
 	/// <summary>
-	/// Interaktionslogik für VariableManager.xaml
+	/// Interaktionslogik für VariableManagerWindow.xaml
 	/// </summary>
-	public partial class VariableManager : Window
+	public partial class VariableManagerWindow : Window
 	{
-		public VariableManager()
+		public VariableManagerWindow()
 		{
 			InitializeComponent();
 		}

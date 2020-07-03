@@ -23,40 +23,29 @@ namespace VisualNovelInterface.ViewModels
 {
 	public class MainViewModel : BaseObject
 	{
-		private VariableManagerViewModel m_variablesManager;
-		private DialogueLine DialogueLine;
 		private DialogueLine selectedLine;
 		private Panel selectedPanel;
 		private Project currentProject;
 		private bool canExecute;
 		private int selectedPanelIndex;
-		private List<DataValue> m_variables;
+		//private ObservableCollection<Sprite> m_sprites;
+
 
 		#region Properties
-		public string StringProperty {
-			get => DialogueLine.textShown;
-			set => SetProperty(ref selectedLine.textShown, value);
-		}
-
-		public string NameProperty {
-			get => DialogueLine.characterName;
-			set => SetProperty(ref selectedLine.characterName, value);
-		}
-
 		public Project CurrentProject {
 			get => currentProject;
 			set => SetProperty(ref currentProject, value);
 		}
 		public Panel SelectedPanel {
-			get => selectedPanel;
+			get => currentProject.SelectedPanel;
 			set {
-				SetProperty(ref selectedPanel, value);
+				currentProject.SelectedPanel = value;
 				SelectedLine = SelectedPanel.DialogueLines.First();
 			}
 		}
 		public DialogueLine SelectedLine {
-			get => selectedLine;
-			set => SetProperty(ref selectedLine, value);
+			get => SelectedPanel.SelectedLine;
+			set => SelectedPanel.SelectedLine = value;
 		}
 		public ICommand AddBackgroundImageCommand {
 			get;
@@ -70,9 +59,19 @@ namespace VisualNovelInterface.ViewModels
 			get => selectedPanelIndex;
 			set => SetProperty(ref selectedPanelIndex, value);
 		}
+
+		public VariableManagerViewModel VariableManager {
+			get => CurrentProject.VariableManagerViewModel;
+			set => CurrentProject.VariableManagerViewModel = value;
+		}
+
 		public ObservableCollection<DataValue> Variables {
-			get => m_variablesManager.Variables;
-			set => m_variablesManager.Variables = value;
+			get => VariableManager.Variables;
+			set => VariableManager.Variables = value;
+		}
+
+		public string TestImage {
+			get => @"F:\Users\Tom Appel\Desktop\Studium\VisualNovel\VisualNovelInterface\Resources\doge.png";
 		}
 		#endregion
 
@@ -81,11 +80,9 @@ namespace VisualNovelInterface.ViewModels
 		{
 			canExecute = true;
 			currentProject = new Project();
-			DialogueLine = new DialogueLine();
-			SelectedLine = new DialogueLine();
+			//SelectedLine = new DialogueLine();
 			AddBackgroundImageCommand = new RelayCommand(AddBackgroundImage);
 			OpenVariableManagerCommand = new RelayCommand(OpenVariableManager);
-			m_variablesManager = new VariableManagerViewModel();
 
 			//IntPtr handle = DLLImporter.CreateDataValue_bool("newTrigger", true);
 			//Console.WriteLine($"The Adress is: 0x{handle.ToString("X16")}");
@@ -120,8 +117,8 @@ namespace VisualNovelInterface.ViewModels
 
 		public void OpenVariableManager()
 		{
-			VariableManager vm = new VariableManager();
-			vm.DataContext = m_variablesManager;
+			VariableManagerWindow vm = new VariableManagerWindow();
+			vm.DataContext = VariableManager;
 			vm.Show();
 		}
 

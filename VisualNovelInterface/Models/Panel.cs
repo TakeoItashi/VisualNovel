@@ -12,30 +12,33 @@ namespace VisualNovelInterface.Models {
 
         private string backgroundImage;
         private string panelName;
-        private ObservableCollection<Sprite> sprites;
         private ObservableCollection<DialogueLine> dialogueLines;
+		private DialogueLine m_selectedDialogLine;
 
 		public string BackgroundImage {
             get => backgroundImage;
             set => SetProperty(ref backgroundImage, value);
         }
+
         public string PanelName {
             get => panelName;
             set => panelName = value;
         }
-        public ObservableCollection<Sprite> Sprites {
-            get => sprites;
-            set => sprites = value;
-        }
+
         public ObservableCollection<DialogueLine> DialogueLines {
             get => dialogueLines;
             set => dialogueLines = value;
         }
 
+		public DialogueLine SelectedLine {
+			get => m_selectedDialogLine;
+			set => SetProperty(ref m_selectedDialogLine, value);
+		}
+
 		public Panel(string _newPanelName)
         {
             PanelName = _newPanelName;
-            sprites = new ObservableCollection<Sprite>();
+
             dialogueLines = new ObservableCollection<DialogueLine>();
 #if DEBUG
             dialogueLines.Add(new DialogueLine { CharacterName = $"Heinrich Meinrich {_newPanelName}", SpriteIndex=0, TextShown = "Lorem Ipsum"});

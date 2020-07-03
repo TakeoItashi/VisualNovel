@@ -4,11 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:VisualNovelInterface.ViewModels"
+        xmlns:conv="clr-namespace:VisualNovelInterface.Converters"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <conv:TestConverter x:Key="TestConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -43,9 +49,12 @@
                             <Border Grid.Column="0"
                                     BorderBrush="Gray" BorderThickness="0,0,1,0">
                                 <TabControl>
-                                    <TabItem Header="Story Tree">
+                                    <TabItem Header="_Story Tree">
                                         <Grid>
-                                            <ListBox ItemsSource="{Binding CurrentProject.Panels}" DataContext="{Binding Mode=OneWay}" SelectedIndex="0" SelectedItem="{Binding SelectedPanel}">
+                                            <ListBox ItemsSource="{Binding CurrentProject.Panels}" 
+                                                     DataContext="{Binding Mode=OneWay}" 
+                                                     SelectedIndex="0" 
+                                                     SelectedItem="{Binding SelectedPanel}">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <TextBlock Text="{Binding PanelName}"/>
@@ -54,9 +63,10 @@
                                             </ListBox>
                                         </Grid>
                                     </TabItem>
-                                    <TabItem Header="Panel View">
+                                    <TabItem Header="_Dialog Lines">
                                         <Grid>
-                                            <ListBox ItemsSource="{Binding SelectedPanel.DialogueLines}" SelectedIndex="0" SelectedItem="{Binding SelectedLine}" >
+                                            <ListBox ItemsSource="{Binding SelectedPanel.DialogueLines}"
+                                                     SelectedItem="{Binding SelectedLine}" >
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <TextBlock Text="{Binding CharacterName}" />
@@ -65,20 +75,72 @@
                                             </ListBox>
                                         </Grid>
                                     </TabItem>
+                                    <TabItem Header="_Sprites">
+                                        <Grid>
+                                            <ListBox ItemsSource="{Binding SelectedPanel.SelectedLine.Sprites}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Name}"/>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Grid>
+                                    </TabItem>
                                 </TabControl>
                             </Border>
                             <Grid Grid.Column="1">
-                                <Image Source="{Binding SelectedPanel.BackgroundImage}" VerticalAlignment="Center" />
+                                <Image Source="{Binding SelectedPanel.BackgroundImage}" 
+                                       VerticalAlignment="Center"/>
+                                <ItemsControl ItemsSource="{Binding SelectedPanel.SelectedLine.Sprites}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Canvas/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Image Source="{Binding Image}"
+                                                   Width="{Binding Width}"
+                                                   Height="{Binding Height}">
+                                                <Image.RenderTransform>
+                                                    <TranslateTransform X="{Binding PosX}"
+                                                                        Y="{Binding PosY}"/>
+                                                </Image.RenderTransform>
+                                                https://stackoverflow.com/questions/33837264/move-image-with-mouse-wpf-c-sharp
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="MoveMouse">
+                                                        <cmd:EventToCommand Command="{Binding MoveSpriteCommand}"
+                                                                            PassEventArgsToCommand="True"/>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Image>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="10*"/>
                                         <RowDefinition />
                                         <RowDefinition Height="4*"/>
                                     </Grid.RowDefinitions>
-                                    <Rectangle Grid.Row="1" Margin="10,0,0,0" Width="60" Stroke="#FFC12F2F" Fill="#B2C12F2F" StrokeThickness="3" HorizontalAlignment="Left"/>
-                                    <TextBlock Grid.Row="1" Margin="10,0,0,0" Text="{Binding SelectedLine.CharacterName}"/>
-                                    <Rectangle Grid.Row="2" Margin="10,5,10,10" Stroke="#FFC12F2F" Fill="#B2C12F2F" StrokeThickness="3"/>
-                                    <TextBlock Grid.Row="2" Margin="10,5,10,10" Text="{Binding SelectedLine.TextShown}"/>
+                                    <Rectangle Grid.Row="1" 
+                                               Margin="10,0,0,0" 
+                                               Width="60" 
+                                               Stroke="#FFC12F2F" 
+                                               Fill="#B2C12F2F" 
+                                               StrokeThickness="3" 
+                                               HorizontalAlignment="Left"/>
+                                    <TextBlock Grid.Row="1" 
+                                               Margin="10,0,0,0" 
+                                               Text="{Binding SelectedLine.CharacterName}"/>
+                                    <Rectangle Grid.Row="2" 
+                                               Margin="10,5,10,10" 
+                                               Stroke="#FFC12F2F" 
+                                               Fill="#B2C12F2F" 
+                                               StrokeThickness="3"/>
+                                    <TextBlock Grid.Row="2" 
+                                               Margin="10,5,10,10" 
+                                               Text="{Binding SelectedLine.TextShown}"/>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -86,10 +148,15 @@
                     <Grid Grid.Row="1">
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <TextBox Margin="10,5,0,5" DockPanel.Dock="Left" HorizontalAlignment="Left" MinWidth="60" Text="{Binding SelectedLine.CharacterName, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Margin="10,5,0,5" 
+                                         DockPanel.Dock="Left" 
+                                         HorizontalAlignment="Left" 
+                                         MinWidth="60" 
+                                         Text="{Binding SelectedLine.CharacterName, UpdateSourceTrigger=PropertyChanged}"/>
                                 <Label Content=":"/>
                             </DockPanel>
-                            <TextBox Margin="10,0,10,10" Text="{Binding SelectedLine.TextShown, UpdateSourceTrigger=PropertyChanged}" >
+                            <TextBox Margin="10,0,10,10" 
+                                     Text="{Binding SelectedLine.TextShown, UpdateSourceTrigger=PropertyChanged}" >
 
                             </TextBox>
                         </DockPanel>
