@@ -14,6 +14,7 @@
     </Window.DataContext>
     <Window.Resources>
         <conv:TestConverter x:Key="TestConverter"/>
+        <conv:EventToEventCommandConverter x:Key="EventToEventCommandConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -91,33 +92,37 @@
                             <Grid Grid.Column="1">
                                 <Image Source="{Binding SelectedPanel.BackgroundImage}" 
                                        VerticalAlignment="Center"/>
-                                <ItemsControl ItemsSource="{Binding SelectedPanel.SelectedLine.Sprites}">
+                                <ItemsControl ItemsSource="{Binding SelectedPanel.SelectedLine.Sprites}"
+                                              d:IsHidden="True">
+                                    <ItemsControl.Style>
+                                        <Style TargetType="ItemsControl">
+                                            <Setter Property="ItemContainerStyle">
+                                                <Setter.Value>
+                                                    <Style>
+                                                        <Setter Property="Canvas.Left" 
+                                                                Value="{Binding PosX}"/>
+                                                        <Setter Property="Canvas.Top" 
+                                                                Value="{Binding PosY}"/>
+                                                    </Style>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ItemsControl.Style>
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <Canvas/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Image Source="{Binding Image}"
-                                                   Width="{Binding Width}"
-                                                   Height="{Binding Height}">
-                                                <Image.RenderTransform>
-                                                    <TranslateTransform X="{Binding PosX}"
-                                                                        Y="{Binding PosY}"/>
-                                                </Image.RenderTransform>
-                                                https://stackoverflow.com/questions/33837264/move-image-with-mouse-wpf-c-sharp
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="MoveMouse">
-                                                        <cmd:EventToCommand Command="{Binding MoveSpriteCommand}"
-                                                                            PassEventArgsToCommand="True"/>
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                            </Image>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MoveMouse">
+                                            <cmd:EventToCommand Command="{Binding AddBackgroundImageCommand}"/>
+                                            <!--PassEventArgsToCommand="True"
+                                        EventArgsConverter="{StaticResource EventToEventCommandConverter}"
+                                        EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UIElement}, AncestorLevel=1}}"/>-->
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
                                 </ItemsControl>
-                                <Grid>
+                                <!--<Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="10*"/>
                                         <RowDefinition />
@@ -141,7 +146,7 @@
                                     <TextBlock Grid.Row="2" 
                                                Margin="10,5,10,10" 
                                                Text="{Binding SelectedLine.TextShown}"/>
-                                </Grid>
+                                </Grid>-->
                             </Grid>
                         </Grid>
                     </Border>

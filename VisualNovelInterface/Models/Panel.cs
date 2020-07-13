@@ -40,12 +40,6 @@ namespace VisualNovelInterface.Models {
             PanelName = _newPanelName;
 
             dialogueLines = new ObservableCollection<DialogueLine>();
-#if DEBUG
-            dialogueLines.Add(new DialogueLine { CharacterName = $"Heinrich Meinrich {_newPanelName}", SpriteIndex=0, TextShown = "Lorem Ipsum"});
-            dialogueLines.Add(new DialogueLine { CharacterName = $"dlwmvmd {_newPanelName}", SpriteIndex = 0, TextShown = "9ur409ut23409u9589023485" });
-            dialogueLines.Add(new DialogueLine { CharacterName = $"39rt md {_newPanelName}", SpriteIndex = 0, TextShown = " 03r dskngkdjfgkdm" });
-            dialogueLines.Add(new DialogueLine { CharacterName = $"FFFFFFFFFFFFFFFFF {_newPanelName}", SpriteIndex = 0, TextShown = "ffffffffffff" });
-#endif
         }
     }
 }

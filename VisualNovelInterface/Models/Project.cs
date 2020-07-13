@@ -39,11 +39,6 @@ namespace VisualNovelInterface.Models {
         {
             m_panels = new ObservableCollection<Panel>();
 			m_variableManagerViewModel = new VariableManagerViewModel();
-#if DEBUG
-            m_panels.Add(new Panel("NewPanel_01"));
-            m_panels.Add(new Panel("NewPanel_02"));
-            m_panels.Add(new Panel("NewPanel_03"));
-#endif
         }
     }
 }

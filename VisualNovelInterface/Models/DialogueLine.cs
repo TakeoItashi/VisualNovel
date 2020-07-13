@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using VisualNovelInterface.MVVM;
+using VisualNovelInterface.ViewModels;
 
 namespace VisualNovelInterface.Models
 {
@@ -16,7 +17,7 @@ namespace VisualNovelInterface.Models
 		private string textShown;
 		private int spriteIndex;
 		private string characterName;
-		private ObservableCollection<Sprite> m_usedSprites;
+		private ObservableCollection<SpriteViewModel> m_usedSprites;
 
 		public string TextShown {
 			get => textShown;
@@ -33,18 +34,13 @@ namespace VisualNovelInterface.Models
 			set => SetProperty(ref characterName, value);
 		}
 
-		public ObservableCollection<Sprite> Sprites {
+		public ObservableCollection<SpriteViewModel> Sprites {
 			get => m_usedSprites;
 			set => m_usedSprites = value;
 		}
 
 		public DialogueLine() {
-			m_usedSprites = new ObservableCollection<Sprite>();
-
-			string path = @"F:\Users\Tom Appel\Desktop\Studium\VisualNovel\VisualNovelInterface\Resources\doge.png";
-			Image newUriImage = new Image() { Source = new BitmapImage(new Uri(path)) };
-			m_usedSprites.Add(new Sprite(path, "DogeSprite1", newUriImage, 0, 0, 100, 100));
-			m_usedSprites.Add(new Sprite(path, "DogeSprite2", newUriImage, 100, 100, 100, 100));
+			m_usedSprites = new ObservableCollection<SpriteViewModel>();
 		}
 	}
 }
