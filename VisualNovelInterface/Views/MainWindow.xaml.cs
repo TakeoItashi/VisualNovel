@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VisualNovelInterface.ViewModels;
 
 namespace VisualNovelInterface
 {
@@ -23,6 +24,8 @@ namespace VisualNovelInterface
 		public MainWindow() {
 			try {
 				InitializeComponent();
+				MainViewModel vm = new MainViewModel();
+				DataContext = vm;
 			} catch (Exception ex) {
 
 			}

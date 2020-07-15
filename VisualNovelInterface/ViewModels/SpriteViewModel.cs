@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using VisualNovelInterface.Models.Args.SenderEventArgs;
 using VisualNovelInterface.MVVM;
 
@@ -22,7 +23,6 @@ namespace VisualNovelInterface.ViewModels
 		public delegate void SpriteMoveEventHandler(SpriteViewModel _sender);
 
 		public event SpriteMoveEventHandler OnSpriteMoveEvent;
-
 
 		public string Image {
 			get => m_image;
@@ -69,6 +69,11 @@ namespace VisualNovelInterface.ViewModels
 			set;
 		}
 
+		public RelayCommand<CustomEventCommandParameter> MoveMouseCommand {
+			get;
+			set;
+		}
+
 		public SpriteViewModel(string _image, string _name, Image _uriImage, int _posX, int _posY, int _height, int _width) {
 			m_image = _image;
 			m_name = _name;
@@ -79,11 +84,24 @@ namespace VisualNovelInterface.ViewModels
 			m_width = _width;
 			m_geometryRect = new Rect(_posX, _posY, _width, _height);
 			MouseDownOnSpriteCommand = new RelayCommand<CustomEventCommandParameter>(MouseDownOnSprite);
+			MoveMouseCommand = new RelayCommand<CustomEventCommandParameter>(MoveMouse);
 			//OnSpriteMoveEvent += MouseDownOnSprite;
 		}
 
 		private void MouseDownOnSprite(CustomEventCommandParameter _args) {
 			OnSpriteMoveEvent.Invoke(this);
+		}
+
+		private void MoveMouse(CustomEventCommandParameter _args) {
+			DragDeltaEventArgs args = _args.Args as DragDeltaEventArgs;
+			double newPosX = PosX + args.HorizontalChange;
+			double newPosY = PosY + args.VerticalChange;
+			if (newPosX > 0) {
+				PosX = newPosX;
+			}
+			if (newPosY > 0) {
+				PosY = newPosY;
+			}
 		}
 	}
 }

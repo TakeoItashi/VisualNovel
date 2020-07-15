@@ -8,7 +8,7 @@
                     xmlns:c="clr-namespace:VisualNovelInterface.Controls"
                     xmlns:con="clr-namespace:VisualNovelInterface.Converters"
                     xmlns:cmd="http://www.galasoft.ch/mvvmlight">
-    
+
     <con:EventToEventCommandConverter x:Key="EventToEventCommandConverter"/>
 
     <ControlTemplate x:Key="ResizeTemplate" TargetType="{x:Type Control}">
@@ -78,7 +78,12 @@
                            HorizontalAlignment="Right"/>
         </Grid>
     </ControlTemplate>
-    
+
+    <ControlTemplate x:Key="InvisibleThumbRect"
+                     TargetType="Thumb">
+        <Rectangle Fill="Transparent"/>
+    </ControlTemplate>
+
     <DataTemplate DataType="{x:Type vm:SpriteViewModel}">
         <Grid x:Name="SpriteGrid"
               Width="{Binding Width}"
@@ -86,15 +91,25 @@
             <Control x:Name="ResizeBorder"
                      Visibility="Collapsed"
                      Template="{StaticResource ResizeTemplate}"/>
-            <Rectangle Fill="Black"/>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDown">
-                    <cmd:EventToCommand Command="{Binding MouseDownOnSpriteCommand}"
-                                        PassEventArgsToCommand="True"
-                                        EventArgsConverter="{StaticResource EventToEventCommandConverter}"
-                                        EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UIElement}, AncestorLevel=1}}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+            <Thumb Template="{StaticResource InvisibleThumbRect}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="DragDelta">
+                        <cmd:EventToCommand Command="{Binding MoveMouseCommand}"
+                                            PassEventArgsToCommand="True"
+                                            EventArgsConverter="{StaticResource EventToEventCommandConverter}"
+                                            EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UIElement}, AncestorLevel=1}}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseDown">
+                        <cmd:EventToCommand Command="{Binding MouseDownOnSpriteCommand}"
+                                            PassEventArgsToCommand="True"
+                                            EventArgsConverter="{StaticResource EventToEventCommandConverter}"
+                                            EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UIElement}, AncestorLevel=1}}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Thumb>
+            <Image Source="{Binding Image}"
+                   Stretch="Fill"
+                   IsHitTestVisible="False"/>
         </Grid>
 
         <DataTemplate.Triggers>

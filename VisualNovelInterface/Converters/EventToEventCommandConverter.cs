@@ -15,7 +15,6 @@ namespace VisualNovelInterface.Converters
 	{
 
 		public object Convert(object value, object parameter) {
-			var test = ((MouseEventArgs)value).Source;
 			CustomEventCommandParameter para = new CustomEventCommandParameter() {
 				Sender = parameter,
 				Args = value

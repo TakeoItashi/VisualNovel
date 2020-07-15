@@ -9,9 +9,6 @@
         xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Window.DataContext>
-        <vm:MainViewModel/>
-    </Window.DataContext>
     <Window.Resources>
         <conv:TestConverter x:Key="TestConverter"/>
         <conv:EventToEventCommandConverter x:Key="EventToEventCommandConverter"/>
@@ -122,7 +119,7 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </ItemsControl>
-                                <!--<Grid>
+                                <Grid IsHitTestVisible="False">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="10*"/>
                                         <RowDefinition />
@@ -146,7 +143,7 @@
                                     <TextBlock Grid.Row="2" 
                                                Margin="10,5,10,10" 
                                                Text="{Binding SelectedLine.TextShown}"/>
-                                </Grid>-->
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Border>
@@ -172,6 +169,12 @@
                 <StackPanel Margin="10">
                     <Button Content="Add Background Image"
                             Command="{Binding AddBackgroundImageCommand}"/>
+                    <DockPanel>
+                        <Label DockPanel.Dock="Top">
+                            Sprite
+                        </Label>
+                        <Label DockPanel.Dock="Left" Content="{Binding SelectedSprite.PosX}"/>
+                    </DockPanel>                    
                     <DockPanel>
                         <Label DockPanel.Dock="Top">
                             Variables:

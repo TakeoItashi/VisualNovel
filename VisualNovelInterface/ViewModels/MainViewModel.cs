@@ -20,6 +20,7 @@ using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
 using VisualNovelInterface.Models.Args.SenderEventArgs;
 using System.Windows;
+using System.IO;
 
 namespace VisualNovelInterface.ViewModels
 {
@@ -113,7 +114,11 @@ namespace VisualNovelInterface.ViewModels
 
 			currentProject.SelectedPanel.SelectedLine = currentProject.SelectedPanel.DialogueLines[0];
 
-			string path = @"F:\Users\Tom Appel\Desktop\Studium\VisualNovel\VisualNovelInterface\Resources\doge.png";
+			string path = Directory.GetCurrentDirectory();//			+ "..\\VisualNovelInterface\\Resources\\doge.png";
+			path = Path.Combine(path, @"..\..\");
+			var test = Path.GetFullPath(path);
+			path = Path.Combine(test, @"VisualNovelInterface\Resources\doge.png");
+
 			System.Windows.Controls.Image newUriImage = new System.Windows.Controls.Image() { Source = new BitmapImage(new Uri(path)) };
 
 			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(path, "DogeSprite1", newUriImage, 0, 0, 100, 100));
