@@ -30,5 +30,15 @@ namespace VisualNovelInterface
 
 			}
 		}
+
+		private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			TextBlock item = sender as TextBlock;
+
+			if (item != null && e.LeftButton == MouseButtonState.Pressed) {
+				DragDrop.DoDragDrop(item,
+									item.DataContext,
+									DragDropEffects.Copy);
+			}
+		}
 	}
 }

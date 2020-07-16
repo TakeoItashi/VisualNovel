@@ -6,11 +6,10 @@
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary Source="Resources/Styles/MovableSprite.xaml"/>
-        <!--<ResourceDictionary>
+        <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/MovableSprite.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>-->
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

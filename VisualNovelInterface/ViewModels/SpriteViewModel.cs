@@ -15,7 +15,6 @@ namespace VisualNovelInterface.ViewModels
 	public class SpriteViewModel : BaseObject
 	{
 		string m_image, m_name;
-		Image m_uriImage;
 		double m_posX, m_posY, m_height, m_width;
 		private Rect m_geometryRect;
 		bool m_isSelected;
@@ -27,11 +26,6 @@ namespace VisualNovelInterface.ViewModels
 		public string Image {
 			get => m_image;
 			set => SetProperty(ref m_image, value);
-		}
-
-		public Image UriImage {
-			get => m_uriImage;
-			set => SetProperty(ref m_uriImage, value);
 		}
 
 		public string Name {
@@ -74,10 +68,9 @@ namespace VisualNovelInterface.ViewModels
 			set;
 		}
 
-		public SpriteViewModel(string _image, string _name, Image _uriImage, int _posX, int _posY, int _height, int _width) {
+		public SpriteViewModel(string _image, string _name, int _posX, int _posY, int _height, int _width) {
 			m_image = _image;
 			m_name = _name;
-			m_uriImage = _uriImage;
 			m_posX = _posX;
 			m_posY = _posY;
 			m_height = _height;

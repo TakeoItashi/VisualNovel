@@ -8,9 +8,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="720" Width="1280">
     <Window.Resources>
-        <conv:TestConverter x:Key="TestConverter"/>
         <conv:EventToEventCommandConverter x:Key="EventToEventCommandConverter"/>
     </Window.Resources>
     <Grid>
@@ -75,13 +74,21 @@
                                     </TabItem>
                                     <TabItem Header="_Sprites">
                                         <Grid>
-                                            <ListBox ItemsSource="{Binding SelectedPanel.SelectedLine.Sprites}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition Height="20"/>
+                                            </Grid.RowDefinitions>
+                                            <ListBox ItemsSource="{Binding GlobalSprites}">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding Name}"/>
+                                                        <TextBlock Text="{Binding Name}"
+                                                                   MouseDown="TextBlock_MouseDown"/>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
                                             </ListBox>
+                                            <Button Grid.Row="1"
+                                                    Command="{Binding AddNewSpriteCommand}"
+                                                    Content="Add New Sprite"/>
                                         </Grid>
                                     </TabItem>
                                 </TabControl>
@@ -90,7 +97,23 @@
                                 <Image Source="{Binding SelectedPanel.BackgroundImage}" 
                                        VerticalAlignment="Center"/>
                                 <ItemsControl ItemsSource="{Binding SelectedPanel.SelectedLine.Sprites}"
-                                              d:IsHidden="True">
+                                              AllowDrop="True">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Canvas Background="Transparent"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MoveMouse">
+                                            <cmd:EventToCommand Command="{Binding AddBackgroundImageCommand}"/>
+                                        </i:EventTrigger>
+                                        <i:EventTrigger EventName="Drop">
+                                            <cmd:EventToCommand Command="{Binding DropSpriteInPanelCommand}"
+                                                    PassEventArgsToCommand="True"
+                                                    EventArgsConverter="{StaticResource EventToEventCommandConverter}"
+                                                    EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UIElement}, AncestorLevel=1}}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
                                     <ItemsControl.Style>
                                         <Style TargetType="ItemsControl">
                                             <Setter Property="ItemContainerStyle">
@@ -105,24 +128,11 @@
                                             </Setter>
                                         </Style>
                                     </ItemsControl.Style>
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <Canvas/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MoveMouse">
-                                            <cmd:EventToCommand Command="{Binding AddBackgroundImageCommand}"/>
-                                            <!--PassEventArgsToCommand="True"
-                                        EventArgsConverter="{StaticResource EventToEventCommandConverter}"
-                                        EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UIElement}, AncestorLevel=1}}"/>-->
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
                                 </ItemsControl>
                                 <Grid IsHitTestVisible="False">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="10*"/>
-                                        <RowDefinition />
+                                        <RowDefinition/>
                                         <RowDefinition Height="4*"/>
                                     </Grid.RowDefinitions>
                                     <Rectangle Grid.Row="1" 
@@ -144,6 +154,18 @@
                                                Margin="10,5,10,10" 
                                                Text="{Binding SelectedLine.TextShown}"/>
                                 </Grid>
+                                <!--<Rectangle AllowDrop="True"
+                                           Fill="Transparent"
+                                           IsHitTestVisible="False">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Drop">
+                                            <cmd:EventToCommand Command="{Binding DropSpriteInPanelCommand}"
+                                                                PassEventArgsToCommand="True"
+                                                                EventArgsConverter="{StaticResource EventToEventCommandConverter}"
+                                                                EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UIElement}, AncestorLevel=1}}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Rectangle>-->
                             </Grid>
                         </Grid>
                     </Border>
@@ -174,7 +196,7 @@
                             Sprite
                         </Label>
                         <Label DockPanel.Dock="Left" Content="{Binding SelectedSprite.PosX}"/>
-                    </DockPanel>                    
+                    </DockPanel>
                     <DockPanel>
                         <Label DockPanel.Dock="Top">
                             Variables:

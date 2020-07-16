@@ -32,7 +32,7 @@ namespace VisualNovelInterface.ViewModels
 		private SpriteViewModel m_selectedSprite;
 		private bool canExecute;
 		private int selectedPanelIndex;
-		//private ObservableCollection<Sprite> m_sprites;
+		private ObservableCollection<SpriteViewModel> m_globalSprites;
 
 
 		#region Properties
@@ -63,11 +63,21 @@ namespace VisualNovelInterface.ViewModels
 			get => SelectedPanel.SelectedLine;
 			set => SelectedPanel.SelectedLine = value;
 		}
-		public ICommand AddBackgroundImageCommand {
+		public RelayCommand AddBackgroundImageCommand {
 			get;
 			set;
 		}
-		public ICommand OpenVariableManagerCommand {
+		public RelayCommand OpenVariableManagerCommand {
+			get;
+			set;
+		}
+
+		public RelayCommand AddNewSpriteCommand {
+			get;
+			set;
+		}
+
+		public RelayCommand<CustomEventCommandParameter> DropSpriteInPanelCommand {
 			get;
 			set;
 		}
@@ -87,8 +97,9 @@ namespace VisualNovelInterface.ViewModels
 			set => VariableManager.Variables = value;
 		}
 
-		public string TestImage {
-			get => @"F:\Users\Tom Appel\Desktop\Studium\VisualNovel\VisualNovelInterface\Resources\doge.png";
+		public ObservableCollection<SpriteViewModel> GlobalSprites {
+			get => m_globalSprites;
+			set => m_globalSprites = value;
 		}
 		#endregion
 
@@ -96,9 +107,11 @@ namespace VisualNovelInterface.ViewModels
 		public MainViewModel() {
 			canExecute = true;
 			currentProject = new Project();
-			//SelectedLine = new DialogueLine();
+			GlobalSprites = new ObservableCollection<SpriteViewModel>();
 			AddBackgroundImageCommand = new RelayCommand(AddBackgroundImage);
 			OpenVariableManagerCommand = new RelayCommand(OpenVariableManager);
+			AddNewSpriteCommand = new RelayCommand(AddNewSprite);
+			DropSpriteInPanelCommand = new RelayCommand<CustomEventCommandParameter>(DropSpriteInPanel);
 #if DEBUG
 
 			currentProject.Panels.Add(new Panel("NewPanel_01"));
@@ -114,16 +127,15 @@ namespace VisualNovelInterface.ViewModels
 
 			currentProject.SelectedPanel.SelectedLine = currentProject.SelectedPanel.DialogueLines[0];
 
-			string path = Directory.GetCurrentDirectory();//			+ "..\\VisualNovelInterface\\Resources\\doge.png";
-			path = Path.Combine(path, @"..\..\");
-			var test = Path.GetFullPath(path);
-			path = Path.Combine(test, @"VisualNovelInterface\Resources\doge.png");
+			string currentPath = Directory.GetCurrentDirectory();
+			currentPath = Path.Combine(currentPath, @"..\..\");
+			var ProjectDir = Path.GetFullPath(currentPath);
+			currentPath = Path.Combine(ProjectDir, @"VisualNovelInterface\Resources\doge.png");
 
-			System.Windows.Controls.Image newUriImage = new System.Windows.Controls.Image() { Source = new BitmapImage(new Uri(path)) };
-
-			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(path, "DogeSprite1", newUriImage, 0, 0, 100, 100));
+			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(currentPath, "DogeSprite1", 0, 0, 100, 100));
+			GlobalSprites.Add(currentProject.SelectedPanel.SelectedLine.Sprites.Last());
 			currentProject.SelectedPanel.SelectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
-			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(path, "DogeSprite2", newUriImage, 100, 100, 100, 100));
+			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(currentPath, "DogeSprite2", 100, 100, 100, 100));
 			currentProject.SelectedPanel.SelectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
 #endif
 
@@ -159,6 +171,22 @@ namespace VisualNovelInterface.ViewModels
 			}
 		}
 
+		public void AddNewSprite() {
+
+			using (OpenFileDialog newFile = new OpenFileDialog()) {
+
+				newFile.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
+				newFile.Filter = "image files (*.png; *.jpg)|*.png; *.jpg";
+
+				if (newFile.ShowDialog() == DialogResult.OK) {
+
+					string path = newFile.FileName;
+					SpriteViewModel newSVM = new SpriteViewModel(path, newFile.SafeFileName, 0, 0, 100, 100);
+					GlobalSprites.Add(newSVM);
+				}
+			}
+		}
+
 		public void OpenVariableManager() {
 			VariableManagerWindow vm = new VariableManagerWindow();
 			vm.DataContext = VariableManager;
@@ -171,6 +199,10 @@ namespace VisualNovelInterface.ViewModels
 
 		public void MoveSprite(SpriteViewModel _sender) {
 			SelectedSprite = _sender;
+		}
+
+		public void DropSpriteInPanel(CustomEventCommandParameter _args) {
+		
 		}
 	}
 }
