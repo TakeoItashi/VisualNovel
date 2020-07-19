@@ -104,9 +104,6 @@
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                     <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MoveMouse">
-                                            <cmd:EventToCommand Command="{Binding AddBackgroundImageCommand}"/>
-                                        </i:EventTrigger>
                                         <i:EventTrigger EventName="Drop">
                                             <cmd:EventToCommand Command="{Binding DropSpriteInPanelCommand}"
                                                     PassEventArgsToCommand="True"
