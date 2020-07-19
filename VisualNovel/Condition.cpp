@@ -9,8 +9,8 @@ bool Condition::isMet(std::map<std::string, DataValue*> _matchingData) {
 
 		std::map<std::string, DataValue*>::iterator matchingItem = _matchingData.find(search->first);
 		//search = m_RequiredValues.find(_matchingData[i]->m_name);
-		DataValue test = *m_RequiredValues[matchingItem->first];
-		DataValueType type = test.GetType();
+		DataValue Value = *m_RequiredValues[matchingItem->first];
+		DataValueType type = Value.GetType();
 
 		if (type == DataValueType::trigger) {
 
@@ -43,4 +43,9 @@ bool Condition::isMet(std::map<std::string, DataValue*> _matchingData) {
 	}
 
 	return ConditionMet;
+}
+
+bool Condition::EvaluateValue(ConditionAction _evaluationAction, DataValue _value)
+{
+	return false;
 }

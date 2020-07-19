@@ -6,11 +6,12 @@ DataValue::DataValue() {
 	//m_Value = nullptr;
 }
 //TODO: statt void* variant benutzen
-DataValue::DataValue(std::string _name, DataValueType _type, ValueVariant _value)
+DataValue::DataValue(std::string _name, DataValueType _type, ValueVariant _value, ConditionAction _action)
 {
 	m_name = _name;
 	m_Type = _type;
 	m_Value = _value;
+	m_Action = _action;
 }
 
 DataValue::~DataValue() {
@@ -86,6 +87,10 @@ std::string DataValue::GetString() {
 DataValueType DataValue::GetType() {
 
 	return m_Type;
+}
+ConditionAction DataValue::GetAction()
+{
+	return m_Action;
 }
 #pragma region extern Methods
 extern "C" api_export_DataValue void* __cdecl CreateDataValue_int(const char* _name, int _value) {

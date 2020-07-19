@@ -11,6 +11,7 @@
 ##				Name: [Name of the DataValue];
 ##				Type: [Type of the DataValue];
 ##				Value: [Value that triggers the Condition];
+##				Action: [Action that should take place in the condition Check];
 ##			}
 ##		}
 ##		

@@ -191,6 +191,9 @@
     <ClInclude Include="SpriteSheetTexture.h">
       <Filter>Headerdateien\UI</Filter>
     </ClInclude>
+    <ClInclude Include="ConditionAction.h">
+      <Filter>Headerdateien\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ImageImports.txt">

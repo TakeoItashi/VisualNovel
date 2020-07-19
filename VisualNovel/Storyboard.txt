@@ -11,6 +11,7 @@ Panel {
 			Name: StoryTrigger1;
 			Type: trigger;
 			Value: true;
+			Action: isEqual;
 		}
 		
 		DataValue {
@@ -18,6 +19,7 @@ Panel {
 			Name: StoryVariable1;
 			Type: variable;
 			Value: 3;
+			Action: isBigger;
 		}
 	}
 

@@ -103,7 +103,6 @@
     <Compile Include="Models\Args\TextBoxEventArgs.cs" />
     <Compile Include="Models\EnumerationMember.cs" />
     <Compile Include="Models\Enums\ActionEnum.cs" />
-    <Compile Include="Models\PanelLineObject.cs" />
     <Compile Include="MVVM\EnumerationExtension .cs" />
     <Compile Include="Resources\HelperClasses\ShapesHelper.cs" />
     <Compile Include="VariablesImport\DataValue.cs" />

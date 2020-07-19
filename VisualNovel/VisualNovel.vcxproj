@@ -168,6 +168,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="ButtonSpriteState.h" />
     <ClInclude Include="Condition.h" />
+    <ClInclude Include="ConditionAction.h" />
     <ClInclude Include="DataValue.h" />
     <ClInclude Include="DataValueType.h" />
     <ClInclude Include="DialogueLine.h" />

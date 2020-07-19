@@ -2,6 +2,7 @@
 #include <string>
 #include <variant>
 #include <stdexcept>
+#include "ConditionAction.h"
 
 enum DataValueType;
 
@@ -32,9 +33,11 @@ class DataValue {
 		float GetFloat();
 		std::string GetString();
 		DataValueType GetType();
+		ConditionAction GetAction();
 private:
 		DataValueType m_Type;
 		ValueVariant m_Value;
+		ConditionAction m_Action;
 };
 
 //extern "C" api_export_DataValue void* __cdecl CreateDataValue_int(const char* _name, int _value);

@@ -15,6 +15,7 @@
 #include "MainMenu.h"
 #include "ImageLoader.h"
 #include "Game.h"
+#include "ConditionAction.h"
 
 Game* Game::m_gamePointer = nullptr;			//required for singleton
 MainMenu* Game::m_MainMenu;						//
@@ -303,6 +304,28 @@ void Game::LoadStoryBoard() {
 										i++;
 										break;
 									}
+								}
+								if (m_keywords[i] == "Action:") {
+
+									if (m_keywords[i + 1] == "isSmaller") {
+
+										newType = ConditionAction::isSmaller;
+										i = i + 2;
+									}
+									else if (m_keywords[i + 1] == "isEqual") {
+
+										newType = DataValueType::variable;
+										i = i + 2;
+									}
+									else if (m_keywords[i + 1] == "isBigger") {
+
+										newType = DataValueType::decimal;
+										i = i + 2;
+									}
+									else {
+										//TODO Fehlermeldung
+									}
+									continue;
 								}
 								if (m_keywords[i] == "}") {
 									newDataValue = new DataValue(newName, newType, newValue);
