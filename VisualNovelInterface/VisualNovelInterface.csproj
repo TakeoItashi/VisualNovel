@@ -103,6 +103,7 @@
     <Compile Include="Models\Args\TextBoxEventArgs.cs" />
     <Compile Include="Models\EnumerationMember.cs" />
     <Compile Include="Models\Enums\ActionEnum.cs" />
+    <Compile Include="Models\PanelLineObject.cs" />
     <Compile Include="MVVM\EnumerationExtension .cs" />
     <Compile Include="Resources\HelperClasses\ShapesHelper.cs" />
     <Compile Include="VariablesImport\DataValue.cs" />
@@ -111,7 +112,8 @@
     <Compile Include="Models\DialogueLine.cs" />
     <Compile Include="Models\Panel.cs" />
     <Compile Include="Models\Project.cs" />
-    <Compile Include="ViewModels\SpriteViewModel.cs" />
+    <Compile Include="ViewModels\Sprites\SpriteImage.cs" />
+    <Compile Include="ViewModels\Sprites\SpriteViewModel.cs" />
     <Compile Include="MVVM\RelayComand.cs" />
     <Compile Include="ViewModels\VariablesManagerViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

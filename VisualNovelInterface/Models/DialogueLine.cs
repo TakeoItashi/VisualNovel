@@ -18,6 +18,7 @@ namespace VisualNovelInterface.Models
 		private int spriteIndex;
 		private string characterName;
 		private ObservableCollection<SpriteViewModel> m_usedSprites;
+		private ObservableCollection<int> m_spriteIds;
 
 		public string TextShown {
 			get => textShown;
@@ -37,6 +38,11 @@ namespace VisualNovelInterface.Models
 		public ObservableCollection<SpriteViewModel> Sprites {
 			get => m_usedSprites;
 			set => m_usedSprites = value;
+		}
+
+		public ObservableCollection<int> SpriteIds {
+			get => m_spriteIds;
+			set => m_spriteIds = value;
 		}
 
 		public DialogueLine() {

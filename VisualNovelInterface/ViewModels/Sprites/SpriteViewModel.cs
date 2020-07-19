@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using VisualNovelInterface.Models;
 using VisualNovelInterface.Models.Args.SenderEventArgs;
 using VisualNovelInterface.MVVM;
 
 namespace VisualNovelInterface.ViewModels
 {
-	public class SpriteViewModel : BaseObject
+	public class SpriteViewModel : SpriteImage
 	{
-		string m_image, m_name;
 		double m_posX, m_posY, m_height, m_width;
 		private Rect m_geometryRect;
 		bool m_isSelected;
@@ -22,16 +22,6 @@ namespace VisualNovelInterface.ViewModels
 		public delegate void SpriteMoveEventHandler(SpriteViewModel _sender);
 
 		public event SpriteMoveEventHandler OnSpriteMoveEvent;
-
-		public string Image {
-			get => m_image;
-			set => SetProperty(ref m_image, value);
-		}
-
-		public string Name {
-			get => m_name;
-			set => SetProperty(ref m_name, value);
-		}
 
 		public double PosX {
 			get => m_posX;
@@ -68,7 +58,7 @@ namespace VisualNovelInterface.ViewModels
 			set;
 		}
 
-		public SpriteViewModel(string _image, string _name, int _posX, int _posY, int _height, int _width) {
+		public SpriteViewModel(string _image, string _name, double _posX, double _posY, double _height, double _width) {
 			m_image = _image;
 			m_name = _name;
 			m_posX = _posX;
@@ -78,7 +68,10 @@ namespace VisualNovelInterface.ViewModels
 			m_geometryRect = new Rect(_posX, _posY, _width, _height);
 			MouseDownOnSpriteCommand = new RelayCommand<CustomEventCommandParameter>(MouseDownOnSprite);
 			MoveMouseCommand = new RelayCommand<CustomEventCommandParameter>(MoveMouse);
-			//OnSpriteMoveEvent += MouseDownOnSprite;
+		}
+
+		public SpriteViewModel(SpriteImage _image, double _posX = 0, double _posY = 0, double _height = 100, double _width = 100)
+			: this(_image.Image, _image.Name, _posX, _posY, _height, _width) {
 		}
 
 		private void MouseDownOnSprite(CustomEventCommandParameter _args) {
@@ -95,6 +88,13 @@ namespace VisualNovelInterface.ViewModels
 			if (newPosY > 0) {
 				PosY = newPosY;
 			}
+		}
+
+		public void SetPositionAndSize(Point _position, double _width, double _height) {
+			PosX = _position.X;
+			PosY = _position.Y;
+			Width = _width;
+			Height = _height;
 		}
 	}
 }

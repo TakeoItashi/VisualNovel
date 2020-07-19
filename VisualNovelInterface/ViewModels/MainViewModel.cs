@@ -21,6 +21,9 @@ using System.Collections.ObjectModel;
 using VisualNovelInterface.Models.Args.SenderEventArgs;
 using System.Windows;
 using System.IO;
+using DragEventArgs = System.Windows.DragEventArgs;
+using System.Windows.Controls;
+using Image = System.Drawing.Image;
 
 namespace VisualNovelInterface.ViewModels
 {
@@ -32,7 +35,7 @@ namespace VisualNovelInterface.ViewModels
 		private SpriteViewModel m_selectedSprite;
 		private bool canExecute;
 		private int selectedPanelIndex;
-		private ObservableCollection<SpriteViewModel> m_globalSprites;
+		private ObservableCollection<SpriteImage> m_globalSprites;
 
 
 		#region Properties
@@ -97,7 +100,7 @@ namespace VisualNovelInterface.ViewModels
 			set => VariableManager.Variables = value;
 		}
 
-		public ObservableCollection<SpriteViewModel> GlobalSprites {
+		public ObservableCollection<SpriteImage> GlobalSprites {
 			get => m_globalSprites;
 			set => m_globalSprites = value;
 		}
@@ -107,7 +110,7 @@ namespace VisualNovelInterface.ViewModels
 		public MainViewModel() {
 			canExecute = true;
 			currentProject = new Project();
-			GlobalSprites = new ObservableCollection<SpriteViewModel>();
+			GlobalSprites = new ObservableCollection<SpriteImage>();
 			AddBackgroundImageCommand = new RelayCommand(AddBackgroundImage);
 			OpenVariableManagerCommand = new RelayCommand(OpenVariableManager);
 			AddNewSpriteCommand = new RelayCommand(AddNewSprite);
@@ -132,10 +135,10 @@ namespace VisualNovelInterface.ViewModels
 			var ProjectDir = Path.GetFullPath(currentPath);
 			currentPath = Path.Combine(ProjectDir, @"VisualNovelInterface\Resources\doge.png");
 
-			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(currentPath, "DogeSprite1", 0, 0, 100, 100));
-			GlobalSprites.Add(currentProject.SelectedPanel.SelectedLine.Sprites.Last());
+			GlobalSprites.Add(new SpriteImage(currentPath, "DogeSprite"));
+			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(GlobalSprites.First()));
 			currentProject.SelectedPanel.SelectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
-			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(currentPath, "DogeSprite2", 100, 100, 100, 100));
+			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(GlobalSprites.First()));
 			currentProject.SelectedPanel.SelectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
 #endif
 
@@ -202,7 +205,15 @@ namespace VisualNovelInterface.ViewModels
 		}
 
 		public void DropSpriteInPanel(CustomEventCommandParameter _args) {
-		
+			DragEventArgs dea = (DragEventArgs) _args.Args;
+			string[] formats = dea.Data.GetFormats();
+			SpriteImage Sprite = (SpriteImage)dea.Data.GetData(formats.First());
+			FrameworkElement canvas = (Canvas)dea.OriginalSource;
+			System.Windows.Point coordinates = dea.GetPosition(canvas);
+
+			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(Sprite, (int)coordinates.X, coordinates.Y));
+			currentProject.SelectedPanel.SelectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
+			SelectedSprite = currentProject.SelectedPanel.SelectedLine.Sprites.Last();
 		}
 	}
 }
