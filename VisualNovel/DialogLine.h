@@ -1,17 +1,18 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "ShownItem.h"
 
 class SpritePosition;
 
-class DialogueLine {
+class DialogLine : public ShownItem {
 
 	public:
 		//Standard Constructor
 		//Creates a new Instance of a Button
-		DialogueLine();
+		DialogLine();
 		//Standard Deconstrucor
-		~DialogueLine();
+		~DialogLine();
 		//The Name Displayed on top of the Textbox
 		std::string Name;
 		//The Text displayed inside of the Textbox

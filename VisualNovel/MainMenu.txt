@@ -2,7 +2,7 @@ Menu {
 
 	Name: "Main Menu";
 
-	BGIndex: 3
+	BGIndex: 2
 
 	Items {
 		Item {

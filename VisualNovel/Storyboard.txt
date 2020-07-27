@@ -4,62 +4,88 @@ Panel {
 
 	BGIndex: 0;				
 	
-	Condition {
-		
-		DataValue {
-			
-			Name: StoryTrigger1;
-			Type: trigger;
-			Value: true;
-			Action: isEqual;
-		}
-		
-		DataValue {
-			
-			Name: StoryVariable1;
-			Type: variable;
-			Value: 3;
-			Action: isBigger;
-		}
-	}
+		##Condition {
+		##	
+		##	DataValue {
+		##		
+		##		Name: StoryTrigger1;
+		##		Type: trigger;
+		##		Value: true;
+		##		Action: isEqual;
+		##	}
+		##	
+		##	DataValue {
+		##		
+		##		Name: StoryVariable1;
+		##		Type: variable;
+		##		Value: 3;
+		##		Action: isBigger;
+		##	}
+		##
+		##	Alternative {
+		##		Name: "Panel 2";
+		##	}
+		##}
 
-	Sprites {
-	
-		Sprite: 1;				
-		Sprite: 2;			
-	}
-	
-	Texts {
-																							
-		Text: "Heinrich Schmeinrich", "This is a String", 1, 2;								
-		Text: "Heinrich Kleinrich"  , "This is also a String", 2, 1(0,400);					
-		Text: "Heinrich Meinrich"   , "This is not a String";								
-		Text: "Heinrich Beinrich"   , "This is going to be a String", 2(20,100), 2(70,400);	
-		Text: "Jan", "Now, this is a story all about howMy life got flipped-turned upside downAnd I'd like to take a minuteJust sitOn the playground was where I spent", 1(50,50), 1(70,600);	
-	}
-	
-	Animation_Placeholder {
-	
-	}	
-}
-Panel {
-
-	Name: "Panel 2";			
-
-	BGIndex: 0;					
-	
 	Sprites {
 	
 		Sprite: 1;
+		Sprite: 4;
+		Sprite: 5;
 	}
 	
 	Texts {
-																							
-		Text: "Heinrich Schmeinrich", "This is a String", 1, 1;								
-		Text: "Heinrich Kleinrich"  , "This is also a String", 1, 1(0,400);					
-		Text: "Heinrich Meinrich"   , "This is not a String";								
-		Text: "Heinrich Beinrich"   , "This is going to be a String", 1(20,100), 1(70,400);
-		Text: "Jan", "Now, this is a story all about howMy life got flipped-turned upside downAnd I'd like to take a minuteJust sitOn the playground was where I spent", 1(50,50), 1(70,600);	
+
+		Text: "Narrator", "This is the first string";
+		Text: ""  , "This is the second text shown";
+		Split {
+			Option {
+				Name: Option1;
+				Text: "Doge first";
+				Sprite: 0;
+				Effect {
+					Continue: "Branch 1";
+##						Variable {
+##						Name: StoryVariable1;
+##						Type: variable;
+##						Operation: add;	##(subtract, set)
+##						Value: 3;
+##					}
+				}
+			}
+			Option {
+				Name: Option2;
+				Text: "Heinrich first";
+				Sprite: 0;
+				Effect {
+					Continue: "Branch 2";
+##					Variable {
+##						Name: StoryVariable1;
+##						Type: variable;
+##						Operation: add;	##(subtract, set)
+##						Value: 3;
+##					}
+				}
+			}
+		}
+		Branch {
+			Name: "Branch 1";
+			Text: "Doge", "I Am Doge", 2;
+			Text: "Heinrich Kleinrich", "And I am Heinrich", 2, 3;
+			GlobalText: "Global Text 1";
+		}
+		Branch {
+			Name: "Branch 2";
+			Text: "Heinrich Kleinrich", "I am Heinrich", 3;
+			Text: "Doge", "And I Am Doge", 3, 2;
+			GlobalText: "Global Text 1";
+		}
+		Text: "Goblin Doctor", "Hello", 1;
+##		Global Texts {
+##			Name: "Global Text 1";
+##			Text: "Narrator", "This is a Global Text";		
+##			Text: "Narrator", "This will be shown on all Branches";
+##		}
 	}
 	
 	Animation_Placeholder {

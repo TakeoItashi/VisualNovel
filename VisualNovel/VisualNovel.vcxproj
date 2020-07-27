@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BranchOption.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Condition.cpp" />
     <ClCompile Include="DataValue.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Save.cpp" />
     <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="SplitDecision.cpp" />
     <ClCompile Include="SpriteSheetTexture.cpp" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TextLoader.cpp" />
@@ -157,21 +159,24 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="ButtonSpriteState.png" />
+    <Image Include="doge.png" />
     <Image Include="GoblinMage.png" />
     <Image Include="square-rounded-empty-outlined-button-shapeByKatarinaStefanikova.png" />
     <Image Include="square-rounded-Full-outlined-button-shapeByKatarinaStefanikova.png" />
+    <Image Include="StickFigure.png" />
     <Image Include="summerBackground.png" />
-    <Image Include="TanyaPortrait01.png" />
     <Image Include="wallpaper.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Branch.h" />
+    <ClInclude Include="BranchOption.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ButtonSpriteState.h" />
     <ClInclude Include="Condition.h" />
     <ClInclude Include="ConditionAction.h" />
     <ClInclude Include="DataValue.h" />
     <ClInclude Include="DataValueType.h" />
-    <ClInclude Include="DialogueLine.h" />
+    <ClInclude Include="DialogLine.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="MainMenu.h" />
@@ -182,6 +187,8 @@
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="ShownItem.h" />
+    <ClInclude Include="SplitDecision.h" />
     <ClInclude Include="SpritePosition.h" />
     <ClInclude Include="SpriteSheetTexture.h" />
     <ClInclude Include="TextBox.h" />

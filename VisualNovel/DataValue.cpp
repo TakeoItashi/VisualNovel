@@ -5,7 +5,7 @@ DataValue::DataValue() {
 
 	//m_Value = nullptr;
 }
-//TODO: statt void* variant benutzen
+
 DataValue::DataValue(std::string _name, DataValueType _type, ValueVariant _value, ConditionAction _action)
 {
 	m_name = _name;
@@ -92,46 +92,46 @@ ConditionAction DataValue::GetAction()
 {
 	return m_Action;
 }
-#pragma region extern Methods
-extern "C" api_export_DataValue void* __cdecl CreateDataValue_int(const char* _name, int _value) {
-
-	std::string name = _name;
-	DataValue* newValue = new DataValue(name, DataValueType::variable, _value);
-	return newValue;
-}
-
-extern "C" api_export_DataValue void* __cdecl CreateDataValue_float(const char* _name, float _value) {
-
-	std::string name = _name;
-	DataValue* newValue = new DataValue(name, DataValueType::decimal, _value);
-	return newValue;
-}
-extern "C" api_export_DataValue void* __cdecl CreateDataValue_bool(const char* _name, bool _value) {
-
-	std::string name = _name;
-	DataValue* newValue = new DataValue(name, DataValueType::trigger, _value);
-	return newValue;
-}
-extern "C" api_export_DataValue void* __cdecl CreateDataValue_string(const char* _name, const char* _value) {
-
-	std::string name = _name;
-	std::string value = _value;
-	DataValue* newValue = new DataValue(name, DataValueType::text, value);
-	return newValue;
-}
-extern "C" api_export_DataValue bool __cdecl ReadDataValue_bool(void* _ptr) {
-
-	DataValue* ptr = (DataValue*)_ptr;
-	return ptr->GetBool();
-}
-extern "C" api_export_DataValue void __cdecl SetDataValue_bool(void* _ptr, bool _value) {
-
-	DataValue* ptr = (DataValue*)_ptr;
-	ptr->SetValue(_value);
-}
-extern "C" api_export_DataValue void __cdecl FreeDataValue(void* _ptr) {
-
-	DataValue* ptr = (DataValue*)_ptr;
-	delete ptr;
-}
-#pragma endregion
+//#pragma region extern Methods
+//extern "C" api_export_DataValue void* __cdecl CreateDataValue_int(const char* _name, int _value) {
+//
+//	std::string name = _name;
+//	DataValue* newValue = new DataValue(name, DataValueType::variable, _value);
+//	return newValue;
+//}
+//
+//extern "C" api_export_DataValue void* __cdecl CreateDataValue_float(const char* _name, float _value) {
+//
+//	std::string name = _name;
+//	DataValue* newValue = new DataValue(name, DataValueType::decimal, _value);
+//	return newValue;
+//}
+//extern "C" api_export_DataValue void* __cdecl CreateDataValue_bool(const char* _name, bool _value) {
+//
+//	std::string name = _name;
+//	DataValue* newValue = new DataValue(name, DataValueType::trigger, _value);
+//	return newValue;
+//}
+//extern "C" api_export_DataValue void* __cdecl CreateDataValue_string(const char* _name, const char* _value) {
+//
+//	std::string name = _name;
+//	std::string value = _value;
+//	DataValue* newValue = new DataValue(name, DataValueType::text, value);
+//	return newValue;
+//}
+//extern "C" api_export_DataValue bool __cdecl ReadDataValue_bool(void* _ptr) {
+//
+//	DataValue* ptr = (DataValue*)_ptr;
+//	return ptr->GetBool();
+//}
+//extern "C" api_export_DataValue void __cdecl SetDataValue_bool(void* _ptr, bool _value) {
+//
+//	DataValue* ptr = (DataValue*)_ptr;
+//	ptr->SetValue(_value);
+//}
+//extern "C" api_export_DataValue void __cdecl FreeDataValue(void* _ptr) {
+//
+//	DataValue* ptr = (DataValue*)_ptr;
+//	delete ptr;
+//}
+//#pragma endregion

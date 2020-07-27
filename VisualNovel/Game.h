@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <map>
 #include <SDL.h>
 #include <SDL_ttf.h>
 
@@ -32,11 +33,13 @@ public:
 	static TextLoader* m_textLoader;
 	static Save* m_save;
 	static Menu* m_CurrentMenu;
-	static std::vector<Panel*> m_PanelList;
+	static std::vector<Panel*> m_PanelList;		//TODO map für Panel Liste benutzen
+	static std::map<std::string, int> m_panelNameDictionary;
 	static std::vector<std::string> m_keywords;		//TODO eventuell in seperate Klasse aussondern, zusammen mit der LoadStory Funktion
 	static int m_CurrentLine;
 	static int m_CurrentPanel;
 	static bool m_GameIsRunning;
+	static bool m_IsDecisionPending;
 	/**
 	Initializes the Game Libraries and Variables
 	*/
@@ -44,42 +47,44 @@ public:
 	/**
 	Starts a new Game
 	*/
-	static void NewGame(Button* _buttonCallback);
+	static bool NewGame(Button* _buttonCallback);
 	/**
 	Updates the current Process
 	*/
-	static void Update(SDL_Event* _eventhandler, bool* _quitCondition);
+	static bool Update(SDL_Event* _eventhandler);
 	/**
 	Renders all the Current Sprites
 	*/
-	static void Render();
+	static bool Render();
 	/**
 	Loads a serialized game state
 	*/
-	static void LoadGame(Button* _buttonCallback);
+	static bool LoadGame(Button* _buttonCallback);
 	/**
 	Changes the Settings of the Game
 	@param The new Settings of the Game
 	*/
-	static void ChangeSettings(Settings* NewSettings);
+	static bool ChangeSettings(Settings* NewSettings);
 
-	static void Gallery(Button* _buttonCallback);
+	static bool Gallery(Button* _buttonCallback);
 
-	static void OpenOptions(Button* _buttonCallback);
+	static bool OpenOptions(Button* _buttonCallback);
 
-	static void Quit(Button* _buttonCallback);
+	static bool Quit(Button* _buttonCallback);
 
-	static void ChangeResolution(Button* _buttonCallback);
+	static bool ChangeResolution(Button* _buttonCallback);
 
-	static void ToggleFullscreen(Button* _buttonCallback);
+	static bool ToggleFullscreen(Button* _buttonCallback);
 
-	static void OpenMainMenu(Button* _buttonCallback);
+	static bool OpenMainMenu(Button* _buttonCallback);
 
-	static void LoadCustomMethod(Button* _buttonCallback);
+	static bool LoadCustomMethod(Button* _buttonCallback);
 
 	static void RenderCurrentMenu();
 
 	static void LoadStoryBoard();
+
+	static void ShowMenu(Menu* _menuInstance);
 
 	inline static Game* GetInstance() { if (m_gamePointer == nullptr) { m_gamePointer = new Game(); } return m_gamePointer; };
 

@@ -94,8 +94,7 @@ void Menu::LoadMenu(std::string _filepath) {
 								// Parse the design of the button
 								if (m_keywords[i] == "Button:") {
 
-									std::function<void(Button*)> f;
-									menuItem.Button = new Button(m_Renderer, f);
+									menuItem.Button = new Button(m_Renderer);
 
 									if (m_keywords[i + 1] == ";") {		//No Parameter = generic Button
 										i++;

@@ -2,7 +2,7 @@ Menu {
 
 	Name: "Options Menu";
 
-	BGIndex: 4
+	BGIndex: 3
 
 	Items {
 		Item {

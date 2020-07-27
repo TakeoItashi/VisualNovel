@@ -13,6 +13,10 @@
 ##				Value: [Value that triggers the Condition];
 ##				Action: [Action that should take place in the condition Check];
 ##			}
+##			
+##			Alternative {
+##				Name: "[Name of the alternative Panel that gets shown if thé condition is not met]";
+##			}
 ##		}
 ##		
 ##		Sprites {
@@ -23,8 +27,27 @@
 ##		Texts {
 ##			
 ##			Text: "[Name of the Character]", "[Text Shown in the Textbox]", [SpritePosition], [SpritePosition];		Any number of Sprite Positions can be used
-##			## Sprite Position Syntax: [Sprite Index as defined in the sprite Bracket] ( [Position on X-Axis, Position on Y-Axis] )
+##			## Sprite Position Syntax: [Sprite Index; The Index is the one from the Sprite Bracket, not from the Image File] ( [Position on X-Axis, Position on Y-Axis] )
 ##			## Example: "2(70,400)"  
+##			Split {
+##				Option {
+##					Name: [Name of the Option];
+##					Text: "[Text shown on the button]"
+##					Effect {
+##						Continue: "[Name of the Branch that gets shown, when this option is chosen]"
+##						##Variable {
+##						##	Name: StoryVariable1;
+##						##	Type: variable;
+##						##	Operation: add;	##(subtract, set)
+##						##	Value: 3;
+##						##}
+##					}
+##				}
+##			}
+##			Branch {
+##				Name: "[Name of the Branch]";
+##				Text: "[Name of the Character]", "[Text Shown in the Textbox]", [SpritePosition], [SpritePosition];		Any number of Sprite Positions can be used
+##			}
 ##		}
 ##		
 ##		Animation_Placeholder {

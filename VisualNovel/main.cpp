@@ -12,12 +12,18 @@ int main(int argc, char* argv[]) {
 	Game::GetInstance()->Init(new Settings(Game::GetInstance()->m_textLoader), eventHandler);
 
 	//Main loop
-	bool* quit = new bool;
-	*quit = false;
-	while (!*quit) {
+	bool quit = new bool;
+	quit = false;
+	while (!quit) {
+		int pending = SDL_PollEvent(eventHandler);
+		if ((pending != 0)) {
 
-		Game::GetInstance()->Update(eventHandler, quit);
+			if (eventHandler->type == SDL_QUIT) {
 
+				quit = true;
+			}
+			Game::GetInstance()->Update(eventHandler);
+		}
 	}
 	SDL_Quit();
 	return 0;

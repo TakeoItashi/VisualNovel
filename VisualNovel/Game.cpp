@@ -1,41 +1,42 @@
 #include "Menu.h"
 #include "Condition.h"
 #include "Panel.h"
-#include "Save.h"
 #include "Settings.h"
 #include "TextLoader.h"
 #include "Button.h"
 #include "DataValue.h"
 #include "MenuItem.h"
 #include "SpritePosition.h"
-#include "DialogueLine.h"
+#include "DialogLine.h"
 #include "DataValueType.h"
 #include "TextBox.h"
 #include "OptionsMenu.h"
 #include "MainMenu.h"
 #include "ImageLoader.h"
-#include "Game.h"
+#include "Save.h"
 #include "ConditionAction.h"
+#include "Game.h"
+#include "SplitDecision.h"
 
-Game* Game::m_gamePointer = nullptr;			//required for singleton
-MainMenu* Game::m_MainMenu;						//
-OptionsMenu* Game::m_OptionsMenu;				//
-Settings* Game::m_GameSettings;					//
-ImageLoader* Game::m_ImageLoader;				//
-TextBox* Game::m_TextBox;						//
-SDL_Window* Game::m_Window;						//
-SDL_Renderer* Game::m_Renderer;					// Defining the static members is required since it is in a static context
-SDL_Event* Game::m_EventHandler;				//
-TextLoader* Game::m_textLoader;					//
-Save* Game::m_save;
-std::vector<Panel*> Game::m_PanelList;			//
-std::vector<std::string> Game::m_keywords;		//
-int Game::m_CurrentLine;						//
-int Game::m_CurrentPanel;						//
-Menu* Game::m_CurrentMenu;
-bool Game::m_GameIsRunning;
-
-
+Game* Game::m_gamePointer = nullptr;					//required for singleton
+MainMenu* Game::m_MainMenu;								//
+OptionsMenu* Game::m_OptionsMenu;						//
+Settings* Game::m_GameSettings;							//
+ImageLoader* Game::m_ImageLoader;						//
+TextBox* Game::m_TextBox;								//
+SDL_Window* Game::m_Window;								//
+SDL_Renderer* Game::m_Renderer;							// Defining the static members is required since it is in a static context
+SDL_Event* Game::m_EventHandler;						//
+TextLoader* Game::m_textLoader;							//
+Save* Game::m_save;										//
+std::vector<Panel*> Game::m_PanelList;					//
+std::map<std::string, int> Game::m_panelNameDictionary;	//
+std::vector<std::string> Game::m_keywords;				//
+int Game::m_CurrentLine;								//
+int Game::m_CurrentPanel;								//
+Menu* Game::m_CurrentMenu;								//
+bool Game::m_GameIsRunning;								//
+bool Game::m_IsDecisionPending;							//
 
 Game::Game() {
 
@@ -50,6 +51,7 @@ Game::Game() {
 	m_textLoader = nullptr;
 	m_CurrentMenu = nullptr;
 	m_GameIsRunning = false;
+	m_IsDecisionPending = false;
 }
 
 Game::~Game() {
@@ -64,10 +66,12 @@ Game::~Game() {
 	m_textLoader = nullptr;
 	IMG_Quit();
 	SDL_Quit();
+	//TODO: delete all the lists and maps
 }
 
 void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 
+	m_GameSettings = _initialSettings;
 	m_EventHandler = _eventHandler;
 
 	SDL_Init(SDL_INIT_VIDEO);
@@ -87,6 +91,7 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 	m_TextBox = new TextBox(m_Renderer);
 	m_TextBox->ApplySettings(_initialSettings);
 	m_TextBox->loadFont();
+	_initialSettings->m_Font = m_TextBox->GetFont();
 
 	m_textLoader = new TextLoader();
 	m_keywords = m_textLoader->LoadText("Storyboard.txt");
@@ -101,16 +106,19 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 	m_GameIsRunning = false;
 }
 
-void Game::NewGame(Button* _butt) {
+bool Game::NewGame(Button* _butt) {
+
+	m_CurrentPanel = 0;
+	m_CurrentLine = 0;
 
 	////Test for save game serialization. must be removed
 	m_save = new Save();
-	m_save->m_currentLine = 8;
-	m_save->m_currentPanel = 15;
+	m_save->m_currentLine = m_CurrentLine;
+	m_save->m_currentPanel = m_CurrentPanel;
 	DataValue* testValue = new DataValue();
 	testValue->m_name = "StoryTrigger1";
 	testValue->SetValue(true);
-	m_save->m_values.insert({testValue->m_name, testValue });
+	m_save->m_values.insert({ testValue->m_name, testValue });
 
 	testValue = new DataValue();
 	testValue->m_name = "StoryVariable1";
@@ -124,71 +132,101 @@ void Game::NewGame(Button* _butt) {
 
 	m_save->Serialize();
 	m_GameIsRunning = true;
+
+	m_CurrentMenu = nullptr;
+
+	Render();
+	SDL_RenderPresent(m_Renderer);
+	return true;
 }
 
-void Game::Update(SDL_Event* _eventhandler, bool* _quitCondition) {
+bool Game::Update(SDL_Event* _eventhandler) {
 
 	if (m_CurrentMenu != nullptr) {
 
-		for (int i = 0; i < m_CurrentMenu->m_MenuItems.size(); i++) {
-
-			m_CurrentMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
-		}
-		SDL_RenderClear(m_Renderer);
-		m_CurrentMenu->Render();
+		ShowMenu(m_CurrentMenu);
+		return false;
 	}
 
-	while (SDL_PollEvent(m_EventHandler) != 0) {
 
-		if (m_EventHandler->type == SDL_QUIT) {
 
-			*_quitCondition = true;
-			return;
-		}
+	if (m_GameIsRunning) {
 
-		if (m_GameIsRunning) {
+		if (!m_IsDecisionPending) {
 
-			if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_MOUSEMOTION || true) {
+			//TODO Update neu strukturieren:
+			if (m_EventHandler->type == SDL_MOUSEBUTTONUP ||
+				m_EventHandler->type == SDL_KEYUP) {
 
-				//TODO Update neu strukturieren:
-				if (m_EventHandler->type == SDL_MOUSEBUTTONUP || m_EventHandler->type == SDL_KEYUP|| true) {
+				//TODO: If the PanelCondition is null because of an Error, relying on it being null here could create Problems
+				if (m_PanelList[m_CurrentPanel]->m_PanelCondition == nullptr ||
+					m_PanelList[m_CurrentPanel]->m_PanelCondition->isMet(m_save->m_values)) {
 
-					if (m_PanelList[m_CurrentPanel]->m_PanelCondition->isMet(m_save->m_values)) {
+					if (m_CurrentPanel >= m_PanelList.size()) {
 
-						if (m_CurrentPanel >= m_PanelList.size()) {
+						_eventhandler->quit;
+					}
 
-							_eventhandler->quit;
-						}
+					Render();
+					SDL_RenderPresent(m_Renderer);
+					if (m_IsDecisionPending) {
+						return false;
+					}
+					m_CurrentLine++;
 
-						Render();
-						SDL_RenderPresent(m_Renderer);
-						m_CurrentLine++;
-						SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Next Line triggered.", "Next Line triggered.", NULL);
+					if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
 
-						if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
+						if (m_CurrentPanel >= (m_PanelList.size() - 1)) {
+
+							m_CurrentMenu = m_MainMenu;
+							m_GameIsRunning = false;
+							return false;
+						} else {
 
 							m_CurrentPanel++;
 							m_CurrentLine = 0;
 						}
 					}
-					else {
-						m_CurrentPanel++;
-						m_CurrentLine = 0;
+				} else {
+					if (m_PanelList[m_CurrentPanel]->m_PanelCondition != nullptr) {
+
+						m_CurrentPanel = m_panelNameDictionary[m_PanelList[m_CurrentPanel]->m_PanelCondition->m_AlternativePanelKey];
+					} else {
+						//TODO Fehlermeldung
 					}
+				}
+			}
+		} else {
+			SplitDecision* split = (SplitDecision*)m_PanelList[m_CurrentPanel]->m_DialogueLines[m_CurrentLine];
+			for (int i = 0; i < split->m_buttons.size(); i++) {
+
+				bool cancel = false;
+				cancel = split->m_buttons[i]->HandleEvent(m_EventHandler);
+				if (cancel) {
+					return true;
 				}
 			}
 		}
 	}
 }
 
-void Game::Render() {
+bool Game::Render() {
 
 	SDL_RenderClear(m_Renderer);
+	switch (m_PanelList[m_CurrentPanel]->m_DialogueLines[m_CurrentLine]->m_type) {
 
-	m_PanelList[m_CurrentPanel]->ShowLine(m_CurrentLine);
+		case ShownItemType::Line:
+			m_PanelList[m_CurrentPanel]->ShowLine(m_CurrentLine);
+			break;
+		case ShownItemType::Decision:
+			m_PanelList[m_CurrentPanel]->ShowSplit(m_CurrentLine, m_Renderer);
+			m_IsDecisionPending = true;
+			break;
+	}
+	return false;
 }
 
-void Game::LoadGame(Button* _buttonCallback) {
+bool Game::LoadGame(Button* _buttonCallback) {
 
 	if (m_save == nullptr) {
 
@@ -196,9 +234,102 @@ void Game::LoadGame(Button* _buttonCallback) {
 	}
 	std::string test;
 	m_save->Deserialize();
+	return false;
+
+}
+
+void Game::ShowMenu(Menu* _menuInstance) {
+
+	SDL_RenderClear(m_Renderer);
+	_menuInstance->Render();
+
+	for (int i = 0; i < _menuInstance->m_MenuItems.size(); i++) {
+
+		bool cancel = false;
+		cancel = _menuInstance->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+		if (cancel) {
+			return;
+		}
+	}
+}
+
+bool Game::LoadCustomMethod(Button* _buttonCallback) {
+	return false;
+
+}
+
+bool Game::ChangeSettings(Settings* NewSettings) {
+	return false;
+
+}
+
+bool Game::Gallery(Button* _buttonCallback) {
+	return false;
+
+}
+
+bool Game::OpenOptions(Button* _buttonCallback) {
+
+	m_CurrentMenu = m_OptionsMenu;
+	m_CurrentMenu->Render();
+	return false;
+
+}
+
+bool Game::Quit(Button* _buttonCallback) {
+
+	SDL_FlushEvents(0, UINT32_MAX);
+	SDL_Event* quitEvent = new SDL_Event();
+	quitEvent->type = SDL_QUIT;
+	//TODO nachfaregn, ob man schließen will. vlt noch zum Menü leiten
+	SDL_PushEvent(quitEvent);
+	return false;
+}
+
+bool Game::ChangeResolution(Button* _buttonCallback) {
+
+	SDL_RenderClear(m_Renderer);
+
+	for (int i = 0; i < m_OptionsMenu->m_MenuItems.size(); i++) {
+
+		m_OptionsMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+
+		SDL_RenderPresent(m_Renderer);
+	}
+	return false;
+
+}
+
+bool Game::ToggleFullscreen(Button* _buttonCallback) {
+	return false;
+
+}
+
+bool Game::OpenMainMenu(Button* _buttonCallback) {
+
+	m_CurrentMenu = m_MainMenu;
+	m_CurrentMenu->Render();
+	return false;
+
+}
+
+void Game::RenderCurrentMenu() {
+
+	SDL_RenderClear(m_Renderer);
+
+	m_CurrentMenu->Render();
+
+	for (int i = 0; i < m_CurrentMenu->m_MenuItems.size(); i++) {
+
+		m_CurrentMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+
+	}
+	SDL_RenderPresent(m_Renderer);
 }
 
 void Game::LoadStoryBoard() {
+
+	int lineKey = 0;
 
 	//TODO while schleifen benutzen
 	for (int i = 0; i < m_keywords.size(); i++) {
@@ -239,8 +370,9 @@ void Game::LoadStoryBoard() {
 							DataValue* newDataValue;
 							i = i + 2;
 							DataValueType newType;
+							ConditionAction newAction;
 							std::string newName;
-							void* newValue = new void*;
+							std::variant<int, std::string, float, bool> newValue = new void*;
 
 							for (i; i < m_keywords.size(); i) {
 
@@ -261,18 +393,15 @@ void Game::LoadStoryBoard() {
 
 										newType = DataValueType::trigger;
 										i = i + 2;
-									}
-									else if (m_keywords[i + 1] == "variable") {
+									} else if (m_keywords[i + 1] == "variable") {
 
 										newType = DataValueType::variable;
 										i = i + 2;
-									}
-									else if (m_keywords[i + 1] == "decimal") {
+									} else if (m_keywords[i + 1] == "decimal") {
 
 										newType = DataValueType::decimal;
 										i = i + 2;
-									}
-									else {
+									} else {
 										//TODO Fehlermeldung
 									}
 									continue;
@@ -280,25 +409,28 @@ void Game::LoadStoryBoard() {
 								if (m_keywords[i] == "Value:") {
 
 									switch (newType) {
-									case DataValueType::trigger:
-										if (m_keywords[i + 1] == "true") {
+										case DataValueType::trigger:
+											if (m_keywords[i + 1] == "true") {
 
-											(*(bool*)newValue) = true;
-										}
-										else {
+												newValue = true;
+											} else {
 
-											(*(bool*)newValue) = false;
-										}
-										i = i + 2;
-										break;
-									case DataValueType::variable:
-										(*(int*)newValue) = atoi(m_keywords[i + 1].c_str());
-										i = i + 2;
-										break;
-									case DataValueType::decimal:
-										(*(float*)newValue) = (float)atof(m_keywords[i + 1].c_str());
-										i = i + 2;
-										break;
+												newValue = false;
+											}
+											i = i + 2;
+											break;
+										case DataValueType::variable:
+											newValue = atoi(m_keywords[i + 1].c_str());
+											i = i + 2;
+											break;
+										case DataValueType::decimal:
+											newValue = (float)atof(m_keywords[i + 1].c_str());
+											i = i + 2;
+											break;
+										case DataValueType::text:
+											newValue = m_keywords[i + 1];
+											i = i + 2;
+											break;
 									}
 									if (m_keywords[i] == "}") {
 										i++;
@@ -309,32 +441,36 @@ void Game::LoadStoryBoard() {
 
 									if (m_keywords[i + 1] == "isSmaller") {
 
-										newType = ConditionAction::isSmaller;
+										newAction = ConditionAction::isSmaller;
 										i = i + 2;
-									}
-									else if (m_keywords[i + 1] == "isEqual") {
+									} else if (m_keywords[i + 1] == "isEqual") {
 
-										newType = DataValueType::variable;
+										newAction = ConditionAction::isEqual;
 										i = i + 2;
-									}
-									else if (m_keywords[i + 1] == "isBigger") {
+									} else if (m_keywords[i + 1] == "isBigger") {
 
-										newType = DataValueType::decimal;
+										newAction = ConditionAction::isBigger;
 										i = i + 2;
-									}
-									else {
+									} else {
 										//TODO Fehlermeldung
 									}
 									continue;
 								}
 								if (m_keywords[i] == "}") {
-									newDataValue = new DataValue(newName, newType, newValue);
-									newCondition->m_RequiredValues[newDataValue->m_name] = newDataValue;
+									newDataValue = new DataValue(newName, newType, newValue, newAction);
+									newCondition->m_ConditionValues[newDataValue->m_name] = newDataValue;
 									i++;
 									break;
 								}
 							}
 						}
+
+						if (m_keywords[i] == "Alternative" && m_keywords[i + 1] == "{") {
+							i = i + 2;
+							newCondition->m_AlternativePanelKey = m_keywords[i + 1];
+							i = i + 4;
+						}
+
 						if (m_keywords[i] == "}") {
 							i++;
 							break;
@@ -369,24 +505,24 @@ void Game::LoadStoryBoard() {
 				}
 				if (m_keywords[i] == "Texts" && m_keywords[i + 1] == "{") {		//TODO Anführungszeichen entfernen
 					i = i + 2;
-					DialogueLine* newLine = new DialogueLine();
+					DialogLine* newLine = new DialogLine();
+					newLine->m_type = ShownItemType::Line;
 					for (i; i < m_keywords.size(); i) {
 
 						if (m_keywords[i] == "Text:") {
 
-							newLine = new DialogueLine();
+							newLine = new DialogLine();
 							newLine->Name = m_keywords[i + 1];
 							newLine->Text = m_keywords[i + 3];		//+3 weil sich zwischen dem Namen und dem Text ein Komma befindet
 							i = i + 4;
 							continue;
 						}
 						if (m_keywords[i] == ";") {
-
-							newPanel->m_DialogueLines.push_back(newLine);
+							newPanel->m_DialogueLines.insert(std::pair(lineKey, newLine));
+							lineKey++;
 							i++;
 							continue;
-						}
-						else if (m_keywords[i] == ",") {
+						} else if (m_keywords[i] == ",") {
 							i++;
 							SpritePosition spritePosition;
 							spritePosition.Index = std::stoi(m_keywords[i]);
@@ -418,9 +554,91 @@ void Game::LoadStoryBoard() {
 								i++;
 							}
 							newLine->m_SpritesShown.push_back(spritePosition);
-							newPanel->m_DialogueLines.push_back(newLine);
+							newPanel->m_DialogueLines.insert(std::pair(lineKey, newLine));
+							lineKey++;
 							i++;
 							spritePosition = { -1, -1, -1 };
+						}
+						if (m_keywords[i] == "Split" && m_keywords[i + 1] == "{") {
+							i += 2;
+							SplitDecision* newDecision = new SplitDecision(m_Renderer, m_GameSettings, m_ImageLoader);
+							newDecision->m_type = ShownItemType::Decision;
+							for (i; i < m_keywords.size(); i) {
+								if (m_keywords[i] == "Option" && m_keywords[i + 1] == "{") {
+									i += 2;
+									BranchOption* newOption = new BranchOption();
+									for (i; i < m_keywords.size(); i) {
+
+										if (m_keywords[i] == "Name:") {
+											newOption->m_name = m_keywords[i + 1];
+											i += 3;
+											continue;
+										}
+										if (m_keywords[i] == "Text:") {
+											newOption->m_shownText = m_keywords[i + 1];
+											i += 3;
+											continue;
+										}
+										if (m_keywords[i] == "Sprite:") {
+											newOption->SpriteIndex = stoi(m_keywords[i + 1]);
+											i += 3;
+											continue;
+										}
+										if (m_keywords[i] == "Effect" && m_keywords[i + 1] == "{") {
+											i += 6;
+											continue;
+										}
+										if (m_keywords[i] == "}") {
+											i++;
+											newDecision->m_options.push_back(newOption);
+											break;
+										}
+									}
+								}
+								if (m_keywords[i] == "}") {
+									i++;
+									newPanel->m_DialogueLines.insert(std::pair(lineKey, newDecision));
+									lineKey++;
+									break;
+								}
+							}
+						}
+						if (m_keywords[i] == "Branch" && m_keywords[i + 1] == "{") {
+							i += 2;
+							SplitDecision* newDecision = new SplitDecision(m_Renderer, m_GameSettings, m_ImageLoader);
+							newDecision->m_type = ShownItemType::Decision;
+							for (i; i < m_keywords.size(); i) {
+								if (m_keywords[i] == "Option" && m_keywords[i + 1] == "{") {
+									i += 2;
+									BranchOption* newOption = new BranchOption();
+									if (m_keywords[i] == "Name:") {
+										newOption->m_name = m_keywords[i + 1];
+										i += 3;
+										continue;
+									}
+									if (m_keywords[i] == "Text:") {
+										newOption->m_shownText = m_keywords[i + 1];
+										i += 3;
+										continue;
+									}
+									if (m_keywords[i] == "Sprite:") {
+										newOption->SpriteIndex = stoi(m_keywords[i + 1]);
+										i += 3;
+										continue;
+									}
+									if (m_keywords[i] == "Effect" && m_keywords[i + 1] == "{") {
+										i += 6;
+										continue;
+									}
+
+								}
+								if (m_keywords[i] == "}") {
+									i++;
+									newPanel->m_DialogueLines.insert(std::pair(lineKey, newDecision));
+									lineKey++;
+									break;
+								}
+							}
 						}
 						if (m_keywords[i] == "}") {
 							i++;
@@ -438,6 +656,7 @@ void Game::LoadStoryBoard() {
 				}
 			}
 			m_PanelList.push_back(newPanel);
+			m_panelNameDictionary.insert(std::pair<std::string, int>(newPanel->m_PanelName, (m_PanelList.size() - 1)));
 		}
 	}
 
@@ -445,68 +664,4 @@ void Game::LoadStoryBoard() {
 
 		m_PanelList[i]->LoadImages();
 	}
-}
-
-
-void Game::LoadCustomMethod(Button * _buttonCallback) {
-
-}
-
-void Game::ChangeSettings(Settings * NewSettings) {
-
-}
-
-void Game::Gallery(Button * _buttonCallback) {
-
-}
-
-void Game::OpenOptions(Button * _buttonCallback) {
-
-	m_CurrentMenu = m_OptionsMenu;
-	m_CurrentMenu->Render();
-}
-
-void Game::Quit(Button * _buttonCallback) {
-
-	SDL_FlushEvents(0, UINT32_MAX);
-	SDL_Event* quitEvent = new SDL_Event();
-	quitEvent->type = SDL_QUIT;
-	//TODO nachfaregn, ob man schließen will. vlt noch zum Menü leiten
-	SDL_PushEvent(quitEvent);
-	return;
-}
-
-void Game::ChangeResolution(Button * _buttonCallback) {
-
-	SDL_RenderClear(m_Renderer);
-
-	for (int i = 0; i < m_OptionsMenu->m_MenuItems.size(); i++) {
-
-		m_OptionsMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
-
-		SDL_RenderPresent(m_Renderer);
-	}
-}
-
-void Game::ToggleFullscreen(Button * _buttonCallback) {
-}
-
-void Game::OpenMainMenu(Button * _buttonCallback) {
-
-	m_CurrentMenu = m_MainMenu;
-	m_CurrentMenu->Render();
-}
-
-void Game::RenderCurrentMenu() {
-
-	SDL_RenderClear(m_Renderer);
-
-	m_CurrentMenu->Render();
-
-	for (int i = 0; i < m_CurrentMenu->m_MenuItems.size(); i++) {
-
-		m_CurrentMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
-
-	}
-	SDL_RenderPresent(m_Renderer);
 }

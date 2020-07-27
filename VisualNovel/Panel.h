@@ -1,13 +1,16 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
 
 class TextBox;
 class ImageLoader;
 class Texture;
 class Condition;
-class DialogueLine;
 class SpritePosition;
+class Button;
+class ShownItem;
+class SDL_Renderer;
 
 class Panel {
 
@@ -21,7 +24,7 @@ class Panel {
 		ImageLoader* m_ImageLoader;							//TODO statische Image Loader Referenz
 		Condition* m_PanelCondition;
 		std::string m_PanelName;
-		std::vector<DialogueLine*> m_DialogueLines;
+		std::map<int, ShownItem*> m_DialogueLines;
 		std::vector<SpritePosition> m_SpriteIndexList;		//TODO Liste wieder auf ints zurueck setzen
 		std::vector<Texture*> m_SpriteList;
 		/**
@@ -29,5 +32,6 @@ class Panel {
 		@param _lineIndex: The Index of the Line in this Panel
 		*/
 		void ShowLine(int _lineIndex);
+		void ShowSplit(int _lineIndex, SDL_Renderer* _renderer);
 		void LoadImages();
 };

@@ -1,5 +1,6 @@
 wallpaper.jpg
-TanyaPortrait01.png
 GoblinMage.png
 summerBackground.png
 square-rounded-Full-outlined-button-shapeByKatarinaStefanikova.png
+doge.png
+StickFigure.png

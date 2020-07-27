@@ -1,8 +1,8 @@
 #include "SpritePosition.h"
-#include "DialogueLine.h"
+#include "DialogLine.h"
 
-DialogueLine::DialogueLine() {
+DialogLine::DialogLine() {
 }
 
-DialogueLine::~DialogueLine() {
+DialogLine::~DialogLine() {
 }

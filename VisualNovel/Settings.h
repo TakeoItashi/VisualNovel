@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <SDL_ttf.h>
 
 class TextLoader;
 
@@ -24,6 +25,7 @@ class Settings {
 		bool m_SkipUnseenText;
 		//TODO richtige implementierung
 		std::string m_SoundSettings;
+		TTF_Font* m_Font;
 private:
 		int m_windowPosX, m_windowPosY;			//TODO Sollte die Position raus genommen werden oder für die Engine benutzt werden?
 		TextLoader* m_TextLoader;

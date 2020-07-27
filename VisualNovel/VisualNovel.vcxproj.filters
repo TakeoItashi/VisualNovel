@@ -19,9 +19,6 @@
     <Filter Include="Headerdateien\Serialization">
       <UniqueIdentifier>{99a2f578-788b-4251-8a5d-26c340d3f173}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headerdateien\Panels">
-      <UniqueIdentifier>{78de29cc-8a42-4b16-91ca-c3adc77d1bfa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Headerdateien\Loaders">
       <UniqueIdentifier>{d43a1025-095f-4060-a16b-955761f216cb}</UniqueIdentifier>
     </Filter>
@@ -33,9 +30,6 @@
     </Filter>
     <Filter Include="Quelldateien\Settings">
       <UniqueIdentifier>{08c0275d-b6a7-42ba-ad3e-c1ca71ee15a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Panels">
-      <UniqueIdentifier>{9845eaac-06d2-496e-a996-e898f7e345cb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Quelldateien\Serialization">
       <UniqueIdentifier>{f4b2c1f4-c4d9-40e7-99fe-3f4e9eacbb6b}</UniqueIdentifier>
@@ -52,6 +46,60 @@
     <Filter Include="Ressourcendateien\Font">
       <UniqueIdentifier>{d1eb834b-810d-466b-b73a-845df1a537a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\InGameView">
+      <UniqueIdentifier>{78de29cc-8a42-4b16-91ca-c3adc77d1bfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\InGameView\Conditions">
+      <UniqueIdentifier>{ebe44f4e-c613-4825-9674-44d76d8d7b0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\InGameView\BaseClasses">
+      <UniqueIdentifier>{9b46628e-8ec3-409d-8d20-d98c69074c3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\InGameView\SplitDecisions">
+      <UniqueIdentifier>{eeb7dd0b-8e76-4592-8235-e3c05d689932}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\InGameView\Panels">
+      <UniqueIdentifier>{8fc66ada-5ac0-4090-9b35-9340fea84943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\InGameView">
+      <UniqueIdentifier>{9845eaac-06d2-496e-a996-e898f7e345cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\InGameView\BaseClasses">
+      <UniqueIdentifier>{d8fb7fd0-e51c-4d2d-9ed1-994722cead22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\InGameView\SplitDecision">
+      <UniqueIdentifier>{47fc3419-1067-43c8-8490-9dc42f530bb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\InGameView\Panels">
+      <UniqueIdentifier>{7c15ce09-a153-4403-94f2-0f5fcd397852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\InGameView\Conditions">
+      <UniqueIdentifier>{d39d55e8-2f25-4c67-aee2-dbe1f3571f35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\UI\BaseClasses">
+      <UniqueIdentifier>{794061f0-8937-4e61-9799-8569be80accf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\UI\Buttons">
+      <UniqueIdentifier>{58977109-222e-4ae1-b71f-ddcb983c86b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\UI\MenuImplementations">
+      <UniqueIdentifier>{ebf88fc3-acfc-44b2-8f18-0afe1b41a303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\UI\BaseClasses">
+      <UniqueIdentifier>{468cdff8-b930-4287-b6ab-0c5f39f99476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\UI\Buttons">
+      <UniqueIdentifier>{ab44a96e-3210-4d97-b4fc-83c38aa06520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\UI\MenuImplementations">
+      <UniqueIdentifier>{cc6b95a8-9bac-4a99-9770-677e259d1a7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\UI\BaseMenu">
+      <UniqueIdentifier>{3c8dba38-06a8-4fee-95ae-73c45eb1208c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\UI\BaseMenu">
+      <UniqueIdentifier>{247b2c15-884f-4029-a24b-079eb2a2cec5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -67,41 +115,47 @@
     <ClCompile Include="Settings.cpp">
       <Filter>Quelldateien\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="DialogueLine.cpp">
-      <Filter>Quelldateien\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="Panel.cpp">
-      <Filter>Quelldateien\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="TextBox.cpp">
-      <Filter>Quelldateien\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Quelldateien\Panels</Filter>
-    </ClCompile>
     <ClCompile Include="Save.cpp">
       <Filter>Quelldateien\Serialization</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Quelldateien\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>Quelldateien\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Quelldateien\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Condition.cpp">
-      <Filter>Quelldateien\Panels</Filter>
     </ClCompile>
     <ClCompile Include="DataValue.cpp">
       <Filter>Quelldateien\Serialization</Filter>
     </ClCompile>
-    <ClCompile Include="OptionsMenu.cpp">
-      <Filter>Quelldateien\UI</Filter>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Quelldateien\InGameView\BaseClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="BranchOption.cpp">
+      <Filter>Quelldateien\InGameView\SplitDecision</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>Quelldateien\InGameView\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogueLine.cpp">
+      <Filter>Quelldateien\InGameView\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="TextBox.cpp">
+      <Filter>Quelldateien\InGameView\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Condition.cpp">
+      <Filter>Quelldateien\InGameView\Conditions</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Quelldateien\UI\BaseClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Quelldateien\UI\Buttons</Filter>
     </ClCompile>
     <ClCompile Include="SpriteSheetTexture.cpp">
-      <Filter>Quelldateien\UI</Filter>
+      <Filter>Quelldateien\UI\BaseClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsMenu.cpp">
+      <Filter>Quelldateien\UI\MenuImplementations</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Quelldateien\UI\MenuImplementations</Filter>
+    </ClCompile>
+    <ClCompile Include="SplitDecision.cpp">
+      <Filter>Quelldateien\InGameView\SplitDecision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,9 +163,6 @@
       <Filter>Ressourcendateien\Images</Filter>
     </Image>
     <Image Include="square-rounded-Full-outlined-button-shapeByKatarinaStefanikova.png">
-      <Filter>Ressourcendateien\Images</Filter>
-    </Image>
-    <Image Include="TanyaPortrait01.png">
       <Filter>Ressourcendateien\Images</Filter>
     </Image>
     <Image Include="summerBackground.png">
@@ -126,22 +177,16 @@
     <Image Include="ButtonSpriteState.png">
       <Filter>Ressourcendateien\Images</Filter>
     </Image>
+    <Image Include="doge.png">
+      <Filter>Ressourcendateien\Images</Filter>
+    </Image>
+    <Image Include="StickFigure.png">
+      <Filter>Ressourcendateien\Images</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
       <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Headerdateien\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Menu.h">
-      <Filter>Headerdateien\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuItem.h">
-      <Filter>Headerdateien\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuItemType.h">
-      <Filter>Headerdateien\UI</Filter>
     </ClInclude>
     <ClInclude Include="Save.h">
       <Filter>Headerdateien\Serialization</Filter>
@@ -149,29 +194,11 @@
     <ClInclude Include="DataValueType.h">
       <Filter>Headerdateien\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Headerdateien\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="TextBox.h">
-      <Filter>Headerdateien\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="SpritePosition.h">
-      <Filter>Headerdateien\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="Panel.h">
-      <Filter>Headerdateien\Panels</Filter>
-    </ClInclude>
     <ClInclude Include="TextLoader.h">
       <Filter>Headerdateien\Loaders</Filter>
     </ClInclude>
     <ClInclude Include="ImageLoader.h">
       <Filter>Headerdateien\Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="DialogueLine.h">
-      <Filter>Headerdateien\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenu.h">
-      <Filter>Headerdateien\UI</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Headerdateien\Settings</Filter>
@@ -179,20 +206,62 @@
     <ClInclude Include="DataValue.h">
       <Filter>Headerdateien\Serialization</Filter>
     </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Headerdateien\InGameView\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="TextBox.h">
+      <Filter>Headerdateien\InGameView\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogLine.h">
+      <Filter>Headerdateien\InGameView\Panels</Filter>
+    </ClInclude>
     <ClInclude Include="Condition.h">
-      <Filter>Headerdateien\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="OptionsMenu.h">
-      <Filter>Headerdateien\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="ButtonSpriteState.h">
-      <Filter>Headerdateien\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteSheetTexture.h">
-      <Filter>Headerdateien\UI</Filter>
+      <Filter>Headerdateien\InGameView\Conditions</Filter>
     </ClInclude>
     <ClInclude Include="ConditionAction.h">
-      <Filter>Headerdateien\Panels</Filter>
+      <Filter>Headerdateien\InGameView\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="SpritePosition.h">
+      <Filter>Headerdateien\InGameView\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Headerdateien\InGameView\BaseClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="ShownItem.h">
+      <Filter>Headerdateien\InGameView\BaseClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="SplitDecision.h">
+      <Filter>Headerdateien\InGameView\SplitDecisions</Filter>
+    </ClInclude>
+    <ClInclude Include="BranchOption.h">
+      <Filter>Headerdateien\InGameView\SplitDecisions</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteSheetTexture.h">
+      <Filter>Headerdateien\UI\BaseClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Headerdateien\UI\BaseClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonSpriteState.h">
+      <Filter>Headerdateien\UI\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Headerdateien\UI\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Headerdateien\UI\MenuImplementations</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsMenu.h">
+      <Filter>Headerdateien\UI\MenuImplementations</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuItem.h">
+      <Filter>Headerdateien\UI\BaseMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuItemType.h">
+      <Filter>Headerdateien\UI\BaseMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Branch.h">
+      <Filter>Headerdateien\InGameView\SplitDecisions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

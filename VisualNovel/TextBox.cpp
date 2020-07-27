@@ -1,4 +1,4 @@
-#include "DialogueLine.h"
+#include "DialogLine.h"
 #include "Texture.h"
 #include "Settings.h"
 #include "TextBox.h"
@@ -12,12 +12,13 @@ TextBox::TextBox(SDL_Renderer* _renderer) {
 	Height = 150;
 	//TODO Box Backgound lädt eine textur aus einem Ordner und erstellt selbst eine Textur, wenn keine Textur vordefiniert wurde
 	m_boxBackground = new Texture(_renderer);
+	m_boxBackgroundNameCorner = new Texture(_renderer);
 }
 
 TextBox::~TextBox() {
 }
 
-void TextBox::Render(DialogueLine _line, int _speed) {
+void TextBox::Render(DialogLine _line, int _speed) {
 
 	if (m_textTexture != NULL) {
 
@@ -31,6 +32,7 @@ void TextBox::Render(DialogueLine _line, int _speed) {
 	std::vector<Texture*> TextCharsTexture;
 
 	//TODO TextBox Position an Window Größe anpassen
+	m_boxBackgroundNameCorner->Render(25, 425 - (Height /4), (Height / 4), (Width / 6));
 	m_boxBackground->Render(25, 425, Height, Width);
 
 	//TODO Rework der Text Darstellung für Animation: Create new Texture after DeltaTime has passed. New Texture uses one Char more than before
@@ -44,8 +46,11 @@ void TextBox::Render(DialogueLine _line, int _speed) {
 	int nextSpace;
 
 	std::replace(_line.Text.begin(), _line.Text.end(), '_', ' ');
-	std::replace(_line.Name.begin(), _line.Name.end(), '_', ' ');
-	_line.Name.append(":");
+	if (_line.Name != "") {
+
+		std::replace(_line.Name.begin(), _line.Name.end(), '_', ' ');
+		_line.Name.append(":");
+	}
 
 	while (_line.Text.size() > 0) {
 
@@ -79,10 +84,19 @@ void TextBox::Render(DialogueLine _line, int _speed) {
 
 	lines.push_back(line);
 	int lineStart = 425;	//TODO an Fenstergröße anpassen
-	SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, _line.Name.c_str(), m_Color);
-	m_textTexture->CreateFromSurface(textSurface);
-	TTF_SizeText(m_font, _line.Name.c_str(), &m_textTexture->Width, &m_textTexture->Height);
-	m_textTexture->Render(30, lineStart, m_textTexture->Height, m_textTexture->Width);
+	SDL_Surface* textSurface = nullptr;
+	if (_line.Name != "") {
+
+		textSurface = TTF_RenderText_Blended(m_font, _line.Name.c_str(), m_Color);
+		m_textTexture->CreateFromSurface(textSurface);
+		TTF_SizeText(m_font, _line.Name.c_str(), &m_textTexture->Width, &m_textTexture->Height);
+		m_textTexture->Render(30, lineStart, m_textTexture->Height, m_textTexture->Width);
+	} else {
+		textSurface = TTF_RenderText_Blended(m_font, "BlankSpace", m_Color);
+		m_textTexture->CreateFromSurface(textSurface);
+		TTF_SizeText(m_font, _line.Name.c_str(), &m_textTexture->Width, &m_textTexture->Height);
+		m_textTexture->Render(30, lineStart, m_textTexture->Height, m_textTexture->Width);
+	}
 	lineStart += m_textTexture->Height - 5;
 	SDL_FreeSurface(textSurface);
 
@@ -91,7 +105,7 @@ void TextBox::Render(DialogueLine _line, int _speed) {
 		textSurface = TTF_RenderText_Blended(m_font, lines[i].c_str(), m_Color);
 		m_textTexture->CreateFromSurface(textSurface);
 		TTF_SizeText(m_font, lines[i].c_str(), &m_textTexture->Width, &m_textTexture->Height);
-		m_textTexture->Render(35, lineStart + (i*(m_textTexture->Height - 5)), m_textTexture->Height, m_textTexture->Width);
+		m_textTexture->Render(35, lineStart + (i * (m_textTexture->Height - 5)), m_textTexture->Height, m_textTexture->Width);
 		SDL_FreeSurface(textSurface);
 	}
 }
@@ -107,9 +121,16 @@ void TextBox::ApplySettings(Settings* _settings) {
 
 	SDL_FillRect(backgroundSurface, NULL, SDL_MapRGB(backgroundSurface->format, _settings->m_TextBoxRed, _settings->m_TextBoxGreen, _settings->m_TextBoxBlue));
 	m_boxBackground->CreateFromSurface(backgroundSurface);
-
+	m_boxBackgroundNameCorner->CreateFromSurface(backgroundSurface);
+	SDL_FreeSurface(backgroundSurface);
 	//TODO checke Settings auf Alpha für TextBox
 	m_boxBackground->SetBlendMode(SDL_BLENDMODE_BLEND);
+	m_boxBackgroundNameCorner->SetBlendMode(SDL_BLENDMODE_BLEND);
 	//TODO SetAlpha Änderungen spiegeln sich nicht in der Textbox wieder.
 	m_boxBackground->SetAlpha((_settings->m_TextBoxAlpha * 0.5));
+	m_boxBackgroundNameCorner->SetAlpha((_settings->m_TextBoxAlpha * 0.5));
+}
+
+TTF_Font* TextBox::GetFont() {
+	return m_font;
 }

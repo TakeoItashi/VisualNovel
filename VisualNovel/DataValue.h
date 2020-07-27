@@ -17,7 +17,7 @@ using ValueVariant = std::variant<int, std::string, float, bool>;
 class DataValue {
 	public:
 		DataValue();
-		DataValue(std::string _name, DataValueType _type, ValueVariant _value);
+		DataValue(std::string _name, DataValueType _type, ValueVariant _value, ConditionAction _action);
 		~DataValue();
 
 		std::string m_name;
