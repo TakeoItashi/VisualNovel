@@ -68,18 +68,27 @@ Panel {
 				}
 			}
 		}
-		Branch {
-			Name: "Branch 1";
-			Text: "Doge", "I Am Doge", 2;
-			Text: "Heinrich Kleinrich", "And I am Heinrich", 2, 3;
-			GlobalText: "Global Text 1";
-		}
-		Branch {
-			Name: "Branch 2";
-			Text: "Heinrich Kleinrich", "I am Heinrich", 3;
-			Text: "Doge", "And I Am Doge", 3, 2;
-			GlobalText: "Global Text 1";
-		}
+##		Branch {
+##			Name: "Branch 1";
+##			Text: "Doge", "I Am Doge", 2;
+##			Text: "Heinrich Kleinrich", "And I am Heinrich", 2, 3;
+####			GlobalText: "Global Text 1";
+##			Branch {
+##				Name: "Branch 1";
+##				Text: "Doge", "I Am Doge", 2;
+##				Text: "Heinrich Kleinrich", "And I am Heinrich", 2, 3;
+##				}
+##				Branch {
+##					Name: "Branch 2";
+##					Text: "Heinrich Kleinrich", "I am Heinrich", 3;
+##					Text: "Doge", "And I Am Doge", 3, 2;
+##				}
+##				Branch {
+##					Name: "Branch 2";
+##					Text: "Heinrich Kleinrich", "I am Heinrich", 3;
+##					Text: "Doge", "And I Am Doge", 3, 2;
+##				}
+##			}
 		Text: "Goblin Doctor", "Hello", 1;
 ##		Global Texts {
 ##			Name: "Global Text 1";
