@@ -329,8 +329,8 @@ ASALocalRun/
 
 #Zip archives
 .zip
-.7z
-.rar
+*.7z
+*.rar
 SDL2-2.0.9/
 *.zip
 
