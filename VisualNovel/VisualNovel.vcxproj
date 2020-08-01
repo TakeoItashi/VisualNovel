@@ -137,7 +137,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BranchOption.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Condition.cpp" />
     <ClCompile Include="DataValue.cpp" />
@@ -169,11 +168,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Branch.h" />
-    <ClInclude Include="BranchOption.h" />
+    <ClInclude Include="SplitOption.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ButtonSpriteState.h" />
     <ClInclude Include="Condition.h" />
     <ClInclude Include="ConditionAction.h" />
+    <ClInclude Include="ContinueItem.h" />
+    <ClInclude Include="ContinueType.h" />
     <ClInclude Include="DataValue.h" />
     <ClInclude Include="DataValueType.h" />
     <ClInclude Include="DialogLine.h" />

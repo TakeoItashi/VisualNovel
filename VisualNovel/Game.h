@@ -16,6 +16,7 @@ class Panel;
 class Settings;
 class Button;
 class OptionsMenu;
+class Branch;
 
 class Game {
 
@@ -33,11 +34,11 @@ public:
 	static TextLoader* m_textLoader;
 	static Save* m_save;
 	static Menu* m_CurrentMenu;
-	static std::vector<Panel*> m_PanelList;		//TODO map für Panel Liste benutzen
+	static std::map<std::string, Panel*> m_PanelMap;		//TODO map für Panel Liste benutzen
 	static std::map<std::string, int> m_panelNameDictionary;
 	static std::vector<std::string> m_keywords;		//TODO eventuell in seperate Klasse aussondern, zusammen mit der LoadStory Funktion
 	static int m_CurrentLine;
-	static int m_CurrentPanel;
+	static std::string m_CurrentPanelKey;
 	static bool m_GameIsRunning;
 	static bool m_IsDecisionPending;
 	/**
@@ -85,6 +86,12 @@ public:
 	static void LoadStoryBoard();
 
 	static void ShowMenu(Menu* _menuInstance);
+
+	static bool ChangeBranch(const char* _BranchKey);
+
+	static bool ChangePanel(const char* _panelKey);
+
+	static void ResetGameToMainMenu();
 
 	inline static Game* GetInstance() { if (m_gamePointer == nullptr) { m_gamePointer = new Game(); } return m_gamePointer; };
 

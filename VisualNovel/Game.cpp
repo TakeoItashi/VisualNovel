@@ -17,6 +17,7 @@
 #include "ConditionAction.h"
 #include "Game.h"
 #include "SplitDecision.h"
+#include "Branch.h"
 
 Game* Game::m_gamePointer = nullptr;					//required for singleton
 MainMenu* Game::m_MainMenu;								//
@@ -29,11 +30,11 @@ SDL_Renderer* Game::m_Renderer;							// Defining the static members is required
 SDL_Event* Game::m_EventHandler;						//
 TextLoader* Game::m_textLoader;							//
 Save* Game::m_save;										//
-std::vector<Panel*> Game::m_PanelList;					//
+std::map<std::string, Panel*> Game::m_PanelMap;					//
 std::map<std::string, int> Game::m_panelNameDictionary;	//
 std::vector<std::string> Game::m_keywords;				//
 int Game::m_CurrentLine;								//
-int Game::m_CurrentPanel;								//
+std::string Game::m_CurrentPanelKey;								//
 Menu* Game::m_CurrentMenu;								//
 bool Game::m_GameIsRunning;								//
 bool Game::m_IsDecisionPending;							//
@@ -108,13 +109,13 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 
 bool Game::NewGame(Button* _butt) {
 
-	m_CurrentPanel = 0;
+	m_CurrentPanelKey = m_PanelMap.begin()->second->m_PanelName;
 	m_CurrentLine = 0;
 
 	////Test for save game serialization. must be removed
 	m_save = new Save();
 	m_save->m_currentLine = m_CurrentLine;
-	m_save->m_currentPanel = m_CurrentPanel;
+	m_save->m_currentPanel = m_CurrentPanelKey;
 	DataValue* testValue = new DataValue();
 	testValue->m_name = "StoryTrigger1";
 	testValue->SetValue(true);
@@ -135,6 +136,14 @@ bool Game::NewGame(Button* _butt) {
 
 	m_CurrentMenu = nullptr;
 
+	std::map<std::string, Panel*>::iterator iterator = m_PanelMap.begin();
+
+	while (iterator != m_PanelMap.end()) {
+
+		iterator->second->LoadImages();
+		iterator++;
+	}
+
 	Render();
 	SDL_RenderPresent(m_Renderer);
 	return true;
@@ -148,8 +157,6 @@ bool Game::Update(SDL_Event* _eventhandler) {
 		return false;
 	}
 
-
-
 	if (m_GameIsRunning) {
 
 		if (!m_IsDecisionPending) {
@@ -159,45 +166,54 @@ bool Game::Update(SDL_Event* _eventhandler) {
 				m_EventHandler->type == SDL_KEYUP) {
 
 				//TODO: If the PanelCondition is null because of an Error, relying on it being null here could create Problems
-				if (m_PanelList[m_CurrentPanel]->m_PanelCondition == nullptr ||
-					m_PanelList[m_CurrentPanel]->m_PanelCondition->isMet(m_save->m_values)) {
+				if (m_PanelMap[m_CurrentPanelKey]->m_PanelCondition == nullptr ||
+					m_PanelMap[m_CurrentPanelKey]->m_PanelCondition->isMet(m_save->m_values)) {
 
-					if (m_CurrentPanel >= m_PanelList.size()) {
+					m_CurrentLine++;
 
-						_eventhandler->quit;
+					Branch* currentBranch = m_PanelMap[m_CurrentPanelKey]->GetCurrentBranch();
+					if (m_CurrentLine >= currentBranch->m_shownItems.size()) {
+						switch (currentBranch->m_continueType) {
+							case ContinueType::BranchContinue:
+								ChangeBranch(currentBranch->m_continueKey.c_str());
+								break;
+							case ContinueType::PanelContinue:
+								ChangePanel(currentBranch->m_continueKey.c_str());
+								break;
+						}
 					}
 
 					Render();
-					SDL_RenderPresent(m_Renderer);
+
 					if (m_IsDecisionPending) {
 						return false;
 					}
-					m_CurrentLine++;
 
-					if (m_CurrentLine >= m_PanelList[m_CurrentPanel]->m_DialogueLines.size()) {
-
-						if (m_CurrentPanel >= (m_PanelList.size() - 1)) {
-
-							m_CurrentMenu = m_MainMenu;
-							m_GameIsRunning = false;
-							return false;
-						} else {
-
-							m_CurrentPanel++;
-							m_CurrentLine = 0;
-						}
-					}
+					//if (m_CurrentLine >= m_PanelMap[m_CurrentPanelKey]->m_DialogueLines.size()) {
+					//
+					//	if (m_CurrentPanelKey != m_PanelMap.end()->first) {
+					//
+					//		m_CurrentMenu = m_MainMenu;
+					//		m_GameIsRunning = false;
+					//		return false;
+					//	} else {
+					//
+					//		//m_CurrentPanelKey++;
+					//		m_CurrentLine = 0;
+					//	}
+					//}
 				} else {
-					if (m_PanelList[m_CurrentPanel]->m_PanelCondition != nullptr) {
+					if (m_PanelMap[m_CurrentPanelKey]->m_PanelCondition != nullptr) {
 
-						m_CurrentPanel = m_panelNameDictionary[m_PanelList[m_CurrentPanel]->m_PanelCondition->m_AlternativePanelKey];
-					} else {
-						//TODO Fehlermeldung
+						m_CurrentPanelKey = m_PanelMap[m_CurrentPanelKey]->m_PanelCondition->m_AlternativePanelKey;
 					}
+					//else {
+					//	//TODO Fehlermeldung
+					//}
 				}
 			}
 		} else {
-			SplitDecision* split = (SplitDecision*)m_PanelList[m_CurrentPanel]->m_DialogueLines[m_CurrentLine];
+			SplitDecision* split = (SplitDecision*)m_PanelMap[m_CurrentPanelKey]->GetCurrentBranch()->m_shownItems[m_CurrentLine];
 			for (int i = 0; i < split->m_buttons.size(); i++) {
 
 				bool cancel = false;
@@ -206,6 +222,7 @@ bool Game::Update(SDL_Event* _eventhandler) {
 					return true;
 				}
 			}
+			m_PanelMap[m_CurrentPanelKey]->RenderCurrentSplit(m_CurrentLine);
 		}
 	}
 }
@@ -213,16 +230,25 @@ bool Game::Update(SDL_Event* _eventhandler) {
 bool Game::Render() {
 
 	SDL_RenderClear(m_Renderer);
-	switch (m_PanelList[m_CurrentPanel]->m_DialogueLines[m_CurrentLine]->m_type) {
+	Panel* m_currentPanel = nullptr;
+	if (m_PanelMap.find(m_CurrentPanelKey) != m_PanelMap.end()) {
+		m_currentPanel = m_PanelMap[m_CurrentPanelKey];
+	} else {
+		ResetGameToMainMenu();
+		return true;
+	}
+	Branch* currentBranch = m_currentPanel->GetCurrentBranch();
+	switch (currentBranch->m_shownItems[m_CurrentLine]->m_type) {
 
 		case ShownItemType::Line:
-			m_PanelList[m_CurrentPanel]->ShowLine(m_CurrentLine);
+			m_PanelMap[m_CurrentPanelKey]->ShowLine(m_CurrentLine);
 			break;
 		case ShownItemType::Decision:
-			m_PanelList[m_CurrentPanel]->ShowSplit(m_CurrentLine, m_Renderer);
+			m_PanelMap[m_CurrentPanelKey]->ShowSplit(m_CurrentLine);
 			m_IsDecisionPending = true;
 			break;
 	}
+	SDL_RenderPresent(m_Renderer);
 	return false;
 }
 
@@ -251,6 +277,35 @@ void Game::ShowMenu(Menu* _menuInstance) {
 			return;
 		}
 	}
+}
+
+bool Game::ChangeBranch(const char* _BranchKey) {
+	m_PanelMap[m_CurrentPanelKey]->m_currentBranchKey = _BranchKey;
+	m_IsDecisionPending = false;
+	m_CurrentLine = 0;
+	Render();
+	return true;
+}
+
+bool Game::ChangePanel(const char* _panelKey) {
+	m_CurrentPanelKey = _panelKey;
+	m_IsDecisionPending = false;
+	m_CurrentLine = 0;
+
+	Render();
+	return true;
+}
+
+void Game::ResetGameToMainMenu() {
+	m_CurrentMenu = m_MainMenu;
+	m_GameIsRunning = false;
+	m_CurrentPanelKey = m_PanelMap.begin()->second->m_PanelName;
+	std::map<std::string, Panel*>::iterator it;
+
+	for (it = m_PanelMap.begin(); it != m_PanelMap.end(); it++) {
+		it->second->m_currentBranchKey = it->second->m_EntryBranchKey;
+	}
+	m_CurrentLine = 0;
 }
 
 bool Game::LoadCustomMethod(Button* _buttonCallback) {
@@ -329,7 +384,7 @@ void Game::RenderCurrentMenu() {
 
 void Game::LoadStoryBoard() {
 
-	int lineKey = 0;
+	int lineKey;
 
 	//TODO while schleifen benutzen
 	for (int i = 0; i < m_keywords.size(); i++) {
@@ -503,165 +558,184 @@ void Game::LoadStoryBoard() {
 						}
 					}
 				}
-				if (m_keywords[i] == "Texts" && m_keywords[i + 1] == "{") {		//TODO Anführungszeichen entfernen
-					i = i + 2;
-					DialogLine* newLine = new DialogLine();
-					newLine->m_type = ShownItemType::Line;
+				if (m_keywords[i] == "EntryBranch:") {
+					newPanel->m_EntryBranchKey = m_keywords[i + 1];
+					i = i + 3;
+				}
+				if (m_keywords[i] == "Branches" && m_keywords[i + 1] == "{") {
+					i += 2;
 					for (i; i < m_keywords.size(); i) {
-
-						if (m_keywords[i] == "Text:") {
-
-							newLine = new DialogLine();
-							newLine->Name = m_keywords[i + 1];
-							newLine->Text = m_keywords[i + 3];		//+3 weil sich zwischen dem Namen und dem Text ein Komma befindet
-							i = i + 4;
-							continue;
-						}
-						if (m_keywords[i] == ";") {
-							newPanel->m_DialogueLines.insert(std::pair(lineKey, newLine));
-							lineKey++;
-							i++;
-							continue;
-						} else if (m_keywords[i] == ",") {
-							i++;
-							SpritePosition spritePosition;
-							spritePosition.Index = std::stoi(m_keywords[i]);
-							spritePosition.PosX = -1;
-							spritePosition.PosY = -1;
-							i++;
-							while (m_keywords[i] != ";") {
-
-								if (m_keywords[i] == ",") {
-
-									newLine->m_SpritesShown.push_back(spritePosition);
-									i++;
-									spritePosition = { -1, -1, -1 };
-									continue;
-								}
-								if (m_keywords[i] == "(") {
-									i++;
-									spritePosition.PosY = std::stoi(m_keywords[i]);
-									i = i + 2;											//um 2 Positionen verschieben, weil sich zwischen den Koordinaten ein Komma befindet
-									spritePosition.PosX = std::stoi(m_keywords[i]);
-									i++;
-									continue;
-								}
-								if (m_keywords[i] == ")") {
-									i++;
-									continue;
-								}
-								spritePosition.Index = std::stoi(m_keywords[i]);
-								i++;
-							}
-							newLine->m_SpritesShown.push_back(spritePosition);
-							newPanel->m_DialogueLines.insert(std::pair(lineKey, newLine));
-							lineKey++;
-							i++;
-							spritePosition = { -1, -1, -1 };
-						}
-						if (m_keywords[i] == "Split" && m_keywords[i + 1] == "{") {
-							i += 2;
-							SplitDecision* newDecision = new SplitDecision(m_Renderer, m_GameSettings, m_ImageLoader);
-							newDecision->m_type = ShownItemType::Decision;
-							for (i; i < m_keywords.size(); i) {
-								if (m_keywords[i] == "Option" && m_keywords[i + 1] == "{") {
-									i += 2;
-									BranchOption* newOption = new BranchOption();
-									for (i; i < m_keywords.size(); i) {
-
-										if (m_keywords[i] == "Name:") {
-											newOption->m_name = m_keywords[i + 1];
-											i += 3;
-											continue;
-										}
-										if (m_keywords[i] == "Text:") {
-											newOption->m_shownText = m_keywords[i + 1];
-											i += 3;
-											continue;
-										}
-										if (m_keywords[i] == "Sprite:") {
-											newOption->SpriteIndex = stoi(m_keywords[i + 1]);
-											i += 3;
-											continue;
-										}
-										if (m_keywords[i] == "Effect" && m_keywords[i + 1] == "{") {
-											i += 6;
-											continue;
-										}
-										if (m_keywords[i] == "}") {
-											i++;
-											newDecision->m_options.push_back(newOption);
-											break;
-										}
-									}
-								}
-								if (m_keywords[i] == "}") {
-									i++;
-									newPanel->m_DialogueLines.insert(std::pair(lineKey, newDecision));
-									lineKey++;
-									break;
-								}
-							}
-						}
 						if (m_keywords[i] == "Branch" && m_keywords[i + 1] == "{") {
 							i += 2;
-							SplitDecision* newDecision = new SplitDecision(m_Renderer, m_GameSettings, m_ImageLoader);
-							newDecision->m_type = ShownItemType::Decision;
+							Branch* newBranch = new Branch();
+							lineKey = 0;
 							for (i; i < m_keywords.size(); i) {
-								if (m_keywords[i] == "Option" && m_keywords[i + 1] == "{") {
-									i += 2;
-									BranchOption* newOption = new BranchOption();
-									if (m_keywords[i] == "Name:") {
-										newOption->m_name = m_keywords[i + 1];
-										i += 3;
-										continue;
-									}
-									if (m_keywords[i] == "Text:") {
-										newOption->m_shownText = m_keywords[i + 1];
-										i += 3;
-										continue;
-									}
-									if (m_keywords[i] == "Sprite:") {
-										newOption->SpriteIndex = stoi(m_keywords[i + 1]);
-										i += 3;
-										continue;
-									}
-									if (m_keywords[i] == "Effect" && m_keywords[i + 1] == "{") {
-										i += 6;
-										continue;
-									}
 
+								if (m_keywords[i] == "Name:") {
+									newBranch->m_Name = m_keywords[i + 1];
+									i += 3;
+									continue;
 								}
+
+								if (m_keywords[i] == "Text:") {
+
+									DialogLine* newLine = new DialogLine();
+									newLine->m_type = ShownItemType::Line;
+									newLine->Name = m_keywords[i + 1];
+									newLine->Text = m_keywords[i + 3];		//+3 weil sich zwischen dem Namen und dem Text ein Komma befindet
+									i = i + 4;
+									if (m_keywords[i] == ";") {
+										newBranch->m_shownItems.insert(std::pair(lineKey, newLine));
+										lineKey++;
+										i++;
+										continue;
+									} else if (m_keywords[i] == ",") {
+										i++;
+										SpritePosition spritePosition;
+										spritePosition.Index = std::stoi(m_keywords[i]);
+										spritePosition.PosX = -1;
+										spritePosition.PosY = -1;
+										i++;
+										while (m_keywords[i] != ";") {
+
+											if (m_keywords[i] == ",") {
+
+												newLine->m_SpritesShown.push_back(spritePosition);
+												i++;
+												spritePosition = { -1, -1, -1 };
+												continue;
+											}
+											if (m_keywords[i] == "(") {
+												i++;
+												spritePosition.PosY = std::stoi(m_keywords[i]);
+												i = i + 2;											//um 2 Positionen verschieben, weil sich zwischen den Koordinaten ein Komma befindet
+												spritePosition.PosX = std::stoi(m_keywords[i]);
+												i++;
+												continue;
+											}
+											if (m_keywords[i] == ")") {
+												i++;
+												continue;
+											}
+											spritePosition.Index = std::stoi(m_keywords[i]);
+											i++;
+										}
+										newLine->m_SpritesShown.push_back(spritePosition);
+										newBranch->m_shownItems.insert(std::pair(lineKey, newLine));
+										lineKey++;
+										i++;
+										spritePosition = { -1, -1, -1 };
+									}
+									continue;
+								}
+
+								if (m_keywords[i] == "Continue" && m_keywords[i + 1] == "{") {
+									i += 3;
+									std::map<std::string, ContinueType> enumMap = { {"Branch", ContinueType::BranchContinue}, {"Split", ContinueType::SplitContinue},{"Panel", ContinueType::PanelContinue} };
+									auto iterator = enumMap.find(m_keywords[i]);
+									if (iterator != enumMap.end()) {
+										newBranch->m_continueType = iterator->second;
+									} else {
+										//TODO Error
+									}
+									switch (newBranch->m_continueType) {
+										case ContinueType::BranchContinue:
+										case ContinueType::PanelContinue:
+											i += 3;
+											newBranch->m_continueKey = m_keywords[i];
+											i += 3;
+											break;
+										case ContinueType::SplitContinue:
+											i += 2;
+											if (m_keywords[i] == "Split" && m_keywords[i + 1] == "{") {
+												i += 2;
+												SplitDecision* newDecision = new SplitDecision(m_Renderer, m_GameSettings, m_ImageLoader);
+												newDecision->m_type = ShownItemType::Decision;
+												for (i; i < m_keywords.size(); i) {
+													if (m_keywords[i] == "Option" && m_keywords[i + 1] == "{") {
+														i += 2;
+														SplitOption* newOption = new SplitOption();
+														for (i; i < m_keywords.size(); i) {
+															if (m_keywords[i] == "Name:") {
+																newOption->m_name = m_keywords[i + 1];
+																i += 3;
+																continue;
+															}
+															if (m_keywords[i] == "Text:") {
+																newOption->m_shownText = m_keywords[i + 1];
+																i += 3;
+																continue;
+															}
+															if (m_keywords[i] == "Sprite:") {
+																newOption->SpriteIndex = stoi(m_keywords[i + 1]);
+																i += 3;
+																continue;
+															}
+															if (m_keywords[i] == "Continue" && m_keywords[i + 1] == "{") {
+																i += 3;
+																iterator = enumMap.find(m_keywords[i]);
+																if (iterator != enumMap.end()) {
+																	newOption->m_type = iterator->second;
+																} else {
+																	//TODO Error
+																}
+																switch (newOption->m_type) {
+																	case ContinueType::BranchContinue:
+																	case ContinueType::PanelContinue:
+																		i += 3;
+																		newOption->m_continueKey = m_keywords[i];
+																		i += 3;
+																		continue;
+																}
+															}
+															if (m_keywords[i] == "}") {
+																newDecision->m_options.push_back(newOption);
+																i++;
+																break;
+															}
+														}
+
+													}
+													if (m_keywords[i] == "}") {
+														i += 2;
+														newBranch->m_shownItems.insert(std::pair(lineKey, newDecision));
+														lineKey++;
+														break;
+													}
+												}
+											}
+									}
+								}
+
 								if (m_keywords[i] == "}") {
 									i++;
-									newPanel->m_DialogueLines.insert(std::pair(lineKey, newDecision));
-									lineKey++;
+									newPanel->m_Branches.insert(std::pair<std::string, Branch*>(newBranch->m_Name, newBranch));
 									break;
 								}
 							}
 						}
 						if (m_keywords[i] == "}") {
-							i++;
+							i++;		//TODO Animation
 							break;
 						}
 					}
-				}
-				if (m_keywords[i] == "Animation_Placeholder") {
-					i++;		//TODO Animation
-					break;
+					if (m_keywords[i] == "Animation_Placeholder") {
+						i += 2;		//TODO Animation
+						continue;
+					}
+					if (m_keywords[i] == "}") {
+						i++;
+						break;
+					}
 				}
 				if (m_keywords[i] == "}") {
 					i++;
 					break;
 				}
 			}
-			m_PanelList.push_back(newPanel);
-			m_panelNameDictionary.insert(std::pair<std::string, int>(newPanel->m_PanelName, (m_PanelList.size() - 1)));
+			newPanel->m_currentBranchKey = newPanel->m_EntryBranchKey;
+			m_PanelMap.insert(std::pair(newPanel->m_PanelName, newPanel));
+			m_panelNameDictionary.insert(std::pair(newPanel->m_PanelName, (m_PanelMap.size() - 1)));
 		}
-	}
-
-	for (int i = 0; i < m_PanelList.size(); i++) {
-
-		m_PanelList[i]->LoadImages();
 	}
 }

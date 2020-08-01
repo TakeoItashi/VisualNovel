@@ -40,6 +40,7 @@ std::vector<std::string> TextLoader::LoadText(std::string _filepath) {
 					} else if (currentCharacter == '"') {
 
 						//currentKeyword += currentCharacter;
+						std::replace(currentKeyword.begin(), currentKeyword.end(), '_', ' ');
 						keywords.push_back(currentKeyword);
 						currentKeyword.clear();
 						quote = !quote;

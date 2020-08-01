@@ -4,7 +4,6 @@
 
 Save::Save() {
 	m_currentLine = 0;
-	m_currentPanel = 0;
 }
 
 void Save::Serialize(std::string _path) {

@@ -1,0 +1,103 @@
+Panel {
+
+	Name: "Panel 1";		
+
+	BGIndex: 0;				
+	
+		##Condition {
+		##	
+		##	DataValue {
+		##		
+		##		Name: StoryTrigger1;
+		##		Type: trigger;
+		##		Value: true;
+		##		Action: isEqual;
+		##	}
+		##	
+		##	DataValue {
+		##		
+		##		Name: StoryVariable1;
+		##		Type: variable;
+		##		Value: 3;
+		##		Action: isBigger;
+		##	}
+		##
+		##	Alternative {
+		##		Name: "Panel 2";
+		##	}
+		##}
+
+	Sprites {
+	
+		Sprite: 1;
+		Sprite: 4;
+		Sprite: 5;
+	}
+	
+	Texts {
+
+		Text: "Narrator", "This is the first string";
+		Text: ""  , "This is the second text shown";
+		Split {
+			Option {
+				Name: Option1;
+				Text: "Doge first";
+				Sprite: 0;
+				Effect {
+					Continue: "Branch 1";
+##						Variable {
+##						Name: StoryVariable1;
+##						Type: variable;
+##						Operation: add;	##(subtract, set)
+##						Value: 3;
+##					}
+				}
+			}
+			Option {
+				Name: Option2;
+				Text: "Heinrich first";
+				Sprite: 0;
+				Effect {
+					Continue: "Branch 2";
+##					Variable {
+##						Name: StoryVariable1;
+##						Type: variable;
+##						Operation: add;	##(subtract, set)
+##						Value: 3;
+##					}
+				}
+			}
+		}
+##		Branch {
+##			Name: "Branch 1";
+##			Text: "Doge", "I Am Doge", 2;
+##			Text: "Heinrich Kleinrich", "And I am Heinrich", 2, 3;
+####			GlobalText: "Global Text 1";
+##			Branch {
+##				Name: "Branch 1";
+##				Text: "Doge", "I Am Doge", 2;
+##				Text: "Heinrich Kleinrich", "And I am Heinrich", 2, 3;
+##				}
+##				Branch {
+##					Name: "Branch 2";
+##					Text: "Heinrich Kleinrich", "I am Heinrich", 3;
+##					Text: "Doge", "And I Am Doge", 3, 2;
+##				}
+##				Branch {
+##					Name: "Branch 2";
+##					Text: "Heinrich Kleinrich", "I am Heinrich", 3;
+##					Text: "Doge", "And I Am Doge", 3, 2;
+##				}
+##			}
+		Text: "Goblin Doctor", "Hello", 1;
+##		Global Texts {
+##			Name: "Global Text 1";
+##			Text: "Narrator", "This is a Global Text";		
+##			Text: "Narrator", "This will be shown on all Branches";
+##		}
+	}
+	
+	Animation_Placeholder {
+	
+	}	
+}

@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 #include <ctype.h>
+#include <algorithm>
 
 class Panel;
 

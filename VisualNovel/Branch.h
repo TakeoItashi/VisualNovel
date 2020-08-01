@@ -2,13 +2,15 @@
 #include <string>
 #include <map>
 #include "ShownItem.h"
+#include "ContinueType.h"
 
 class ShownItem;
+enum ContinueType;
 
 class Branch {
 public:
 	std::string m_Name;
-	int m_startIndex;
-	int m_endIndex;
-	int m_continueIndex;
+	ContinueType m_continueType;
+	std::map<int, ShownItem*> m_shownItems;
+	std::string m_continueKey;
 };

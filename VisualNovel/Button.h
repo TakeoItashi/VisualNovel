@@ -25,6 +25,6 @@ class Button : public SpriteSheetTexture {
 		//@param A pointer to the event that is passed to the Button
 		//@return true for a Button press
 		bool HandleEvent(SDL_Event* _event);
-		std::function<bool(Button*)> m_delegateFunction;
+		std::function<bool(void*)> m_delegateFunction;
 	private:
 };

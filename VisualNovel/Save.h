@@ -11,7 +11,7 @@ public:
 	Save();
 
 	int m_currentLine;
-	int m_currentPanel;
+	std::string m_currentPanel;
 	//TODO: unordered map benutzen
 	std::map<std::string, DataValue*> m_values;
 	std::vector<bool> m_triggers;	//TODO eigene Value Klasse mit ID zum erstellen.

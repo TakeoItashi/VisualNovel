@@ -124,9 +124,6 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Quelldateien\InGameView\BaseClasses</Filter>
     </ClCompile>
-    <ClCompile Include="BranchOption.cpp">
-      <Filter>Quelldateien\InGameView\SplitDecision</Filter>
-    </ClCompile>
     <ClCompile Include="Panel.cpp">
       <Filter>Quelldateien\InGameView\Panels</Filter>
     </ClCompile>
@@ -233,9 +230,6 @@
     <ClInclude Include="SplitDecision.h">
       <Filter>Headerdateien\InGameView\SplitDecisions</Filter>
     </ClInclude>
-    <ClInclude Include="BranchOption.h">
-      <Filter>Headerdateien\InGameView\SplitDecisions</Filter>
-    </ClInclude>
     <ClInclude Include="SpriteSheetTexture.h">
       <Filter>Headerdateien\UI\BaseClasses</Filter>
     </ClInclude>
@@ -261,6 +255,15 @@
       <Filter>Headerdateien\UI\BaseMenu</Filter>
     </ClInclude>
     <ClInclude Include="Branch.h">
+      <Filter>Headerdateien\InGameView\SplitDecisions</Filter>
+    </ClInclude>
+    <ClInclude Include="ContinueType.h">
+      <Filter>Headerdateien\InGameView\SplitDecisions</Filter>
+    </ClInclude>
+    <ClInclude Include="ContinueItem.h">
+      <Filter>Headerdateien\InGameView\SplitDecisions</Filter>
+    </ClInclude>
+    <ClInclude Include="SplitOption.h">
       <Filter>Headerdateien\InGameView\SplitDecisions</Filter>
     </ClInclude>
   </ItemGroup>

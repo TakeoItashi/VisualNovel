@@ -7,6 +7,7 @@
 #include "Panel.h"
 #include "Button.h"
 #include "SplitDecision.h"
+#include "Branch.h"
 
 #define CurrentSprite currentLine->m_SpritesShown[i]
 
@@ -25,7 +26,7 @@ Panel::~Panel() {
 		m_SpriteList[i]->Free();
 	}
 
-	m_DialogueLines.clear();
+	m_Branches.clear();
 	m_SpriteList.shrink_to_fit();
 }
 
@@ -36,7 +37,7 @@ void Panel::ShowLine(int _lineIndex) {
 	int aviableSpriteSpace;
 
 	//Find out Default Sprite offset
-	DialogLine* currentLine = (DialogLine*)m_DialogueLines[_lineIndex];
+	DialogLine* currentLine = (DialogLine*)m_Branches[m_currentBranchKey]->m_shownItems[_lineIndex];
 	if (currentLine->m_SpritesShown.size() > 0) {
 
 		//Hintergrund Breite herausfinden
@@ -60,7 +61,7 @@ void Panel::ShowLine(int _lineIndex) {
 
 				if (CurrentSprite.PosX < 0) {
 
-					SpritePosX = (aviableSpriteSpace * (i+1)) - (widthRatio / 2);		//TODO richtige Textur Width benutzen
+					SpritePosX = (aviableSpriteSpace * (i + 1)) - (widthRatio / 2);		//TODO richtige Textur Width benutzen
 				} else {
 
 					SpritePosX = CurrentSprite.PosX;
@@ -83,10 +84,10 @@ void Panel::ShowLine(int _lineIndex) {
 	m_TextBox->Render((*currentLine));
 }
 
-void Panel::ShowSplit(int _lineIndex, SDL_Renderer* _renderer) {
+void Panel::ShowSplit(int _lineIndex) {
 	m_BackgroundImage->Render(0, 0, 600, 800);
 
-	SplitDecision* currentSplit = (SplitDecision*)m_DialogueLines[_lineIndex];
+	SplitDecision* currentSplit = (SplitDecision*)m_Branches[m_currentBranchKey]->m_shownItems[_lineIndex];
 	currentSplit->CreateButtons();
 	currentSplit->RenderOptions();
 }
@@ -101,4 +102,17 @@ void Panel::LoadImages() {
 	}
 	m_SpriteList = m_ImageLoader->GetTextures(indices);
 	m_BackgroundImage = m_SpriteList[m_SpriteIndexList[0].Index];
+}
+
+void Panel::RenderCurrentSplit(int _lineIndex) {
+
+	m_BackgroundImage->Render(0, 0, 600, 800);
+
+	SplitDecision* currentSplit = (SplitDecision*)m_Branches[m_currentBranchKey]->m_shownItems[_lineIndex];
+	currentSplit->RenderOptions();
+}
+
+Branch* Panel::GetCurrentBranch() {
+
+	return m_Branches[m_currentBranchKey];
 }

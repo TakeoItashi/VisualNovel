@@ -11,6 +11,7 @@ class SpritePosition;
 class Button;
 class ShownItem;
 class SDL_Renderer;
+class Branch;
 
 class Panel {
 
@@ -24,14 +25,18 @@ class Panel {
 		ImageLoader* m_ImageLoader;							//TODO statische Image Loader Referenz
 		Condition* m_PanelCondition;
 		std::string m_PanelName;
-		std::map<int, ShownItem*> m_DialogueLines;
+		std::map<std::string, Branch*> m_Branches;
 		std::vector<SpritePosition> m_SpriteIndexList;		//TODO Liste wieder auf ints zurueck setzen
 		std::vector<Texture*> m_SpriteList;
+		std::string m_currentBranchKey;
+		std::string m_EntryBranchKey;
 		/**
 		Displays the Line corresponding to the index that is handed over
 		@param _lineIndex: The Index of the Line in this Panel
 		*/
 		void ShowLine(int _lineIndex);
-		void ShowSplit(int _lineIndex, SDL_Renderer* _renderer);
+		void ShowSplit(int _lineIndex);
 		void LoadImages();
+		void RenderCurrentSplit(int _lineIndex);
+		Branch* GetCurrentBranch();
 };
