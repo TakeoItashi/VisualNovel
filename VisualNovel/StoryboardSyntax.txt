@@ -4,14 +4,14 @@
 ##
 ##		BGIndex: [Index of the Background Image];	Background Image Index -> See ImageImports.txt
 ##		
-##		Condition {
+##		Condition (Optional) {
 ##			
 ##			DataValue {
 ##				
 ##				Name: [Name of the DataValue];
-##				Type: [Type of the DataValue];
+##				Type: [Type of the DataValue; { trigger, variable, decimal, text } ];
 ##				Value: [Value that triggers the Condition];
-##				Action: [Action that should take place in the condition Check];
+##				Action: [Action that should take place in the condition Check; { isSmaller, isEqual, isBigger, } ];
 ##			}
 ##			
 ##			Alternative {
@@ -24,30 +24,32 @@
 ##			Sprite: [Index in the Image File of the Sprite];	Any number of Sprites can be used
 ##		}
 ##		
-##		Texts {
-##			
-##			Text: "[Name of the Character]", "[Text Shown in the Textbox]", [SpritePosition], [SpritePosition];		Any number of Sprite Positions can be used
-##			## Sprite Position Syntax: [Sprite Index; The Index is the one from the Sprite Bracket, not from the Image File] ( [Position on X-Axis, Position on Y-Axis] )
-##			## Example: "2(70,400)"  
-##			Split {
-##				Option {
-##					Name: [Name of the Option];
-##					Text: "[Text shown on the button]"
-##					Effect {
-##						Continue: "[Name of the Branch that gets shown, when this option is chosen]"
-##						##Variable {
-##						##	Name: StoryVariable1;
-##						##	Type: variable;
-##						##	Operation: add;	##(subtract, set)
-##						##	Value: 3;
-##						##}
+##		EntryBranch: "[Name of the Branch that should be shown first];
+##
+##		Branches {
+##			Branch {
+##				Name: "Unique Name of the Branch";
+##				Text: "[Name of the Character]", "[Text Shown in the Textbox]", [SpritePosition], { undetermined amount of SpritePositions};		Any number of Sprite Positions can be used
+##				## Sprite Position Syntax: [Sprite Index; The Index is the one from the Sprite Bracket, not from the Image File] ( [Position on X-Axis, Position on Y-Axis] )
+##				## Example: "2(70,400)"  			
+##				[Undetermined number of Texts]
+##				Continue (Optional) {
+##					Type: [ContinueType; { Branch, Split, Panel } ];
+##					Split {
+##						Option {
+##							Name: [Name of the ContinueOption];
+##							Text: "[The Text that gets shown on the Button]";
+##							Sprite: [Index of the Button Sprite in the SpriteImports File];
+##							Continue {
+##								Type: [ContinueType; For now only Branch and Panel];
+##								Name: "[Name of the continuePoint, that should be changed to]";
+##							}					
+##						}
+##						[Undetermined number of Options]
 ##					}
 ##				}
 ##			}
-##			Branch {
-##				Name: "[Name of the Branch]";
-##				Text: "[Name of the Character]", "[Text Shown in the Textbox]", [SpritePosition], [SpritePosition];		Any number of Sprite Positions can be used
-##			}
+##			[Undetermined number of Branches]
 ##		}
 ##		
 ##		Animation_Placeholder {
