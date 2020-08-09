@@ -46,7 +46,7 @@
                             <Border Grid.Column="0"
                                     BorderBrush="Gray" BorderThickness="0,0,1,0">
                                 <TabControl>
-                                    <TabItem Header="_Story Tree">
+                                    <TabItem Header="_Panels">
                                         <Grid>
                                             <ListBox ItemsSource="{Binding CurrentProject.Panels}" 
                                                      DataContext="{Binding Mode=OneWay}" 
@@ -55,6 +55,17 @@
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <TextBlock Text="{Binding PanelName}"/>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Grid>
+                                    </TabItem>
+                                    <TabItem Header="_Branches">
+                                        <Grid>
+                                            <ListBox ItemsSource="{Binding SelectedPanel.Branches}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Name}" />
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
                                             </ListBox>

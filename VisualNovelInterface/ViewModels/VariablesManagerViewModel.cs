@@ -9,9 +9,9 @@ using System.Windows.Input;
 using VisualNovelInterface.Models.Args;
 using VisualNovelInterface.Models.Enums;
 using VisualNovelInterface.MVVM;
-using VisualNovelInterface.VariablesImport;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
+using VisualNovelInterface.Models;
 
 namespace VisualNovelInterface.ViewModels
 {

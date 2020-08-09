@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using VisualNovelInterface.Models.Enums;
 using VisualNovelInterface.MVVM;
 
-namespace VisualNovelInterface.VariablesImport
+namespace VisualNovelInterface.Models
 {
 	public class DataValue : BaseObject
 	{

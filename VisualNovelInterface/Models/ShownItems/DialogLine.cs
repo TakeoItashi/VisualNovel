@@ -7,27 +7,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using VisualNovelInterface.Models.ShownItems;
 using VisualNovelInterface.MVVM;
 using VisualNovelInterface.ViewModels;
 
 namespace VisualNovelInterface.Models
 {
-	public class DialogueLine : BaseObject
+	public class DialogLine : ShownItem
 	{
 		private string textShown;
-		private int spriteIndex;
 		private string characterName;
 		private ObservableCollection<SpriteViewModel> m_usedSprites;
-		private ObservableCollection<int> m_spriteIds;
 
 		public string TextShown {
 			get => textShown;
 			set => SetProperty(ref textShown, value);
-		}
-
-		public int SpriteIndex {
-			get => spriteIndex;
-			set => SetProperty(ref spriteIndex, value);
 		}
 
 		public string CharacterName {
@@ -40,12 +34,7 @@ namespace VisualNovelInterface.Models
 			set => m_usedSprites = value;
 		}
 
-		public ObservableCollection<int> SpriteIds {
-			get => m_spriteIds;
-			set => m_spriteIds = value;
-		}
-
-		public DialogueLine() {
+		public DialogLine() {
 			m_usedSprites = new ObservableCollection<SpriteViewModel>();
 		}
 	}

@@ -19,23 +19,25 @@ bool SpriteSheetTexture::LoadMedia(std::string _path)
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
 
 	newTexture = SDL_CreateTextureFromSurface(m_Renderer, loadedSurface);
+	int middleHeight = loadedSurface->h / 2;
+	int middleWidth = loadedSurface->w / 2;
 	m_SpriteClips[0].x = 0;
 	m_SpriteClips[0].y = 0;
-	m_SpriteClips[0].w = 512;
-	m_SpriteClips[0].h = 512;
+	m_SpriteClips[0].w = middleWidth;
+	m_SpriteClips[0].h = middleHeight;
 
-	m_SpriteClips[1].x = 512;
+	m_SpriteClips[1].x = middleWidth;
 	m_SpriteClips[1].y = 0;
-	m_SpriteClips[1].w = 512;
-	m_SpriteClips[1].h = 512;
+	m_SpriteClips[1].w = middleWidth;
+	m_SpriteClips[1].h = middleHeight;
 
 	m_SpriteClips[2].x = 0;
-	m_SpriteClips[2].y = 512;
-	m_SpriteClips[2].w = 512;
-	m_SpriteClips[2].h = 512;
+	m_SpriteClips[2].y = middleHeight;
+	m_SpriteClips[2].w = middleWidth;
+	m_SpriteClips[2].h = middleHeight;
 
-	Width = loadedSurface->w;
-	Height = loadedSurface->h;
+	Width = middleWidth;
+	Height = middleHeight;
 
 	SDL_FreeSurface(loadedSurface);
 

@@ -13,7 +13,6 @@ using Panel = VisualNovelInterface.Models.Panel;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using System.Windows.Media.Imaging;
 using System.Runtime.InteropServices;
-using VisualNovelInterface.VariablesImport;
 using VisualNovelInterface.Views;
 using VisualNovelInterface.Models.Enums;
 using GalaSoft.MvvmLight.Command;
@@ -24,12 +23,13 @@ using System.IO;
 using DragEventArgs = System.Windows.DragEventArgs;
 using System.Windows.Controls;
 using Image = System.Drawing.Image;
+using VisualNovelInterface.Models.ShownItems;
 
 namespace VisualNovelInterface.ViewModels
 {
 	public class MainViewModel : BaseObject
 	{
-		private DialogueLine selectedLine;
+		private DialogLine selectedLine;
 		private Panel selectedPanel;
 		private Project currentProject;
 		private SpriteViewModel m_selectedSprite;
@@ -62,7 +62,7 @@ namespace VisualNovelInterface.ViewModels
 				SelectedLine = SelectedPanel.DialogueLines.First();
 			}
 		}
-		public DialogueLine SelectedLine {
+		public DialogLine SelectedLine {
 			get => SelectedPanel.SelectedLine;
 			set => SelectedPanel.SelectedLine = value;
 		}
@@ -116,32 +116,8 @@ namespace VisualNovelInterface.ViewModels
 			AddNewSpriteCommand = new RelayCommand(AddNewSprite);
 			DropSpriteInPanelCommand = new RelayCommand<CustomEventCommandParameter>(DropSpriteInPanel);
 #if DEBUG
-
-			currentProject.Panels.Add(new Panel("NewPanel_01"));
-			currentProject.Panels.Add(new Panel("NewPanel_02"));
-			currentProject.Panels.Add(new Panel("NewPanel_03"));
-
-			currentProject.SelectedPanel = currentProject.Panels[0];
-
-			currentProject.SelectedPanel.DialogueLines.Add(new DialogueLine { CharacterName = $"Heinrich Meinrich", SpriteIndex = 0, TextShown = "Lorem Ipsum" });
-			currentProject.SelectedPanel.DialogueLines.Add(new DialogueLine { CharacterName = $"dlwmvmd", SpriteIndex = 0, TextShown = "9ur409ut23409u9589023485" });
-			currentProject.SelectedPanel.DialogueLines.Add(new DialogueLine { CharacterName = $"39rt md", SpriteIndex = 0, TextShown = " 03r dskngkdjfgkdm" });
-			currentProject.SelectedPanel.DialogueLines.Add(new DialogueLine { CharacterName = $"FFFFFFFFFFFFFFFFF", SpriteIndex = 0, TextShown = "ffffffffffff" });
-
-			currentProject.SelectedPanel.SelectedLine = currentProject.SelectedPanel.DialogueLines[0];
-
-			string currentPath = Directory.GetCurrentDirectory();
-			currentPath = Path.Combine(currentPath, @"..\..\");
-			var ProjectDir = Path.GetFullPath(currentPath);
-			currentPath = Path.Combine(ProjectDir, @"VisualNovelInterface\Resources\doge.png");
-
-			GlobalSprites.Add(new SpriteImage(currentPath, "DogeSprite"));
-			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(GlobalSprites.First()));
-			currentProject.SelectedPanel.SelectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
-			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(GlobalSprites.First()));
-			currentProject.SelectedPanel.SelectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
+			GenerateTestStory();
 #endif
-
 			//IntPtr handle = DLLImporter.CreateDataValue_bool("newTrigger", true);
 			//Console.WriteLine($"The Adress is: 0x{handle.ToString("X16")}");
 			//bool value = DLLImporter.ReadDataValue_bool(handle);
@@ -155,8 +131,6 @@ namespace VisualNovelInterface.ViewModels
 			//DLLImporter.CreateDataValue_int("newVariable", 1, 3);
 			//DLLImporter.CreateDataValue_float("newVariable", 1, 3.0f);
 			//DLLImporter.CreateDataValue_string("newDecimal", 2, "dfvds");
-
-
 		}
 
 		public void AddBackgroundImage() {
@@ -214,6 +188,38 @@ namespace VisualNovelInterface.ViewModels
 			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(Sprite, (int)coordinates.X, coordinates.Y));
 			currentProject.SelectedPanel.SelectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
 			SelectedSprite = currentProject.SelectedPanel.SelectedLine.Sprites.Last();
+		}
+
+		public void GenerateTestStory() {
+			currentProject.Panels.Add(new Panel("NewPanel_01"));
+			currentProject.Panels.Add(new Panel("NewPanel_02"));
+			currentProject.Panels.Add(new Panel("NewPanel_03"));
+
+			currentProject.SelectedPanel = currentProject.Panels[0];
+
+			currentProject.SelectedPanel.Branches.Add(new Branch("Branch1", 
+													  new ObservableCollection<ShownItem>() {
+														new DialogLine{ CharacterName = "Narrator", TextShown = }
+													  },
+													  ));
+
+			currentProject.SelectedPanel.DialogueLines.Add(new DialogLine { CharacterName = $"Heinrich Meinrich", TextShown = "Lorem Ipsum" });
+			currentProject.SelectedPanel.DialogueLines.Add(new DialogLine { CharacterName = $"dlwmvmd", TextShown = "9ur409ut23409u9589023485" });
+			currentProject.SelectedPanel.DialogueLines.Add(new DialogLine { CharacterName = $"39rt md", TextShown = " 03r dskngkdjfgkdm" });
+			currentProject.SelectedPanel.DialogueLines.Add(new DialogLine { CharacterName = $"FFFFFFFFFFFFFFFFF", TextShown = "ffffffffffff" });
+
+			currentProject.SelectedPanel.SelectedLine = currentProject.SelectedPanel.DialogueLines[0];
+
+			string currentPath = Directory.GetCurrentDirectory();
+			currentPath = Path.Combine(currentPath, @"..\..\");
+			var ProjectDir = Path.GetFullPath(currentPath);
+			currentPath = Path.Combine(ProjectDir, @"VisualNovelInterface\Resources\doge.png");
+
+			GlobalSprites.Add(new SpriteImage(currentPath, "DogeSprite"));
+			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(GlobalSprites.First()));
+			currentProject.SelectedPanel.SelectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
+			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(GlobalSprites.First()));
+			currentProject.SelectedPanel.SelectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
 		}
 	}
 }

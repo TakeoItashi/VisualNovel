@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VisualNovelInterface.MVVM;
 
-namespace VisualNovelInterface.ViewModels
+namespace VisualNovelInterface.Models
 {
 	public class SpriteImage : BaseObject
 	{
