@@ -29,7 +29,6 @@ void SplitDecision::CreateButtons() {
 
 	for (int i = 0; i < m_options.size(); ++i) {
 		Button* newButton = new Button(m_Renderer);
-		
 
 		m_textTexture = new Texture(m_Renderer);
 		newButton->SetSprite(m_imageLoader->GetSprite(m_options[i]->SpriteIndex));

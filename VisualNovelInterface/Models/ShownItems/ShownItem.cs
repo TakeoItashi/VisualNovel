@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VisualNovelInterface.MVVM;
 
-namespace VisualNovelInterface.Models.ShownItems
+namespace VisualNovelInterface.Models
 {
 	public class ShownItem : BaseObject
 	{

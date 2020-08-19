@@ -95,19 +95,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\AspectRatioLayoutDecorator.cs" />
     <Compile Include="Controls\ResizeThumb.cs" />
+    <Compile Include="Converters\ButtonSpriteToRightSizeConverter.cs" />
     <Compile Include="Converters\EventToEventCommandConverter.cs" />
     <Compile Include="Converters\NumberTextBoxArgsConverter.cs" />
-    <Compile Include="Converters\TestConverter.cs" />
+    <Compile Include="Converters\ShownItemNameConverter.cs" />
     <Compile Include="Models\Branching\Branch.cs" />
-    <Compile Include="Models\Branching\Split.cs" />
+    <Compile Include="Models\ShownItems\Split.cs" />
     <Compile Include="Models\Enums\ContinueTypeEnum.cs" />
     <Compile Include="Models\Conditions\Condition.cs" />
     <Compile Include="Models\Branching\Continue.cs" />
     <Compile Include="Models\Branching\Option.cs" />
     <Compile Include="Models\ShownItems\ShownItem.cs" />
-    <Compile Include="Models\ShownItems\Split.cs" />
     <Compile Include="ProjectExport\Exporter.cs" />
+    <Compile Include="ProjectExport\SpriteExporter.cs" />
     <Compile Include="ProjectExport\TextBuilder.cs" />
     <Compile Include="Models\Args\CustomEventCommandParameter.cs" />
     <Compile Include="Models\Args\TextBoxEventArgs.cs" />
@@ -122,14 +124,26 @@
     <Compile Include="Models\Graphics\Panel.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Graphics\SpriteImage.cs" />
+    <Compile Include="ViewModels\FontManagerViewModel.cs" />
     <Compile Include="ViewModels\Sprites\SpriteViewModel.cs" />
     <Compile Include="MVVM\RelayComand.cs" />
     <Compile Include="ViewModels\VariablesManagerViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\FontConfigWindow.xaml.cs">
+      <DependentUpon>FontConfigWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\VariableManagerWindow.xaml.cs">
       <DependentUpon>VariableManagerWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\Styles\MovableSprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\OptionEditArea.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FontConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,6 +188,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="Resources\fonts\OpenSans-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -203,8 +220,33 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Resources\doge.png" />
+    <Resource Include="Resources\images\ButtonSpriteState.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\images\doge.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\images\GoblinMage.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\images\GoblinMage.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\images\square-rounded-empty-outlined-button-shapeByKatarinaStefanikova.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\images\square-rounded-Full-outlined-button-shapeByKatarinaStefanikova.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\images\StickFigure.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\images\summerBackground.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\images\wallpaper.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 </Project>

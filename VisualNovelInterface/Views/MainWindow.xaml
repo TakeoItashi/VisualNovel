@@ -4,29 +4,42 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:VisualNovelInterface.ViewModels"
+        xmlns:mvvm="clr-namespace:VisualNovelInterface.MVVM"
+        xmlns:enums="clr-namespace:VisualNovelInterface.Models.Enums"
         xmlns:conv="clr-namespace:VisualNovelInterface.Converters"
+        xmlns:c="clr-namespace:VisualNovelInterface.Controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1280">
     <Window.Resources>
         <conv:EventToEventCommandConverter x:Key="EventToEventCommandConverter"/>
+        <conv:ShownItemNameConverter x:Key="ShownItemNameConverter"/>
+        <conv:ButtonSpriteToRightSizeConverter x:Key="ButtonSpriteToRightSizeConverter"/>
     </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
-            <MenuItem Header="_File"/>
+            <MenuItem Header="_File">
+                <MenuItem Header="_Export">
+                    <MenuItem Header="_Set Output directory" Command="{Binding SetOutputDirectoryCommand}"/>
+                    <MenuItem Header="_Run Export" Command="{Binding RunExportCommand}"/>
+                </MenuItem>
+            </MenuItem>
             <MenuItem Header="_Edit"/>
             <MenuItem Header="_View"/>
-            <MenuItem Header="_Project"/>
+            <MenuItem Header="_Project">
+                <MenuItem Header="_Configure Fonts" Command="{Binding OpenFontConfigWindowCommand}"/>
+            </MenuItem>
             <MenuItem Header="_Help"/>
         </Menu>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="4*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0"
@@ -45,152 +58,385 @@
                             </Grid.ColumnDefinitions>
                             <Border Grid.Column="0"
                                     BorderBrush="Gray" BorderThickness="0,0,1,0">
-                                <TabControl>
-                                    <TabItem Header="_Panels">
-                                        <Grid>
-                                            <ListBox ItemsSource="{Binding CurrentProject.Panels}" 
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="30"/>
+                                    </Grid.RowDefinitions>
+                                    <TabControl Grid.Row="0">
+                                        <TabItem Header="_Panels">
+                                            <Grid>
+                                                <ListBox ItemsSource="{Binding CurrentProject.Panels}" 
                                                      DataContext="{Binding Mode=OneWay}" 
                                                      SelectedIndex="0" 
                                                      SelectedItem="{Binding SelectedPanel}">
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding PanelName}"/>
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
-                                        </Grid>
-                                    </TabItem>
-                                    <TabItem Header="_Branches">
-                                        <Grid>
-                                            <ListBox ItemsSource="{Binding SelectedPanel.Branches}">
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding Name}" />
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
-                                        </Grid>
-                                    </TabItem>
-                                    <TabItem Header="_Dialog Lines">
-                                        <Grid>
-                                            <ListBox ItemsSource="{Binding SelectedPanel.DialogueLines}"
-                                                     SelectedItem="{Binding SelectedLine}" >
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding CharacterName}" />
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
-                                        </Grid>
-                                    </TabItem>
-                                    <TabItem Header="_Sprites">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition Height="20"/>
-                                            </Grid.RowDefinitions>
-                                            <ListBox ItemsSource="{Binding GlobalSprites}">
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding Name}"
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding PanelName}"/>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                            </Grid>
+                                        </TabItem>
+                                        <TabItem Header="_Branches">
+                                            <Grid>
+                                                <ListBox ItemsSource="{Binding SelectedPanel.Branches}"
+                                                         SelectedIndex="0"
+                                                         SelectedItem="{Binding SelectedBranch}">
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <DockPanel>
+                                                                <CheckBox DockPanel.Dock="Left"
+                                                                          IsChecked="{Binding IsEntryBranch}"/>
+                                                                <TextBlock Text="{Binding Name}" />
+                                                            </DockPanel>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                            </Grid>
+                                        </TabItem>
+                                        <TabItem Header="_Shown Items">
+                                            <Grid>
+                                                <ListBox ItemsSource="{Binding SelectedBranch.ShownItemsList}"
+                                                         SelectedItem="{Binding SelectedItem}" >
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Converter={StaticResource ShownItemNameConverter}}" />
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                            </Grid>
+                                        </TabItem>
+                                        <TabItem Header="_Sprites">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition Height="20"/>
+                                                </Grid.RowDefinitions>
+                                                <ListBox ItemsSource="{Binding GlobalSprites}">
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Name}"
                                                                    MouseDown="TextBlock_MouseDown"/>
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
-                                            <Button Grid.Row="1"
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                                <Button Grid.Row="1"
                                                     Command="{Binding AddNewSpriteCommand}"
                                                     Content="Add New Sprite"/>
-                                        </Grid>
-                                    </TabItem>
-                                </TabControl>
+                                            </Grid>
+                                        </TabItem>
+                                    </TabControl>
+                                    <TextBlock Grid.Row="1"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding SelectionPath}"/>
+                                </Grid>
                             </Border>
-                            <Grid Grid.Column="1">
-                                <Image Source="{Binding SelectedPanel.BackgroundImage}" 
-                                       VerticalAlignment="Center"/>
-                                <ItemsControl ItemsSource="{Binding SelectedPanel.SelectedLine.Sprites}"
+                            <DockPanel Grid.Column="1">
+                                <c:AspectRatioLayoutDecorator AspectRatio="1.78">
+                                    <Border BorderBrush="Black"
+                                        BorderThickness="1"
+                                        MinHeight="360"
+                                        MinWidth="640"
+                                        MaxHeight="1280"
+                                        MaxWidth="720">
+                                    <Grid>
+                                        <Image Source="{Binding SelectedPanel.BackgroundImage.Image}" 
+                                               VerticalAlignment="Center"/>
+                                        <ItemsControl ItemsSource="{Binding SelectedPanel.SelectedLine.Sprites}"
                                               AllowDrop="True">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <Canvas Background="Transparent"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="Drop">
-                                            <cmd:EventToCommand Command="{Binding DropSpriteInPanelCommand}"
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <Canvas Background="Transparent"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="Drop">
+                                                    <cmd:EventToCommand Command="{Binding DropSpriteInPanelCommand}"
                                                     PassEventArgsToCommand="True"
                                                     EventArgsConverter="{StaticResource EventToEventCommandConverter}"
                                                     EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UIElement}, AncestorLevel=1}}"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                    <ItemsControl.Style>
-                                        <Style TargetType="ItemsControl">
-                                            <Setter Property="ItemContainerStyle">
-                                                <Setter.Value>
-                                                    <Style>
-                                                        <Setter Property="Canvas.Left" 
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                            <ItemsControl.Style>
+                                                <Style TargetType="ItemsControl">
+                                                    <Setter Property="ItemContainerStyle">
+                                                        <Setter.Value>
+                                                            <Style>
+                                                                <Setter Property="Canvas.Left" 
                                                                 Value="{Binding PosX}"/>
-                                                        <Setter Property="Canvas.Top" 
+                                                                <Setter Property="Canvas.Top" 
                                                                 Value="{Binding PosY}"/>
-                                                    </Style>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </ItemsControl.Style>
-                                </ItemsControl>
-                                <Grid IsHitTestVisible="False">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="10*"/>
-                                        <RowDefinition/>
-                                        <RowDefinition Height="4*"/>
-                                    </Grid.RowDefinitions>
-                                    <Rectangle Grid.Row="1" 
+                                                            </Style>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ItemsControl.Style>
+                                        </ItemsControl>
+                                        <ItemsControl x:Name="Option_Preview"
+                                              ItemsSource="{Binding SelectedItem.Split.Options}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <Canvas Background="Transparent"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid x:Name="SpriteGrid"
+                                                  Width="{Binding Width}"
+                                                  Height="{Binding Height}">
+                                                        <Image Stretch="Fill"
+                                                       IsHitTestVisible="False">
+                                                            <Image.Source>
+                                                                <CroppedBitmap Source="{Binding NormalButtonSprite}"/>
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <Label Content="{Binding ShownText}"
+                                                               VerticalAlignment="Center"
+                                                               HorizontalAlignment="Center"/>
+                                                        <Grid.Style>
+                                                            <Style TargetType="Grid">
+                                                                <Setter Property="Canvas.Left" 
+                                                                Value="{Binding PosY}"/>
+                                                                <Setter Property="Canvas.Top" 
+                                                                Value="{Binding PosX}"/>
+                                                            </Style>
+                                                        </Grid.Style>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                            <ItemsControl.Style>
+                                                <Style TargetType="ItemsControl">
+                                                    <Setter Property="ItemContainerStyle">
+                                                        <Setter.Value>
+                                                            <Style>
+                                                                <Setter Property="Canvas.Left" 
+                                                                Value="{Binding PosX}"/>
+                                                                <Setter Property="Canvas.Top" 
+                                                                Value="{Binding PosY}"/>
+                                                            </Style>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ItemsControl.Style>
+                                        </ItemsControl>
+                                        <Grid IsHitTestVisible="False" IsEnabled="{Binding IsSelectedItemDialogLine}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="10*"/>
+                                                <RowDefinition/>
+                                                <RowDefinition Height="4*"/>
+                                            </Grid.RowDefinitions>
+                                            <Rectangle Grid.Row="1" 
                                                Margin="10,0,0,0" 
                                                Width="60" 
                                                Stroke="#FFC12F2F" 
                                                Fill="#B2C12F2F" 
                                                StrokeThickness="3" 
                                                HorizontalAlignment="Left"/>
-                                    <TextBlock Grid.Row="1" 
+                                            <TextBlock Grid.Row="1" 
                                                Margin="10,0,0,0" 
-                                               Text="{Binding SelectedLine.CharacterName}"/>
-                                    <Rectangle Grid.Row="2" 
+                                               Text="{Binding SelectedItem.CharacterName}"
+                                                       FontFamily="{Binding SelectedFont}"/>
+                                            <Rectangle Grid.Row="2" 
                                                Margin="10,5,10,10" 
                                                Stroke="#FFC12F2F" 
                                                Fill="#B2C12F2F" 
                                                StrokeThickness="3"/>
-                                    <TextBlock Grid.Row="2" 
+                                            <TextBlock Grid.Row="2" 
                                                Margin="10,5,10,10" 
-                                               Text="{Binding SelectedLine.TextShown}"/>
-                                </Grid>
-                                <!--<Rectangle AllowDrop="True"
-                                           Fill="Transparent"
-                                           IsHitTestVisible="False">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="Drop">
-                                            <cmd:EventToCommand Command="{Binding DropSpriteInPanelCommand}"
-                                                                PassEventArgsToCommand="True"
-                                                                EventArgsConverter="{StaticResource EventToEventCommandConverter}"
-                                                                EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UIElement}, AncestorLevel=1}}"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </Rectangle>-->
-                            </Grid>
+                                               Text="{Binding SelectedItem.TextShown}"
+                                               FontFamily="{Binding SelectedFont}"/>
+                                            <Grid.Style>
+                                                <Style TargetType="Grid">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsSelectedItemDialogLine}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                                </c:AspectRatioLayoutDecorator>
+                            </DockPanel>
                         </Grid>
                     </Border>
                     <Grid Grid.Row="1">
-                        <DockPanel>
+                        <DockPanel x:Name="DialogLine_Edit_Area">
                             <DockPanel DockPanel.Dock="Top">
                                 <TextBox Margin="10,5,0,5" 
                                          DockPanel.Dock="Left" 
                                          HorizontalAlignment="Left" 
-                                         MinWidth="60" 
-                                         Text="{Binding SelectedLine.CharacterName, UpdateSourceTrigger=PropertyChanged}"/>
+                                         MinWidth="60"
+                                         Text="{Binding SelectedItem.CharacterName, UpdateSourceTrigger=PropertyChanged}"/>
                                 <Label Content=":"/>
                             </DockPanel>
                             <TextBox Margin="10,0,10,10" 
-                                     Text="{Binding SelectedLine.TextShown, UpdateSourceTrigger=PropertyChanged}" >
-
+                                     Text="{Binding SelectedItem.TextShown, UpdateSourceTrigger=PropertyChanged}" >
                             </TextBox>
+                            <DockPanel.Style>
+                                <Style TargetType="DockPanel">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelectedItemDialogLine}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DockPanel.Style>
+                        </DockPanel>
+                        <DockPanel x:Name="Continue_Edit_Area">
+                            <DockPanel x:Name="Continue_Type_Area"
+                                       DockPanel.Dock="Top">
+                                <Label Content="Type:"/>
+                                <ComboBox Margin="10,5,0,5"
+                                          ItemsSource="{Binding Source={mvvm:Enumeration {x:Type enums:ContinueTypeEnum}}}"
+                                          DisplayMemberPath="Description"
+                                          SelectedValue="{Binding SelectedItem.Type, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedValuePath="Value"
+                                          DockPanel.Dock="Left" 
+                                          HorizontalAlignment="Left" 
+                                          MinWidth="60"/>
+                                <StackPanel x:Name="Split_Button_Area"
+                                            HorizontalAlignment="Left"
+                                            Orientation="Horizontal">
+                                    <Button Click="Refresh_Button_Click"
+                                            Content="Refresh"/>
+                                    <Button x:Name="Add_Option_Button"
+                                            Margin="5,0,0,0"
+                                            Width="75"
+                                            Height="20"
+                                            Content="Add Option"
+                                            Command="{Binding AddNewOptionCommand}">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SelectedItem.Type}" Value="{x:Static enums:ContinueTypeEnum.Split}">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    <Button x:Name="Remove_Option_Button"
+                                            Margin="5,0,0,0"
+                                            Width="75"
+                                            Height="20"
+                                            Content="Remove Option"
+                                            Command="{Binding RemoveSelectedOptionCommand}">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SelectedItem.Type}" Value="{x:Static enums:ContinueTypeEnum.Split}">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                </StackPanel>
+                            </DockPanel>
+                            <DockPanel x:Name="Panel_n_Branch_Key_Area" DockPanel.Dock="Top"
+                                       VerticalAlignment="Top"
+                                       HorizontalAlignment="Left">
+                                <Label Content="Key:"/>
+                                <TextBox Width="100"
+                                         Text="{Binding SelectedItem.ContinueKey, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DockPanel.Style>
+                                    <Style TargetType="DockPanel">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedItem.Type}" Value="{x:Static enums:ContinueTypeEnum.Split}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DockPanel.Style>
+                            </DockPanel>
+                            <Grid x:Name="Split_Edit_Area"
+                                  Margin="10">
+                                <Border BorderThickness="1"
+                                        BorderBrush="Gray">
+                                    <ListBox ItemsSource="{Binding SelectedItem.Split.Options}"
+                                             SelectedIndex="0"
+                                             SelectedItem="{Binding SelectedOption}"
+                                             HorizontalContentAlignment="Stretch">
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderThickness="1"
+                                                        BorderBrush="Gray"
+                                                        Margin="1">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition/>
+                                                            <ColumnDefinition Width="2*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Grid.Column="0">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Label Content="Name:"/>
+                                                                <TextBox Text="{Binding Name}"
+                                                                         Width="100"
+                                                                         Margin="3"/>
+                                                            </StackPanel>
+                                                            <DockPanel>
+                                                                <Label DockPanel.Dock="Top" Content="Continue:"/>
+                                                                <StackPanel Orientation="Vertical">
+                                                                    <StackPanel Margin="30,0,0,0" Orientation="Horizontal">
+                                                                        <Label Content="Typ:"/>
+                                                                        <ComboBox ItemsSource="{Binding Source={mvvm:Enumeration {x:Type enums:ContinueTypeEnum}}}"
+                                                                                  DisplayMemberPath="Description"
+                                                                                  SelectedValue="{Binding Continue.Type}"
+                                                                                  SelectedValuePath="Value"
+                                                                                  Margin="3,0,0,3"/>
+                                                                    </StackPanel>
+                                                                    <StackPanel Margin="30,0,0,0" Orientation="Horizontal">
+                                                                        <Label Content="Key:"/>
+                                                                        <TextBox Text="{Binding Continue.ContinueKey, UpdateSourceTrigger=PropertyChanged}"
+                                                                                 Width="100"
+                                                                                 Margin="3"/>
+                                                                    </StackPanel>
+                                                                </StackPanel>
+                                                            </DockPanel>
+                                                        </StackPanel>
+                                                        <DockPanel Grid.Column="1">
+                                                            <Label DockPanel.Dock="Left"
+                                                                   Content="ShownText:"/>
+                                                            <TextBox Margin="10,5,10,5" Text="{Binding ShownText}"/>
+                                                        </DockPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Border>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedItem.Type}" Value="{x:Static enums:ContinueTypeEnum.Branch}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding SelectedItem.Type}" Value="{x:Static enums:ContinueTypeEnum.Panel}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+                            <DockPanel.Style>
+                                <Style TargetType="DockPanel">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelectedItemContinue}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DockPanel.Style>
                         </DockPanel>
                     </Grid>
                 </Grid>
@@ -204,6 +450,8 @@
                             Sprite
                         </Label>
                         <Label DockPanel.Dock="Left" Content="{Binding SelectedSprite.PosX}"/>
+                        <Button Content="auto position all sprites"
+                                Click="Auto_Position_Button_Click"/>
                     </DockPanel>
                     <DockPanel>
                         <Label DockPanel.Dock="Top">
@@ -223,6 +471,7 @@
                     <Button Margin="0,5,0,0"
                             Content="Open Variable Manager"
                             Command="{Binding OpenVariableManagerCommand}"/>
+                    <Label Content="FontSize"/>
                 </StackPanel>
             </Grid>
         </Grid>

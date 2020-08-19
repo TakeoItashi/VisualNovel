@@ -11,7 +11,7 @@ using VisualNovelInterface.ViewModels;
 namespace VisualNovelInterface.Models {
     public class Panel : BaseObject {
 
-        private string backgroundImage;
+        private SpriteImage backgroundImage;
         private string panelName;
         private ObservableCollection<DialogLine> dialogueLines;
 		private DialogLine m_selectedDialogLine;
@@ -19,8 +19,9 @@ namespace VisualNovelInterface.Models {
         private Condition m_condition;
         private ObservableCollection<SpriteImage> m_spriteImages;
         private string m_EntryBranchKey;
+        private Branch m_selectedBranch;
 
-		public string BackgroundImage {
+		public SpriteImage BackgroundImage {
             get => backgroundImage;
             set => SetProperty(ref backgroundImage, value);
         }
@@ -39,21 +40,30 @@ namespace VisualNovelInterface.Models {
 			get => m_selectedDialogLine;
 			set => SetProperty(ref m_selectedDialogLine, value);
 		}
+
         public ObservableCollection<Branch> Branches {
             get => m_branches;
-            set => m_branches = value;
+            set => SetProperty(ref m_branches, value);
         }
+
         public Condition Condition {
             get => m_condition;
             set => SetProperty(ref m_condition, value);
         }
+
         public ObservableCollection<SpriteImage> SpriteImages {
             get => m_spriteImages;
             set => m_spriteImages = value;
         }
+
         public string EntryBranchKey {
             get => m_EntryBranchKey;
             set => SetProperty(ref m_EntryBranchKey, value);
+        }
+
+        public Branch SelectedBranch {
+            get => m_selectedBranch;
+            set => SetProperty(ref m_selectedBranch, value);
         }
 
         public Panel(string _newPanelName)
@@ -61,6 +71,9 @@ namespace VisualNovelInterface.Models {
             PanelName = _newPanelName;
 
             dialogueLines = new ObservableCollection<DialogLine>();
+            m_branches = new ObservableCollection<Branch>();
+            m_branches.Add(new Branch("Branch1", new ObservableCollection<ShownItem>() { new DialogLine() { CharacterName = "New Name", TextShown = "New Text"} }));
+            SelectedBranch = m_branches.First();
         }
     }
 }

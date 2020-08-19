@@ -12,12 +12,13 @@ namespace VisualNovelInterface.Models {
 		private string m_settings;
 		private ObservableCollection<Panel> m_panels;
 		private VariableManagerViewModel m_variableManagerViewModel;
+		private FontManagerViewModel m_fontManagerViewModel;
 
 		private Panel m_selectedPanel;
 
 		public string Settings {
 			get => m_settings;
-			set => m_settings = value;
+			set => SetProperty(ref m_settings, value);
 		}
 
 		public ObservableCollection<Panel> Panels {
@@ -25,7 +26,7 @@ namespace VisualNovelInterface.Models {
 			set => m_panels = value;
 		}
 
-		public VariableManagerViewModel VariableManagerViewModel{
+		public VariableManagerViewModel VariableManagerViewModel {
 			get => m_variableManagerViewModel;
 			set => m_variableManagerViewModel = value;
 		}
@@ -34,11 +35,16 @@ namespace VisualNovelInterface.Models {
 			get => m_selectedPanel;
 			set => SetProperty(ref m_selectedPanel, value);
 		}
+		public FontManagerViewModel FontManagerViewModel {
+			get => m_fontManagerViewModel;
+			set => SetProperty(ref m_fontManagerViewModel, value);
+		}
 
-        public Project()
+		public Project()
         {
             m_panels = new ObservableCollection<Panel>();
 			m_variableManagerViewModel = new VariableManagerViewModel();
+			m_fontManagerViewModel = new FontManagerViewModel();
         }
     }
 }

@@ -71,12 +71,13 @@ namespace VisualNovelInterface.ViewModels
 			ChechForDecimalInTextCommand = new RelayCommand<TextBoxEventArgs>(ChechForDecimalInText);
 			AddNewVariableCommand = new RelayCommand(AddNewVariable);
 			DeleteSelectedVariableCommand = new RelayCommand(DeleteSelectedVariable);
-
+#if DEBUG
 			m_variables = new ObservableCollection<DataValue> {
 				new DataValue("testBool", new Tuple<DataValueTypeEnum, object>(DataValueTypeEnum.trigger, true)),
 				new DataValue("testDecimal", new Tuple<DataValueTypeEnum, object>(DataValueTypeEnum.decimalCCPlus, 12.8)),
 				new DataValue("testString", new Tuple<DataValueTypeEnum, object>(DataValueTypeEnum.text, "test test"))
 			};
+#endif
 		}
 
 

@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using VisualNovelInterface.Models.ShownItems;
 using VisualNovelInterface.MVVM;
 using VisualNovelInterface.ViewModels;
 

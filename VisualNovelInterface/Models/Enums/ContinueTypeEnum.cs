@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VisualNovelInterface.Models
+namespace VisualNovelInterface.Models.Enums
 {
 	public enum ContinueTypeEnum
 	{
-		BranchContinue,
-		SplitContinue,
-		PanelContinue,
+		Branch,
+		Split,
+		Panel,
 	}
 }

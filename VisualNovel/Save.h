@@ -11,6 +11,8 @@ public:
 	Save();
 
 	int m_currentLine;
+	std::string m_shownText;
+	std::string BranchKey;
 	std::string m_currentPanel;
 	//TODO: unordered map benutzen
 	std::map<std::string, DataValue*> m_values;

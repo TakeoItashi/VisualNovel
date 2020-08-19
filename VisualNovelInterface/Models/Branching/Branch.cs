@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VisualNovelInterface.Models.ShownItems;
 using VisualNovelInterface.MVVM;
 
 namespace VisualNovelInterface.Models
@@ -14,6 +9,11 @@ namespace VisualNovelInterface.Models
 		private string m_name;
 		private ObservableCollection<ShownItem> m_shownItems;
 		private Continue m_continue;
+		private ShownItem m_selectedItem;
+		private bool m_isEntryBranch;
+
+		public delegate void ChangeEntryBranch(Branch _branch);
+		public event ChangeEntryBranch OnEntryBranchChange;
 
 		public string Name {
 			get => m_name;
@@ -25,15 +25,33 @@ namespace VisualNovelInterface.Models
 			set => SetProperty(ref m_shownItems, value);
 		}
 
+		public ObservableCollection<ShownItem> ShownItemsList {
+			get => new ObservableCollection<ShownItem>(m_shownItems) { m_continue };
+		}
+
 		public Continue Continue {
 			get => m_continue;
 			set => SetProperty(ref m_continue, value);
 		}
+		public ShownItem SelectedItem {
+			get => m_selectedItem;
+			set => SetProperty(ref m_selectedItem, value);
+		}
+		public bool IsEntryBranch {
+			get => m_isEntryBranch;
+			set => SetProperty(ref m_isEntryBranch, value);
+		}
 
-		public Branch(string _name, ObservableCollection<ShownItem> _shownItems, Continue _continue) {
+		public Branch(string _name, ObservableCollection<ShownItem> _shownItems, Continue _continue = null) {
 			m_name = _name;
 			m_shownItems = _shownItems;
 			m_continue = _continue;
+			m_selectedItem = m_shownItems.First();
+		}
+
+		public void CallEntryBranchTrigger() {
+		
+			OnEntryBranchChange.Invoke(this);
 		}
 	}
 }

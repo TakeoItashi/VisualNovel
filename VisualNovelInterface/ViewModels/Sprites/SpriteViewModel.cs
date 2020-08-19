@@ -13,14 +13,15 @@ using VisualNovelInterface.MVVM;
 
 namespace VisualNovelInterface.ViewModels
 {
-	public class SpriteViewModel : SpriteImage
+	public class SpriteViewModel : BaseObject //, SpriteImage
 	{
 		double m_posX, m_posY, m_height, m_width;
 		private Rect m_geometryRect;
 		bool m_isSelected;
+		bool m_isAutoPositioned;
+		SpriteImage m_image;
 
 		public delegate void SpriteMoveEventHandler(SpriteViewModel _sender);
-
 		public event SpriteMoveEventHandler OnSpriteMoveEvent;
 
 		public double PosX {
@@ -47,6 +48,14 @@ namespace VisualNovelInterface.ViewModels
 			get => m_isSelected;
 			set => SetProperty(ref m_isSelected, value);
 		}
+		public SpriteImage SpriteImage {
+			get => m_image;
+			set => SetProperty(ref m_image, value);
+		}
+
+		public bool IsAutoPositioned {
+			get => m_isAutoPositioned;
+		}
 
 		public RelayCommand<CustomEventCommandParameter> MouseDownOnSpriteCommand {
 			get;
@@ -58,9 +67,8 @@ namespace VisualNovelInterface.ViewModels
 			set;
 		}
 
-		public SpriteViewModel(string _image, string _name, double _posX, double _posY, double _height, double _width) {
-			m_image = _image;
-			m_name = _name;
+		public SpriteViewModel(SpriteImage _image, double _posX = 0, double _posY = 0, double _height = 100, double _width = 100) {
+			SpriteImage = _image;
 			m_posX = _posX;
 			m_posY = _posY;
 			m_height = _height;
@@ -68,10 +76,6 @@ namespace VisualNovelInterface.ViewModels
 			m_geometryRect = new Rect(_posX, _posY, _width, _height);
 			MouseDownOnSpriteCommand = new RelayCommand<CustomEventCommandParameter>(MouseDownOnSprite);
 			MoveMouseCommand = new RelayCommand<CustomEventCommandParameter>(MoveMouse);
-		}
-
-		public SpriteViewModel(SpriteImage _image, double _posX = 0, double _posY = 0, double _height = 100, double _width = 100)
-			: this(_image.Image, _image.Name, _posX, _posY, _height, _width) {
 		}
 
 		private void MouseDownOnSprite(CustomEventCommandParameter _args) {
