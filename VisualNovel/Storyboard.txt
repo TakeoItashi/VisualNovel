@@ -95,7 +95,7 @@ Panel {
 				Type: Split;
 				Split {
 					Option {
-						Name: Option1;
+						Name: Option3;
 						Text: "Repeat Doge";
 						Sprite: 0;
 						Continue {
@@ -110,7 +110,7 @@ Panel {
 						}
 					}
 					Option {
-						Name: Option2;
+						Name: Option4;
 						Text: "Repeat Heinrich";
 						Sprite: 0;
 						Continue {
@@ -130,7 +130,7 @@ Panel {
 		
 		Branch {
 			Name: "Branch 5";
-			Text: "Doge", "Hello There", 2;
+			Text: "Doge", "Hello there", 2;
 			Continue { 
 				Type: Branch;
 				Name: "Branch 7";
