@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -49,6 +50,11 @@ namespace VisualNovelInterface.ViewModels
 			set;
 		}
 
+		public RelayCommand<FontFamily> SetNewUsedFontCommand {
+			get;
+			set;
+		}
+
 		public FontManagerViewModel(List<FontFamily> _fonts) {
 			Fonts = new ObservableCollection<FontFamily>(_fonts);
 			SelectedFont = Fonts.First();
@@ -67,6 +73,7 @@ namespace VisualNovelInterface.ViewModels
 		public void InitCommands() {
 			AddNewFontCommand = new RelayCommand(AddNewFont);
 			RemoveSelectedFontCommand = new RelayCommand(RemoveSelectedFont);
+			SetNewUsedFontCommand = new RelayCommand<FontFamily>(SetNewUsedFont);
 		}
 
 		private void AddNewFont() {
@@ -91,6 +98,11 @@ namespace VisualNovelInterface.ViewModels
 			} else {
 				System.Windows.MessageBox.Show("Cannot remove currently used font!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
+		}
+
+		private void SetNewUsedFont(FontFamily _newFont) {
+			CurrentUsedFont = _newFont;
+			//--> Relay Property Change Event to MainViewModel
 		}
 	}
 }

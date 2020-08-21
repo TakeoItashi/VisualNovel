@@ -71,7 +71,7 @@ namespace VisualNovelInterface.ProjectExport
 				++_writer.Indent;
 				//Sprites
 				if (currentPanel.SpriteImages != null) {
-					for (int j = 0; j < currentPanel.SpriteImages.Count;) {
+					for (int j = 0; j < currentPanel.SpriteImages.Count; j++) {
 						//-Sprite
 						_writer.WriteLine($"Sprite: {_spriteExporter.GetSpriteIndex(currentPanel.SpriteImages[j])};");
 					}
@@ -117,6 +117,7 @@ namespace VisualNovelInterface.ProjectExport
 									_writer.Write($", {_spriteExporter.GetSpriteIndex(currentSprite.SpriteImage)}({currentSprite.PosX}, {currentSprite.PosX})");
 								}
 							}
+							_writer.WriteLine(";");
 						} else {
 							_writer.WriteLine(";");
 						}
@@ -128,11 +129,11 @@ namespace VisualNovelInterface.ProjectExport
 					_writer.WriteLine("Continue {");
 					++_writer.Indent;
 					//ContinueType
-					_writer.WriteLine($"Type: {currentBranch.Continue.Type}");
+					_writer.WriteLine($"Type: {currentBranch.Continue.Type};");
 					if (currentBranch.Continue.Type == Models.Enums.ContinueTypeEnum.Split) {
 
 						//Split
-						_writer.WriteLine("Split: {");
+						_writer.WriteLine("Split {");
 						++_writer.Indent;
 
 						//Options
@@ -140,21 +141,21 @@ namespace VisualNovelInterface.ProjectExport
 
 							Option currentOption = currentBranch.Continue.Split.Options[l];
 							//-Option
-							_writer.WriteLine("Option: {");
+							_writer.WriteLine("Option {");
 							++_writer.Indent;
 							//Name
-							_writer.WriteLine($"Name: {currentOption.Name}");
+							_writer.WriteLine($"Name: {currentOption.Name};");
 							//Text
-							_writer.WriteLine($"Text: \"{currentOption.ShownText}\"");
+							_writer.WriteLine($"Text: \"{currentOption.ShownText}\";");
 							//ButtonSprite
-							_writer.WriteLine($"Sprite: {_spriteExporter.GetButtonSpriteIndex(currentOption.ButtonSprite)}");
+							_writer.WriteLine($"Sprite: {_spriteExporter.GetButtonSpriteIndex(currentOption.ButtonSprite)};");
 							//Continue
-							_writer.WriteLine("Continue: {");
+							_writer.WriteLine("Continue {");
 							++_writer.Indent;
 							//Type
-							_writer.WriteLine($"Type: {currentOption.Continue.Type}");
+							_writer.WriteLine($"Type: {currentOption.Continue.Type};");
 							//Key
-							_writer.WriteLine($"Name: \"{currentOption.Continue.ContinueKey}\"");
+							_writer.WriteLine($"Name: \"{currentOption.Continue.ContinueKey}\";");
 							--_writer.Indent;
 							_writer.WriteLine("}");    //Continue Closing Bracket
 							--_writer.Indent;
@@ -164,7 +165,7 @@ namespace VisualNovelInterface.ProjectExport
 						_writer.WriteLine("}");
 					} else {
 						//Continue Key
-						_writer.WriteLine($"Name: \"{currentBranch.Continue.ContinueKey}\"");
+						_writer.WriteLine($"Name: \"{currentBranch.Continue.ContinueKey}\";");
 					}
 					--_writer.Indent;
 					_writer.WriteLine("}");    //Continue closing Bracket

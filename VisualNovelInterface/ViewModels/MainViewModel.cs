@@ -93,8 +93,8 @@ namespace VisualNovelInterface.ViewModels
 				if (!(SelectedBranch.SelectedItem is Continue)) {
 					SelectedOption = null;
 				} else {
-					if(((Continue)SelectedBranch.SelectedItem).Type == ContinueTypeEnum.Split)
-					RefreshButtons();
+					if (((Continue)SelectedBranch.SelectedItem).Type == ContinueTypeEnum.Split)
+						RefreshButtons();
 				}
 			}
 		}
@@ -220,7 +220,7 @@ namespace VisualNovelInterface.ViewModels
 			OpenFontConfigWindowCommand = new RelayCommand(OpenFontConfigWindow);
 			SetOutputDirectoryCommand = new RelayCommand(SetOutputDirectory);
 			RunExportCommand = new RelayCommand(RunExport);
-			
+
 #if DEBUG
 			GenerateTestStory();
 			OnPropertyChanged(nameof(SelectedItem));
@@ -291,15 +291,19 @@ namespace VisualNovelInterface.ViewModels
 		}
 
 		public void DropSpriteInPanel(CustomEventCommandParameter _args) {
-			DragEventArgs dea = (DragEventArgs) _args.Args;
-			string[] formats = dea.Data.GetFormats();
-			SpriteImage Sprite = (SpriteImage)dea.Data.GetData(formats.First());
-			FrameworkElement canvas = (Canvas)dea.OriginalSource;
-			System.Windows.Point coordinates = dea.GetPosition(canvas);
+			DialogLine selectedLine = SelectedBranch.SelectedItem as DialogLine;
+			if (selectedLine != null) {
 
-			currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(Sprite, (int)coordinates.X, coordinates.Y));
-			currentProject.SelectedPanel.SelectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
-			SelectedSprite = currentProject.SelectedPanel.SelectedLine.Sprites.Last();
+				DragEventArgs dea = (DragEventArgs) _args.Args;
+				string[] formats = dea.Data.GetFormats();
+				SpriteImage Sprite = (SpriteImage)dea.Data.GetData(formats.First());
+				FrameworkElement canvas = (Canvas)dea.OriginalSource;
+				System.Windows.Point coordinates = dea.GetPosition(canvas);
+
+				selectedLine.Sprites.Add(new SpriteViewModel(Sprite, (int)coordinates.X, coordinates.Y));
+				selectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
+				SelectedSprite = selectedLine.Sprites.Last();
+			}
 		}
 
 		public void AddNewOption() {
@@ -326,10 +330,8 @@ namespace VisualNovelInterface.ViewModels
 			fcw.Show();
 		}
 
-		public void SetEntryBranch(Branch _branch) {
+		public void EntryBranchChecked(Branch _branch) {
 
-			SelectedPanel.Branches.Single(x => x.Name == SelectedPanel.EntryBranchKey).IsEntryBranch = false;
-			_branch.IsEntryBranch = true;
 			SelectedPanel.EntryBranchKey = _branch.Name;
 		}
 
@@ -352,8 +354,6 @@ namespace VisualNovelInterface.ViewModels
 			bool result = exporter.Export(currentProject, spriteExporter);
 			if (result) {
 				System.Windows.Forms.MessageBox.Show("Export successfull", "Success", MessageBoxButtons.OK);
-			} else {
-				System.Windows.Forms.MessageBox.Show("Export failed!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
@@ -362,20 +362,33 @@ namespace VisualNovelInterface.ViewModels
 			currentProject.Panels.Add(new Panel("NewPanel_01"));
 			//currentProject.Panels.Add(new Panel("NewPanel_02"));
 			//currentProject.Panels.Add(new Panel("NewPanel_03"));
-			currentProject.Panels.First().Branches.Clear();	//TODO: Why clear???
+			currentProject.Panels.First().Branches.Clear(); //TODO: Why clear???
 
 			currentProject.SelectedPanel = currentProject.Panels[0];
 
 			string curDir = Directory.GetCurrentDirectory();
+			curDir = Path.Combine(curDir, "Resources", "images");
 			string fullPath = Path.Combine(curDir,"ButtonSpriteState.png");
 			SpriteImage buttonSprite = new SpriteImage(fullPath, "ButtonSprite");
-			SpriteImage dogeSprite = new SpriteImage("doge.png", "DogeSprite");
-			SpriteImage stickSprite = new SpriteImage("StickFigure.png", "StickSprite");
-			SpriteImage goblinSprite = new SpriteImage("GoblinMage.png", "GoblinSprite");
+			fullPath = Path.Combine(curDir, "wallpaper.jpg");
+			SpriteImage wallpaperSprite = new SpriteImage(fullPath, "wallpaper");
+			fullPath = Path.Combine(curDir, "doge.png");
+			SpriteImage dogeSprite = new SpriteImage(fullPath, "DogeSprite");
+			fullPath = Path.Combine(curDir, "StickFigure.png");
+			SpriteImage stickSprite = new SpriteImage(fullPath, "StickSprite");
+			fullPath = Path.Combine(curDir, "GoblinMage.png");
+			SpriteImage goblinSprite = new SpriteImage(fullPath, "GoblinSprite");
 			GlobalSprites.Add(dogeSprite);
+			SelectedPanel.SpriteImages.Add(dogeSprite);
 			GlobalSprites.Add(stickSprite);
+			SelectedPanel.SpriteImages.Add(stickSprite);
 			GlobalSprites.Add(goblinSprite);
+			SelectedPanel.SpriteImages.Add(goblinSprite);
 			GlobalButtonSprites.Add(buttonSprite);
+
+			GlobalSprites.Add(wallpaperSprite);
+			SelectedPanel.BackgroundImage = wallpaperSprite;
+
 			SpriteViewModel dogeSVM = new SpriteViewModel(dogeSprite);
 			SpriteViewModel stickSVM = new SpriteViewModel(stickSprite);
 			SpriteViewModel goblinSVM = new SpriteViewModel(goblinSprite);
@@ -389,27 +402,28 @@ namespace VisualNovelInterface.ViewModels
 															ContinueTypeEnum.Split,
 															new Split("Split1",
 																new ObservableCollection<Option>() {
-																	new Option("Option1", "Doge first", buttonSprite, new Continue(ContinueTypeEnum.Branch, "Branch 2")),
-																	new Option("Option2", "Heinrich first", buttonSprite, new Continue(ContinueTypeEnum.Branch, "Branch 3"))
+																	new Option("Option1", "Doge first", buttonSprite, new Continue(ContinueTypeEnum.Branch, "Branch2")),
+																	new Option("Option2", "Heinrich first", buttonSprite, new Continue(ContinueTypeEnum.Branch, "Branch3"))
 																}
 															)
 														)));
 
 			SelectedBranch = SelectedPanel.Branches.First();
+			SelectedBranch.IsEntryBranch = true;
 
 			currentProject.SelectedPanel.Branches.Add(new Branch("Branch2",
 														new ObservableCollection<ShownItem>() {
 															new DialogLine{ CharacterName = "Doge", TextShown = "I Am Doge", Sprites = new ObservableCollection<SpriteViewModel>(){dogeSVM}},
 															new DialogLine{ CharacterName = "Heinrich Kleinrich", TextShown = "And I am Heinrich", Sprites = new ObservableCollection<SpriteViewModel>(){dogeSVM, stickSVM}},
 														},
-														new Continue(ContinueTypeEnum.Branch, "Branch 4")));
+														new Continue(ContinueTypeEnum.Branch, "Branch4")));
 
 			currentProject.SelectedPanel.Branches.Add(new Branch("Branch3",
 														new ObservableCollection<ShownItem>() {
 															new DialogLine{ CharacterName = "Heinrich Kleinrich", TextShown = "I am Heinrich", Sprites = new ObservableCollection<SpriteViewModel>(){stickSVM}},
 															new DialogLine{ CharacterName = "Doge", TextShown = "And I Am Doge", Sprites = new ObservableCollection<SpriteViewModel>(){stickSVM, dogeSVM}},
 														},
-														new Continue(ContinueTypeEnum.Branch, "Branch 4")));
+														new Continue(ContinueTypeEnum.Branch, "Branch4")));
 
 			currentProject.SelectedPanel.Branches.Add(new Branch("Branch4",
 														new ObservableCollection<ShownItem>() {
@@ -419,8 +433,8 @@ namespace VisualNovelInterface.ViewModels
 															ContinueTypeEnum.Split,
 															new Split("Split2",
 																new ObservableCollection<Option>() {
-																	new Option("Option3", "Repeat Doge", buttonSprite, new Continue(ContinueTypeEnum.Branch, "Branch 5")),
-																	new Option("Option4", "Repeat Heinrich", buttonSprite, new Continue(ContinueTypeEnum.Branch, "Branch 6"))
+																	new Option("Option3", "Repeat Doge", buttonSprite, new Continue(ContinueTypeEnum.Branch, "Branch5")),
+																	new Option("Option4", "Repeat Heinrich", buttonSprite, new Continue(ContinueTypeEnum.Branch, "Branch6"))
 																}
 															)
 														)));
@@ -429,28 +443,26 @@ namespace VisualNovelInterface.ViewModels
 														new ObservableCollection<ShownItem>() {
 															new DialogLine{ CharacterName = "Doge", TextShown = "Hello there", Sprites = new ObservableCollection<SpriteViewModel>(){dogeSVM}},
 														},
-														new Continue(ContinueTypeEnum.Branch, "Branch 7")));
+														new Continue(ContinueTypeEnum.Branch, "Branch7")));
 
 			currentProject.SelectedPanel.Branches.Add(new Branch("Branch6",
 														new ObservableCollection<ShownItem>() {
 															new DialogLine{ CharacterName = "Heinrich Kleinrich", TextShown = "General Ke-dogee", Sprites = new ObservableCollection<SpriteViewModel>(){stickSVM}},
 														},
-														new Continue(ContinueTypeEnum.Branch, "Branch 7")));
+														new Continue(ContinueTypeEnum.Branch, "Branch7")));
 
 			currentProject.SelectedPanel.Branches.Add(new Branch("Branch7",
 														new ObservableCollection<ShownItem>() {
 															new DialogLine{ CharacterName = "Goblin Doctor", TextShown = "Hello", Sprites = new ObservableCollection<SpriteViewModel>(){goblinSVM}},
 														},
-														new Continue(ContinueTypeEnum.Panel, "Panel 2")));
-			foreach (Branch branch in SelectedPanel.Branches) {
-
-				branch.OnEntryBranchChange += SetEntryBranch;
-			}
+														new Continue(ContinueTypeEnum.Panel, "Panel2")));
 
 			SelectedPanel.EntryBranchKey = SelectedPanel.Branches.First().Name;
-			SelectedBranch.IsEntryBranch = true;
-			SelectedBranch.CallEntryBranchTrigger();
-			
+
+			for (int i = 0; i < SelectedPanel.Branches.Count; ++i) {
+				SelectedPanel.Branches[i].SetEntryBranchEventHandler += EntryBranchChecked;
+			}
+
 			string currentPath = Directory.GetCurrentDirectory();
 			currentPath = Path.Combine(currentPath, @"..\..\");
 			var ProjectDir = Path.GetFullPath(currentPath);

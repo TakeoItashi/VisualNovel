@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using GalaSoft.MvvmLight.Command;
+using System.Collections.ObjectModel;
 using System.Linq;
 using VisualNovelInterface.MVVM;
 
@@ -12,8 +13,8 @@ namespace VisualNovelInterface.Models
 		private ShownItem m_selectedItem;
 		private bool m_isEntryBranch;
 
-		public delegate void ChangeEntryBranch(Branch _branch);
-		public event ChangeEntryBranch OnEntryBranchChange;
+		public delegate void SetEntryBranchEvent(Branch _branch);
+		public event SetEntryBranchEvent SetEntryBranchEventHandler;
 
 		public string Name {
 			get => m_name;
@@ -42,16 +43,22 @@ namespace VisualNovelInterface.Models
 			set => SetProperty(ref m_isEntryBranch, value);
 		}
 
+		public RelayCommand SetToEntryBranchCommand {
+			get;
+			set;
+		}
+
 		public Branch(string _name, ObservableCollection<ShownItem> _shownItems, Continue _continue = null) {
 			m_name = _name;
 			m_shownItems = _shownItems;
 			m_continue = _continue;
 			m_selectedItem = m_shownItems.First();
+			SetToEntryBranchCommand = new RelayCommand(SetToEntryBranch);
 		}
 
-		public void CallEntryBranchTrigger() {
+		public void SetToEntryBranch() {
 		
-			OnEntryBranchChange.Invoke(this);
+			SetEntryBranchEventHandler.Invoke(this);
 		}
 	}
 }

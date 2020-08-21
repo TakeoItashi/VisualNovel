@@ -17,6 +17,11 @@ namespace VisualNovelInterface.Models
 			set => SetProperty(ref m_image, value);
 		}
 
+		public string Path {
+			get;
+			set;
+		}
+
 		public string Name {
 			get => m_name;
 			set => SetProperty(ref m_name, value);

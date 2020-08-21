@@ -4,7 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VisualNovelInterface.Views"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:vm="clr-namespace:VisualNovelInterface.ViewModels"
         mc:Ignorable="d"
+        xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
         Title="FontConfigWindow" Height="400" Width="400">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
@@ -16,6 +19,20 @@
                   SelectedItem="{Binding SelectedFont}">
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="Applied">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <RadioButton Content="">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Checked">
+                                            <cmd:EventToCommand Command="{Binding DataContext.SetNewUsedFontCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                                CommandParameter="{Binding }"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </RadioButton>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="Name" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -45,7 +62,7 @@
                     Command="{Binding RemoveSelectedFontCommand}"
                     IsEnabled="{Binding IsFontSelected}"/>
             <Button Content="Close" DockPanel.Dock="Bottom"/>
-                    <!--Click="CloseButton_Click"/>-->
+            <!--Click="CloseButton_Click"/>-->
         </DockPanel>
     </Grid>
 </Window>

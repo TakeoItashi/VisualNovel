@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using VisualNovelInterface.Models;
 
 namespace VisualNovelInterface.ProjectExport
@@ -33,7 +34,7 @@ namespace VisualNovelInterface.ProjectExport
 				//ImageImports
 				using (StreamWriter writer = new StreamWriter(Path.Combine(m_exportPath, "ImageImports.txt"), false)) {
 					for (int i = 0; i < _spriteExporter.SpriteCount; ++i) {
-						writer.WriteLine(_spriteExporter.Sprites[i].Image);
+						writer.WriteLine(Path.GetFileName(_spriteExporter.Sprites[i].Image));
 					}
 					writer.Close();
 				}
@@ -41,7 +42,7 @@ namespace VisualNovelInterface.ProjectExport
 				//(Button)Sprite Imports
 				using (StreamWriter writer = new StreamWriter(Path.Combine(m_exportPath, "SpriteImports.txt"), false)) {
 					for (int i = 0; i < _spriteExporter.ButtonSpriteCount; ++i) {
-						writer.WriteLine(_spriteExporter.ButtonSprites[i].Image);
+						writer.WriteLine(Path.GetFileName(_spriteExporter.ButtonSprites[i].Image));
 					}
 					writer.Close();
 				}
@@ -51,6 +52,8 @@ namespace VisualNovelInterface.ProjectExport
 					m_textBuilder.Export(writer, _project, _spriteExporter);
 					writer.Close();
 				}
+
+				//Menu Files
 
 				//Copy Files
 				string filename;
@@ -70,12 +73,15 @@ namespace VisualNovelInterface.ProjectExport
 					File.Copy(_spriteExporter.ButtonSprites[i].Image, destFile, true);
 				}
 				//TTF Font Files
-				string path = Path.Combine(_project.FontManagerViewModel.CurrentUsedFont.BaseUri.AbsolutePath, _project.FontManagerViewModel.CurrentUsedFont.Source);
+				string path = Path.Combine(_project.FontManagerViewModel.CurrentUsedFont.BaseUri.OriginalString, _project.FontManagerViewModel.CurrentUsedFont.Source+".TTF");
 				filename = _project.FontManagerViewModel.CurrentUsedFont.Source;
-				destFile = Path.Combine(m_exportPath, filename);
+				destFile = Path.Combine(m_exportPath, filename + ".ttf");
 				File.Copy(path, destFile, true);
+
+				//Options Datei
 				return success = true;
 			} catch (Exception ex) {
+				System.Windows.Forms.MessageBox.Show("Export failed! " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return success;
 			}
 		}

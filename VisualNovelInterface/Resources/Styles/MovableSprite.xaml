@@ -107,7 +107,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Thumb>
-            <Image Source="{Binding Image}"
+            <Image Source="{Binding SpriteImage.Image}"
                    Stretch="Fill"
                    IsHitTestVisible="False"/>
         </Grid>

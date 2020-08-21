@@ -62,11 +62,11 @@ namespace VisualNovelInterface
 		}
 
 		private void Auto_Position_Button_Click(object sender, RoutedEventArgs e) {
-			((MainViewModel)DataContext).RefreshButtons();
+			((MainViewModel)DataContext).TriggerAutoPositionSprites();
 		}
 
 		private void AutoPositionSprites(ObservableCollection<SpriteViewModel> _sprites) {
-			
+
 		}
 	}
 }
