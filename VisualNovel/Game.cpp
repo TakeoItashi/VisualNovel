@@ -408,8 +408,10 @@ void Game::LoadStoryBoard() {
 				}
 				if (m_keywords[i] == "BGIndex:") {
 
+					int index = std::stoi(m_keywords[i + 1]);
+					newPanel->m_BackgroundImageIndex = index;
 					SpritePosition spritePosition;
-					spritePosition.Index = std::stoi(m_keywords[i + 1]);
+					spritePosition.Index = index;
 					newPanel->m_SpriteIndexList.push_back(spritePosition);
 					i = i + 2;
 					continue;

@@ -69,7 +69,7 @@ void Panel::ShowLine(int _lineIndex) {
 				if (CurrentSprite.PosY < 0) {
 
 					SpritePosY = 50;
-				} else {
+				} else { 
 
 					SpritePosY = CurrentSprite.PosY;
 				}
@@ -100,8 +100,9 @@ void Panel::LoadImages() {
 
 		indices.push_back(m_SpriteIndexList[i].Index);
 	}
+	std::sort(indices.begin(), indices.end());
 	m_SpriteList = m_ImageLoader->GetTextures(indices);
-	m_BackgroundImage = m_SpriteList[m_SpriteIndexList[0].Index];
+	m_BackgroundImage = m_SpriteList[m_BackgroundImageIndex]; //Background Sprite should be first in the m_SpriteIndexList, so it should be first here too
 }
 
 void Panel::RenderCurrentSplit(int _lineIndex) {

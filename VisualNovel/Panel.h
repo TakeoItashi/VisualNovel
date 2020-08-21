@@ -20,6 +20,7 @@ class Panel {
 		~Panel();
 
 		//TODO Background Image entfernen und m_SpriteList[0] verwenden
+		int m_BackgroundImageIndex;
 		Texture* m_BackgroundImage = nullptr;
 		TextBox* m_TextBox = nullptr;
 		ImageLoader* m_ImageLoader;							//TODO statische Image Loader Referenz
