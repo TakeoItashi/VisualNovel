@@ -100,6 +100,9 @@
     <Filter Include="Headerdateien\UI\BaseMenu">
       <UniqueIdentifier>{247b2c15-884f-4029-a24b-079eb2a2cec5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ressourcendateien\TextExe">
+      <UniqueIdentifier>{f150b0dd-bcc8-4beb-ac2e-9bef8e0ac5a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
