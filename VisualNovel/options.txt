@@ -4,6 +4,8 @@ TextBoxRed: 0;
 TextBoxGreen: 0;
 TextBoxBlue: 255;
 TextBoxAlpha: 255;
+Font: PAPYRUS.ttf;
+FontSize: 26;
 ##TODO Variables
 ## TextBoxColor
 ## TextBoxTextColor		

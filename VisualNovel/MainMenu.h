@@ -8,6 +8,6 @@ class ImageLoader;
 
 class MainMenu : public Menu {
 public:
-	MainMenu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, std::string _filePath);
+	MainMenu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, Settings* _settings, std::string _filePath);
 	~MainMenu();
 };

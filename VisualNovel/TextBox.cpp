@@ -110,11 +110,6 @@ void TextBox::Render(DialogLine _line, int _speed) {
 	}
 }
 
-void TextBox::loadFont(std::string _path) {
-	//TODO use FontSize from Settings
-	m_font = TTF_OpenFont("OpenSans-Regular.ttf", 28);
-}
-
 //TODO Use Configured Background Settings
 void TextBox::ApplySettings(Settings* _settings) {
 	SDL_Surface* backgroundSurface = SDL_CreateRGBSurface(0, Width, Height, 32, 0, 0, 0, 0);
@@ -129,6 +124,8 @@ void TextBox::ApplySettings(Settings* _settings) {
 	//TODO SetAlpha Änderungen spiegeln sich nicht in der Textbox wieder.
 	m_boxBackground->SetAlpha((_settings->m_TextBoxAlpha * 0.5));
 	m_boxBackgroundNameCorner->SetAlpha((_settings->m_TextBoxAlpha * 0.5));
+
+	m_font = _settings->m_Font;
 }
 
 TTF_Font* TextBox::GetFont() {

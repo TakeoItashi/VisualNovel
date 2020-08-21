@@ -91,17 +91,16 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 
 	m_TextBox = new TextBox(m_Renderer);
 	m_TextBox->ApplySettings(_initialSettings);
-	m_TextBox->loadFont();
 	_initialSettings->m_Font = m_TextBox->GetFont();
 
 	m_textLoader = new TextLoader();
 	m_keywords = m_textLoader->LoadText("Storyboard.txt");
 
-	m_MainMenu = new MainMenu(m_Renderer, m_ImageLoader, "MainMenu.txt");
+	m_MainMenu = new MainMenu(m_Renderer, m_ImageLoader, m_GameSettings, "MainMenu.txt");
 	m_CurrentMenu = m_MainMenu;
 	m_CurrentMenu->Render();
 
-	m_OptionsMenu = new OptionsMenu(m_Renderer, m_ImageLoader, "OptionsMenu.txt");
+	//m_OptionsMenu = new OptionsMenu(m_Renderer, m_ImageLoader, "OptionsMenu.txt");
 
 	LoadStoryBoard();
 	m_GameIsRunning = false;

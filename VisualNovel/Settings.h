@@ -12,6 +12,7 @@ class Settings {
 		~Settings();
 
 		void LoadSettings();
+		void LoadFont(std::string _path, int _fontSize);
 
 		//Window Settings
 		int m_WindowWidth, m_WindowHeight;

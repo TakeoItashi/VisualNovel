@@ -24,12 +24,6 @@ class TextBox {
 		*/
 		void Render(DialogLine _text, int _speed = 0);
 		/**
-		Loads the specified Font for the TextBox
-		@param _path: The filepath of the Font
-		*/
-		//TODO lade Font aus einem bestimmten Ordner. Vielleicht anderes System mit dem man mehrere Fonts definieren kann
-		void loadFont(std::string _path = "");
-		/**
 		Loads the Settings for the Textbox and spplies them
 		@param _settings: The Settings for the TextBox
 		*/
@@ -41,6 +35,7 @@ class TextBox {
 		Texture* m_boxBackground;
 		Texture* m_boxBackgroundNameCorner;
 		Texture* m_textTexture;
+		//TODO lade Font aus einem bestimmten Ordner. Vielleicht anderes System mit dem man mehrere Fonts definieren kann
 		TTF_Font* m_font;
 		//TODO Color is defined in Settings
 		SDL_Color m_Color;

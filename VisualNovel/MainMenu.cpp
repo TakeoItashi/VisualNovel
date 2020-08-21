@@ -3,10 +3,10 @@
 #include "ImageLoader.h"
 #include "MainMenu.h"
 
-MainMenu::MainMenu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, std::string _filePath) : Menu(_renderer, _imageLoader, _filePath) {
+MainMenu::MainMenu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, Settings* _settings, std::string _filePath) : Menu(_renderer, _imageLoader, _settings, _filePath) {
 
 	LoadMenu(_filePath);
-	CreateMenu();
+	CreateMenu(_settings);
 }
 
 MainMenu::~MainMenu() {

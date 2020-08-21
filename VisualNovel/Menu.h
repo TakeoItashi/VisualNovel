@@ -11,11 +11,12 @@ class TextLoader;
 class ImageLoader;
 class MenuItem;
 class SpritePosition;
+class Settings;
 
 class Menu{
 	//TODO Menu von Panel erben lassen?
 public:
-	Menu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, std::string _filePath);
+	Menu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, Settings* _settings, std::string _filePath);
 	~Menu();
 
 	std::string m_Name;
@@ -25,7 +26,7 @@ public:
 	Texture* m_BackgroundImage;
 	ImageLoader* m_ImageLoader;
 	std::vector<Texture*> m_Sprites;
-	void CreateMenu();
+	void CreateMenu(Settings* _settings);
 	void LoadMenu(std::string _filepath);
 	void AutoWidth(Button* _button);
 	void Render();

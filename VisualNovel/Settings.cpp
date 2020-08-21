@@ -45,6 +45,14 @@ void Settings::LoadSettings() {
 
 			m_TextBoxAlpha = std::stoi(keywords[i + 1]);
 			i += 3;
+		} else if (keywords[i] == "Font:") {
+			LoadFont(keywords[i + 1], std::stoi(keywords[i + 4]));
+			i += 6;
 		}
 	}
+}
+
+void Settings::LoadFont(std::string _path, int _fontSize) {
+	//TODO use FontSize from Settings
+	m_Font = TTF_OpenFont(_path.c_str(), _fontSize);
 }

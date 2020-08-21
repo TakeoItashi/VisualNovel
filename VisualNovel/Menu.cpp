@@ -7,10 +7,11 @@
 #include "TextLoader.h"
 #include "SpritePosition.h"
 #include "Menu.h"
+#include "Settings.h"
 
 #define LastButton m_MenuItems[m_MenuItems.size()-1].Button
 
-Menu::Menu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, std::string _filePath) {
+Menu::Menu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, Settings* _settings, std::string _filePath) {
 
 	m_ImageLoader = _imageLoader;
 	m_Renderer = _renderer;
@@ -193,12 +194,12 @@ void Menu::LoadMenu(std::string _filepath) {
 			}
 		}
 	}
-	loadFont("");
 }
 
-void Menu::CreateMenu() {
+void Menu::CreateMenu(Settings* _settings) {
 
 	m_BackgroundImage = m_ImageLoader->GetTexture(m_SpriteIndices[0].Index);
+	m_font = _settings->m_Font;
 	std::vector<int> m_indices;
 	for (int i = 0; i < m_MenuItems.size(); i++) {
 
