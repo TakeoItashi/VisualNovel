@@ -10,6 +10,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualNovelInterface", "Vis
 		{2BBC93AB-695E-4559-A7EE-0845D5AD8F8A} = {2BBC93AB-695E-4559-A7EE-0845D5AD8F8A}
 	EndProjectSection
 EndProject
+Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "VisualNovelTest", "x64\Debug\Output\VisualNovelTest.exe", "{F7D1211B-226E-48DF-AA48-A681A16C0D3E}"
+	ProjectSection(DebuggerProjectSystem) = preProject
+		PortSupplier = 00000000-0000-0000-0000-000000000000
+		Executable = F:\Users\Tom Appel\Desktop\Studium\VisualNovel\x64\Debug\Output\VisualNovelTest.exe
+		RemoteMachine = COMPUTERTOM
+		StartingDirectory = F:\Users\Tom Appel\Desktop\Studium\VisualNovel\x64\Debug\Output
+		Environment = Default
+		LaunchingEngine = 00000000-0000-0000-0000-000000000000
+		UseLegacyDebugEngines = No
+		LaunchSQLEngine = No
+		AttachLaunchAction = No
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -34,6 +47,10 @@ Global
 		{4DFA9BAD-CFC7-4D87-9072-BCED3A1FE1FE}.Release|x64.Build.0 = Release|Any CPU
 		{4DFA9BAD-CFC7-4D87-9072-BCED3A1FE1FE}.Release|x86.ActiveCfg = Release|Any CPU
 		{4DFA9BAD-CFC7-4D87-9072-BCED3A1FE1FE}.Release|x86.Build.0 = Release|Any CPU
+		{F7D1211B-226E-48DF-AA48-A681A16C0D3E}.Debug|x64.ActiveCfg = Release|x64
+		{F7D1211B-226E-48DF-AA48-A681A16C0D3E}.Debug|x86.ActiveCfg = Release|x64
+		{F7D1211B-226E-48DF-AA48-A681A16C0D3E}.Release|x64.ActiveCfg = Release|x64
+		{F7D1211B-226E-48DF-AA48-A681A16C0D3E}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
