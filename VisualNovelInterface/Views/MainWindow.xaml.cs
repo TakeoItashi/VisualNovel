@@ -25,6 +25,11 @@ namespace VisualNovelInterface
 	public partial class MainWindow : Window
 	{
 		public MainWindow() {
+			InitializeComponent();
+			MainViewModel vm = new MainViewModel();
+			DataContext = vm;
+			vm.OnReorganizeButtons += ArrangeButtons;
+			vm.OnAutoPositionSprites += AutoPositionSprites;
 		}
 
 		private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
