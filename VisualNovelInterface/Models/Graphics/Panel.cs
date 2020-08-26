@@ -72,7 +72,7 @@ namespace VisualNovelInterface.Models {
 
             dialogueLines = new ObservableCollection<DialogLine>();
             m_branches = new ObservableCollection<Branch>();
-            m_branches.Add(new Branch("Branch1", new ObservableCollection<ShownItem>() { new DialogLine() { CharacterName = "New Name", TextShown = "New Text"} }));
+            m_branches.Add(new Branch("Branch1"));
             SpriteImages = new ObservableCollection<SpriteImage>();
             SelectedBranch = m_branches.First();
         }

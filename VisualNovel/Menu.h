@@ -25,6 +25,7 @@ public:
 	SDL_Renderer* m_Renderer;
 	Texture* m_BackgroundImage;
 	ImageLoader* m_ImageLoader;
+	Settings* m_settings;
 	std::vector<Texture*> m_Sprites;
 	void CreateMenu(Settings* _settings);
 	void LoadMenu(std::string _filepath);

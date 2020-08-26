@@ -14,7 +14,7 @@ SplitDecision::~SplitDecision() {
 
 void SplitDecision::CreateButtons() {
 
-	int aviableButtonSpace = (600 / (m_options.size() + 1));
+	int aviableButtonSpace = (m_settings->m_WindowHeight / (m_options.size() + 1));
 
 	//SDL_Surface* buttonsSurface = SDL_CreateRGBSurface(0, 800, 600, 32, 0, 0, 0, 0);
 	Texture* m_textTexture = new Texture(m_Renderer);
@@ -36,7 +36,7 @@ void SplitDecision::CreateButtons() {
 		m_textTexture->CreateFromSurface(textSurface);
 		newButton->m_textTexture = m_textTexture;
 		TTF_SizeText(m_settings->m_Font, m_options[i]->m_shownText.c_str(), &newButton->Width, &newButton->Height);	//TODO Breite des Textes an Button oder vice versa anpassen
-		newButton->PosX = (800 / 2) - (newButton->Width / 2);	//Middle of the screen = (ScreenWidth/2)-buttonWidth
+		newButton->PosX = (m_settings->m_WindowWidth / 2) - (newButton->Width / 2);	//Middle of the screen = (ScreenWidth/2)-buttonWidth
 		newButton->PosY = (aviableButtonSpace * (i + 1));
 		m_textTexture->PosX = newButton->PosX;
 		m_textTexture->PosY = newButton->PosY;

@@ -22,7 +22,7 @@
                     <GridViewColumn Header="Applied">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <RadioButton Content="">
+                                <RadioButton IsChecked="{Binding IsUsed}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Checked">
                                             <cmd:EventToCommand Command="{Binding DataContext.SetNewUsedFontCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
@@ -36,8 +36,8 @@
                     <GridViewColumn Header="Name" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding}"
-                                       FontFamily="{Binding}"
+                                <Label Content="{Binding Font}"
+                                       FontFamily="{Binding Font}"
                                        MinWidth="80"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -45,7 +45,7 @@
                     <GridViewColumn Header="Sample">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Label FontFamily="{Binding}"
+                                <Label FontFamily="{Binding Font}"
                                        MinWidth="80">
                                     the quick brown fox jumps over the lazy dog
                                 </Label>

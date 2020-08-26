@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
+using VisualNovelInterface.Models;
 using VisualNovelInterface.MVVM;
 using FontFamily = System.Windows.Media.FontFamily;
 
@@ -17,27 +18,44 @@ namespace VisualNovelInterface.ViewModels
 {
 	public class FontManagerViewModel : BaseObject
 	{
-		private ObservableCollection<FontFamily> m_fonts;
-		private FontFamily m_selectedFont;
-		private FontFamily m_currentUsedFont;
+		private ObservableCollection<ProjectFont> m_fonts;
+		private ProjectFont m_selectedFont;
+		private ProjectFont m_currentUsedFont;
+		private int m_fontSize;
 
-		public ObservableCollection<FontFamily> Fonts {
+		public delegate void SetNewUsedFontEventHandler();
+		public event SetNewUsedFontEventHandler OnNewUsedFont;
+
+		public ObservableCollection<ProjectFont> Fonts {
 			get => m_fonts;
 			set => SetProperty(ref m_fonts, value);
 		}
 
-		public FontFamily SelectedFont {
+		public ProjectFont SelectedFont {
 			get => m_selectedFont;
 			set => SetProperty(ref m_selectedFont, value);
 		}
 
-		public FontFamily CurrentUsedFont {
+		public ProjectFont CurrentUsedFont {
 			get => m_currentUsedFont;
-			set => SetProperty(ref m_currentUsedFont, value);
+			set {
+				if (m_currentUsedFont != null) {
+					m_currentUsedFont.IsUsed = false;
+				}
+				SetProperty(ref m_currentUsedFont, value);
+				if (m_currentUsedFont != null) {
+					m_currentUsedFont.IsUsed = true;
+				}
+			}
 		}
 
 		public bool IsFontSelected {
 			get => SelectedFont != null;
+		}
+
+		public int FontSize {
+			get => m_fontSize;
+			set => SetProperty(ref m_fontSize, value);
 		}
 
 		public RelayCommand AddNewFontCommand {
@@ -50,34 +68,37 @@ namespace VisualNovelInterface.ViewModels
 			set;
 		}
 
-		public RelayCommand<FontFamily> SetNewUsedFontCommand {
+		public RelayCommand<ProjectFont> SetNewUsedFontCommand {
 			get;
 			set;
 		}
 
-		public FontManagerViewModel(List<FontFamily> _fonts) {
-			Fonts = new ObservableCollection<FontFamily>(_fonts);
+		public FontManagerViewModel(List<ProjectFont> _fonts) {
+			Fonts = new ObservableCollection<ProjectFont>(_fonts);
 			SelectedFont = Fonts.First();
+			FontSize = 26;
 			InitCommands();
 		}
-		public FontManagerViewModel(FontFamily _font) {
-			Fonts = new ObservableCollection<FontFamily>() { _font };
+		public FontManagerViewModel(ProjectFont _font) {
+			Fonts = new ObservableCollection<ProjectFont>() { _font };
 			SelectedFont = _font;
+			FontSize = 26;
 			InitCommands();
 		}
 		public FontManagerViewModel() {
-			Fonts = new ObservableCollection<FontFamily>();
+			Fonts = new ObservableCollection<ProjectFont>();
+			FontSize = 26;
 			InitCommands();
 		}
 
 		public void InitCommands() {
 			AddNewFontCommand = new RelayCommand(AddNewFont);
 			RemoveSelectedFontCommand = new RelayCommand(RemoveSelectedFont);
-			SetNewUsedFontCommand = new RelayCommand<FontFamily>(SetNewUsedFont);
+			SetNewUsedFontCommand = new RelayCommand<ProjectFont>(SetNewUsedFont);
 		}
 
 		private void AddNewFont() {
-		
+
 			using (OpenFileDialog newFile = new OpenFileDialog()) {
 
 				newFile.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
@@ -86,7 +107,7 @@ namespace VisualNovelInterface.ViewModels
 				if (newFile.ShowDialog() == DialogResult.OK) {
 
 					string path = newFile.FileName;
-					FontFamily newFont = new FontFamily(new Uri(path), Path.GetFileNameWithoutExtension(newFile.SafeFileName));
+					ProjectFont newFont = new ProjectFont(){ Font = new FontFamily(new Uri(path), Path.GetFileNameWithoutExtension(newFile.SafeFileName)), IsUsed = false };
 					Fonts.Add(newFont);
 				}
 			}
@@ -100,8 +121,9 @@ namespace VisualNovelInterface.ViewModels
 			}
 		}
 
-		private void SetNewUsedFont(FontFamily _newFont) {
+		private void SetNewUsedFont(ProjectFont _newFont) {
 			CurrentUsedFont = _newFont;
+			OnNewUsedFont.Invoke();
 			//--> Relay Property Change Event to MainViewModel
 		}
 	}

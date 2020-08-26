@@ -40,8 +40,8 @@ Panel {
 		
 		Branch {
 			Name: "Branch 1";
-			Text: "Narrator", "This is the first string";
-			Text: "", "This is the second text shown";
+			Text: "", "This is the first string";
+			Text: "Narrator", "This is the second text shown";
 			
 			Continue { 
 				Type: Split;

@@ -109,7 +109,8 @@
             </Thumb>
             <Image Source="{Binding SpriteImage.Image}"
                    Stretch="Fill"
-                   IsHitTestVisible="False"/>
+                   IsHitTestVisible="False"
+                   Panel.ZIndex="-1"/>
         </Grid>
 
         <DataTemplate.Triggers>

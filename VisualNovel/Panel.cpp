@@ -11,10 +11,11 @@
 
 #define CurrentSprite currentLine->m_SpritesShown[i]
 
-Panel::Panel(TextBox* _textBoxReference, ImageLoader* _imageLoaderReference) {
+Panel::Panel(TextBox* _textBoxReference, ImageLoader* _imageLoaderReference, Settings* _settings) {
 
 	m_TextBox = _textBoxReference;
 	m_ImageLoader = _imageLoaderReference;
+	m_Settings = _settings;
 }
 
 Panel::~Panel() {
@@ -32,7 +33,7 @@ Panel::~Panel() {
 
 void Panel::ShowLine(int _lineIndex) {
 
-	m_BackgroundImage->Render(0, 0, 600, 800);
+	m_BackgroundImage->Render(0, 0, m_Settings->m_WindowHeight, m_Settings->m_WindowWidth);
 
 	int aviableSpriteSpace;
 
@@ -41,7 +42,7 @@ void Panel::ShowLine(int _lineIndex) {
 	if (currentLine->m_SpritesShown.size() > 0) {
 
 		//Hintergrund Breite herausfinden
-		int BackgroundWidth = 800;
+		int BackgroundWidth = m_Settings->m_WindowWidth;
 		int Padding = 20;
 		//Padding addieren
 		int AviableWidth = BackgroundWidth;// -Padding;
@@ -52,8 +53,8 @@ void Panel::ShowLine(int _lineIndex) {
 	//Sprites anzeigen
 	if (currentLine->m_SpritesShown.size() != 0) {
 		//TODO Magic Numbers entfernen
-		int widthRatio = 600 / 2;
-		int HeightRatio = ((800 / 4) * 3) - 100;
+		int widthRatio = m_Settings->m_WindowHeight / 2;
+		int HeightRatio = ((m_Settings->m_WindowWidth / 4) * 3) - 100;
 		int SpritePosX = 0;
 		int SpritePosY = 0;		//TODO Padding für die Sprites überarbeiten
 		if (m_SpriteList.size() > 0) {
@@ -85,7 +86,7 @@ void Panel::ShowLine(int _lineIndex) {
 }
 
 void Panel::ShowSplit(int _lineIndex) {
-	m_BackgroundImage->Render(0, 0, 600, 800);
+	m_BackgroundImage->Render(0, 0, m_Settings->m_WindowHeight, m_Settings->m_WindowWidth);
 
 	SplitDecision* currentSplit = (SplitDecision*)m_Branches[m_currentBranchKey]->m_shownItems[_lineIndex];
 	currentSplit->CreateButtons();
@@ -107,7 +108,7 @@ void Panel::LoadImages() {
 
 void Panel::RenderCurrentSplit(int _lineIndex) {
 
-	m_BackgroundImage->Render(0, 0, 600, 800);
+	m_BackgroundImage->Render(0, 0, m_Settings->m_WindowHeight, m_Settings->m_WindowWidth);
 
 	SplitDecision* currentSplit = (SplitDecision*)m_Branches[m_currentBranchKey]->m_shownItems[_lineIndex];
 	currentSplit->RenderOptions();

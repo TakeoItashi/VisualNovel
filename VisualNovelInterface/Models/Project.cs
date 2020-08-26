@@ -9,17 +9,12 @@ using VisualNovelInterface.ViewModels;
 
 namespace VisualNovelInterface.Models {
 	public class Project : BaseObject {
-		private string m_settings;
 		private ObservableCollection<Panel> m_panels;
 		private VariableManagerViewModel m_variableManagerViewModel;
 		private FontManagerViewModel m_fontManagerViewModel;
+		private SettingsViewModel m_projectSettingsViewModel;
 
 		private Panel m_selectedPanel;
-
-		public string Settings {
-			get => m_settings;
-			set => SetProperty(ref m_settings, value);
-		}
 
 		public ObservableCollection<Panel> Panels {
 			get => m_panels;
@@ -39,12 +34,17 @@ namespace VisualNovelInterface.Models {
 			get => m_fontManagerViewModel;
 			set => SetProperty(ref m_fontManagerViewModel, value);
 		}
+		public SettingsViewModel ProjectSettingsViewModel {
+			get => m_projectSettingsViewModel;
+			set => SetProperty(ref m_projectSettingsViewModel, value);
+		}
 
 		public Project()
         {
             m_panels = new ObservableCollection<Panel>();
 			m_variableManagerViewModel = new VariableManagerViewModel();
 			m_fontManagerViewModel = new FontManagerViewModel();
+			ProjectSettingsViewModel = new SettingsViewModel();
         }
     }
 }

@@ -114,7 +114,7 @@ namespace VisualNovelInterface.ProjectExport
 									_writer.Write($", {_spriteExporter.GetSpriteIndex(currentSprite.SpriteImage)}");
 								} else {
 									//SpriteIndex, XPos, YPos
-									_writer.Write($", {_spriteExporter.GetSpriteIndex(currentSprite.SpriteImage)}({currentSprite.PosX}, {currentSprite.PosX})");
+									_writer.Write($", {_spriteExporter.GetSpriteIndex(currentSprite.SpriteImage)}({(int)currentSprite.PosX}, {(int)currentSprite.PosX})");
 								}
 							}
 							_writer.WriteLine(";");

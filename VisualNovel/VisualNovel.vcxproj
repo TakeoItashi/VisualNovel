@@ -204,14 +204,30 @@
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ImageImports.txt" />
-    <Text Include="MainMenu.txt" />
-    <Text Include="MenuSyntax.txt" />
-    <Text Include="options.txt" />
-    <Text Include="OptionsMenu.txt" />
-    <Text Include="SpriteImports.txt" />
-    <Text Include="Storyboard.txt" />
-    <Text Include="StoryboardSyntax.txt" />
+    <Text Include="ImageImports.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
+    <Text Include="MainMenu.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
+    <Text Include="MenuSyntax.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
+    <Text Include="options.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
+    <Text Include="OptionsMenu.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
+    <Text Include="SpriteImports.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
+    <Text Include="Storyboard.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
+    <Text Include="StoryboardSyntax.txt">
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Font Include="ttf\OpenSans-Regular.ttf" />

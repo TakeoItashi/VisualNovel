@@ -89,7 +89,7 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 	m_ImageLoader = new ImageLoader(m_Renderer);
 	m_ImageLoader->LoadTextures();
 
-	m_TextBox = new TextBox(m_Renderer);
+	m_TextBox = new TextBox(m_Renderer, m_GameSettings);
 	m_TextBox->ApplySettings(_initialSettings);
 	_initialSettings->m_Font = m_TextBox->GetFont();
 
@@ -390,7 +390,7 @@ void Game::LoadStoryBoard() {
 
 		if (m_keywords[i] == "Panel" && m_keywords[i + 1] == "{") {
 
-			Panel* newPanel = new Panel(m_TextBox, m_ImageLoader);
+			Panel* newPanel = new Panel(m_TextBox, m_ImageLoader, m_GameSettings);
 			i = i + 2;
 			for (i; i < m_keywords.size(); i) {
 

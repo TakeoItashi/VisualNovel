@@ -3,13 +3,14 @@
 #include "Settings.h"
 #include "TextBox.h"
 
-TextBox::TextBox(SDL_Renderer* _renderer) {
+TextBox::TextBox(SDL_Renderer* _renderer, Settings* _settings) {
 	m_renderer = _renderer;
 	//TODO richtige implementierung von color
 	m_Color = SDL_Color{ 0, 0, 0 };
 	//TODO TextBox Größe und Position aus den Settings holen
-	Width = 750;
-	Height = 150;
+	m_settings = _settings;
+	Width = _settings->m_WindowWidth - 50;
+	Height = _settings->m_WindowHeight / 4;
 	//TODO Box Backgound lädt eine textur aus einem Ordner und erstellt selbst eine Textur, wenn keine Textur vordefiniert wurde
 	m_boxBackground = new Texture(_renderer);
 	m_boxBackgroundNameCorner = new Texture(_renderer);
@@ -30,10 +31,11 @@ void TextBox::Render(DialogLine _line, int _speed) {
 	//TODO ganz lange Wörter abarbeiten
 
 	std::vector<Texture*> TextCharsTexture;
-
+	int leftUpCornerPos = m_settings->m_WindowHeight - (Height + 25);
+	int leftUpNameBoxPos = leftUpCornerPos - (Height / 4);
 	//TODO TextBox Position an Window Größe anpassen
-	m_boxBackgroundNameCorner->Render(25, 425 - (Height /4), (Height / 4), (Width / 6));
-	m_boxBackground->Render(25, 425, Height, Width);
+	m_boxBackgroundNameCorner->Render(25, leftUpNameBoxPos, (Height / 4), (Width / 6));
+	m_boxBackground->Render(25, leftUpCornerPos, Height, Width);
 
 	//TODO Rework der Text Darstellung für Animation: Create new Texture after DeltaTime has passed. New Texture uses one Char more than before
 
@@ -83,21 +85,21 @@ void TextBox::Render(DialogLine _line, int _speed) {
 	}
 
 	lines.push_back(line);
-	int lineStart = 425;	//TODO an Fenstergröße anpassen
+	int lineStart = leftUpCornerPos;	//TODO an Fenstergröße anpassen
 	SDL_Surface* textSurface = nullptr;
 	if (_line.Name != "") {
 
 		textSurface = TTF_RenderText_Blended(m_font, _line.Name.c_str(), m_Color);
 		m_textTexture->CreateFromSurface(textSurface);
 		TTF_SizeText(m_font, _line.Name.c_str(), &m_textTexture->Width, &m_textTexture->Height);
-		m_textTexture->Render(30, lineStart, m_textTexture->Height, m_textTexture->Width);
-	} else {
+		m_textTexture->Render(30, leftUpNameBoxPos, m_textTexture->Height, m_textTexture->Width);
+	}/*else {
 		textSurface = TTF_RenderText_Blended(m_font, "BlankSpace", m_Color);
 		m_textTexture->CreateFromSurface(textSurface);
 		TTF_SizeText(m_font, _line.Name.c_str(), &m_textTexture->Width, &m_textTexture->Height);
-		m_textTexture->Render(30, lineStart, m_textTexture->Height, m_textTexture->Width);
-	}
-	lineStart += m_textTexture->Height - 5;
+		m_textTexture->Render(30, leftUpCornerPos, m_textTexture->Height, m_textTexture->Width);
+	}*/
+	//lineStart += m_textTexture->Height - 5;
 	SDL_FreeSurface(textSurface);
 
 	for (int i = 0; i < lines.size(); i++) {
@@ -112,7 +114,7 @@ void TextBox::Render(DialogLine _line, int _speed) {
 
 //TODO Use Configured Background Settings
 void TextBox::ApplySettings(Settings* _settings) {
-	SDL_Surface* backgroundSurface = SDL_CreateRGBSurface(0, Width, Height, 32, 0, 0, 0, 0);
+	SDL_Surface* backgroundSurface = SDL_CreateRGBSurface(0, Width, Height, 32, 0, 0, 0, 0); //TODO Insert RGB-A Values here?
 
 	SDL_FillRect(backgroundSurface, NULL, SDL_MapRGB(backgroundSurface->format, _settings->m_TextBoxRed, _settings->m_TextBoxGreen, _settings->m_TextBoxBlue));
 	m_boxBackground->CreateFromSurface(backgroundSurface);
@@ -122,8 +124,8 @@ void TextBox::ApplySettings(Settings* _settings) {
 	m_boxBackground->SetBlendMode(SDL_BLENDMODE_BLEND);
 	m_boxBackgroundNameCorner->SetBlendMode(SDL_BLENDMODE_BLEND);
 	//TODO SetAlpha Änderungen spiegeln sich nicht in der Textbox wieder.
-	m_boxBackground->SetAlpha((_settings->m_TextBoxAlpha * 0.5));
-	m_boxBackgroundNameCorner->SetAlpha((_settings->m_TextBoxAlpha * 0.5));
+	m_boxBackground->SetAlpha((_settings->m_TextBoxAlpha));
+	m_boxBackgroundNameCorner->SetAlpha((_settings->m_TextBoxAlpha));
 
 	m_font = _settings->m_Font;
 }

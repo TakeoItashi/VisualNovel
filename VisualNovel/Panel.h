@@ -12,11 +12,12 @@ class Button;
 class ShownItem;
 class SDL_Renderer;
 class Branch;
+class Settings;
 
 class Panel {
 
 	public:
-		Panel(TextBox* _textBoxReference, ImageLoader* _imageLoaderReference);
+		Panel(TextBox* _textBoxReference, ImageLoader* _imageLoaderReference, Settings* _settings);
 		~Panel();
 
 		//TODO Background Image entfernen und m_SpriteList[0] verwenden
@@ -25,6 +26,7 @@ class Panel {
 		TextBox* m_TextBox = nullptr;
 		ImageLoader* m_ImageLoader;							//TODO statische Image Loader Referenz
 		Condition* m_PanelCondition;
+		Settings* m_Settings;
 		std::string m_PanelName;
 		std::map<std::string, Branch*> m_Branches;
 		std::vector<SpritePosition> m_SpriteIndexList;		//TODO Liste wieder auf ints zurueck setzen

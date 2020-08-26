@@ -16,6 +16,7 @@ Menu::Menu(SDL_Renderer* _renderer, ImageLoader* _imageLoader, Settings* _settin
 	m_ImageLoader = _imageLoader;
 	m_Renderer = _renderer;
 	m_Color = SDL_Color{ 0, 0, 0 };
+	m_settings = _settings;
 }
 
 Menu::~Menu() {
@@ -234,7 +235,7 @@ void Menu::AutoWidth(Button* _button) {
 void Menu::Render() {
 
 	SDL_RenderClear(m_Renderer);
-	m_BackgroundImage->Render(0, 0, 600, 800);
+	m_BackgroundImage->Render(0, 0, m_settings->m_WindowHeight, m_settings->m_WindowWidth);
 	for (int i = 0; i < m_MenuItems.size(); i++) {
 
 		m_MenuItems[i].Button->Render();

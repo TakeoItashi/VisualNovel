@@ -110,7 +110,7 @@ namespace VisualNovelInterface.ViewModels
 			(e.sender as TextBox).Text = text;
 		}
 
-		private static bool IsInteger(string text) {
+		public static bool IsInteger(string text) {
 
 			return m_integerRegex.IsMatch(text);
 		}

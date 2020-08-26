@@ -28,6 +28,10 @@ namespace VisualNovelInterface.Models
 			set => SetProperty(ref characterName, value);
 		}
 
+		public string RenderedCharacterName {
+			get => characterName + ':';
+		}
+
 		public ObservableCollection<SpriteViewModel> Sprites {
 			get => m_usedSprites;
 			set => m_usedSprites = value;

@@ -78,6 +78,17 @@ namespace VisualNovelInterface.ViewModels
 			MoveMouseCommand = new RelayCommand<CustomEventCommandParameter>(MoveMouse);
 		}
 
+		public SpriteViewModel(SpriteViewModel _sprite) {
+			SpriteImage = _sprite.SpriteImage;
+			m_posX = _sprite.PosX;
+			m_posY = _sprite.PosY;
+			m_height = _sprite.Height;
+			m_width = _sprite.Width;
+			m_geometryRect = new Rect(m_posX, m_posY, m_height, m_width);
+			MouseDownOnSpriteCommand = new RelayCommand<CustomEventCommandParameter>(MouseDownOnSprite);
+			MoveMouseCommand = new RelayCommand<CustomEventCommandParameter>(MoveMouse);
+		}
+
 		private void MouseDownOnSprite(CustomEventCommandParameter _args) {
 			OnSpriteMoveEvent.Invoke(this);
 		}

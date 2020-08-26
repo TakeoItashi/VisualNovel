@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VisualNovelInterface.Models;
+using VisualNovelInterface.ViewModels;
 
 namespace VisualNovelInterface.ProjectExport
 {
@@ -31,6 +32,10 @@ namespace VisualNovelInterface.ProjectExport
 				}
 				//Text Files
 
+
+				//Gib den SpriteImages einen unique Key und füge diesen KEy beim Export für jede Benutzung einem Dictionary zu
+				//Wenn Das Sprite scho einmal benutzt wurde, wird es trotzdem nurt einmal vermerkt.
+
 				//ImageImports
 				using (StreamWriter writer = new StreamWriter(Path.Combine(m_exportPath, "ImageImports.txt"), false)) {
 					for (int i = 0; i < _spriteExporter.SpriteCount; ++i) {
@@ -50,6 +55,21 @@ namespace VisualNovelInterface.ProjectExport
 				//Storyboard
 				using (IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(Path.Combine(m_exportPath, "Storyboard.txt"), false))) {
 					m_textBuilder.Export(writer, _project, _spriteExporter);
+					writer.Close();
+				}
+
+				//options
+				using (StreamWriter writer = new StreamWriter(Path.Combine(m_exportPath, "options.txt"), false)) {
+					SettingsViewModel svm = _project.ProjectSettingsViewModel;
+					FontManagerViewModel fmvm = _project.FontManagerViewModel;
+					writer.WriteLine($"WindowWidth: {svm.WindowWidth};");
+					writer.WriteLine($"WindowHeight: {svm.WindowHeight};");
+					writer.WriteLine($"TextBoxRed: {svm.TextBoxRed};");
+					writer.WriteLine($"TextBoxGreen: {svm.TextBoxGreen};");
+					writer.WriteLine($"TextBoxBlue: {svm.TextBoxBlue};");
+					writer.WriteLine($"TextBoxAlpha: {svm.TextBoxAlpha};");
+					writer.WriteLine($"Font: {fmvm.CurrentUsedFont.Font.Source}.ttf;");
+					writer.WriteLine($"FontSize: {fmvm.FontSize};");
 					writer.Close();
 				}
 
@@ -73,15 +93,15 @@ namespace VisualNovelInterface.ProjectExport
 					File.Copy(_spriteExporter.ButtonSprites[i].Image, destFile, true);
 				}
 				//TTF Font Files
-				string path = Path.Combine(_project.FontManagerViewModel.CurrentUsedFont.BaseUri.OriginalString, _project.FontManagerViewModel.CurrentUsedFont.Source+".TTF");
-				filename = _project.FontManagerViewModel.CurrentUsedFont.Source;
+				string path = Path.Combine(_project.FontManagerViewModel.CurrentUsedFont.Font.BaseUri.OriginalString, _project.FontManagerViewModel.CurrentUsedFont.Font.Source+".TTF");
+				filename = _project.FontManagerViewModel.CurrentUsedFont.Font.Source;
 				destFile = Path.Combine(m_exportPath, filename + ".ttf");
 				File.Copy(path, destFile, true);
 
 				//Options Datei
 				return success = true;
 			} catch (Exception ex) {
-				System.Windows.Forms.MessageBox.Show("Export failed! " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Export failed! " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return success;
 			}
 		}

@@ -11,7 +11,7 @@ class Texture;
 class TextBox {
 
 	public:
-		TextBox(SDL_Renderer* _renderer);
+		TextBox(SDL_Renderer* _renderer, Settings* _settings);
 		~TextBox();
 		
 		int Width;
@@ -39,4 +39,5 @@ class TextBox {
 		TTF_Font* m_font;
 		//TODO Color is defined in Settings
 		SDL_Color m_Color;
+		Settings* m_settings;
 };
