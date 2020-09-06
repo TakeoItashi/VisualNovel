@@ -1,4 +1,6 @@
 #include "Button.h"
+#include "ImageLoader.h"
+#include "Settings.h"
 
 Button::Button(SDL_Renderer* _Renderer)
 	: SpriteSheetTexture(_Renderer) {
@@ -53,4 +55,19 @@ bool Button::HandleEvent(SDL_Event* _event) {
 		}
 	}
 	return false;
+}
+
+void Button::UpdateText(std::string _newText, ImageLoader* _imageLoader, Settings* _settings) {
+
+	Texture* m_textTexture = new Texture(m_Renderer);
+
+	SetSprite(_imageLoader->GetSprite(TextureIndex));
+	SDL_Surface* textSurface = TTF_RenderText_Blended(_settings->m_Font, _newText.c_str(), SDL_Color{ 0,0,0 });
+	m_textTexture->CreateFromSurface(textSurface);
+
+	m_textTexture = m_textTexture;
+	TTF_SizeText(_settings->m_Font, _newText.c_str(), &Width, &Height);    //TODO Breite des Textes an Button oder vice versa anpassen
+	m_textTexture->PosX = PosX;
+	m_textTexture->PosY = PosY;
+	SDL_FreeSurface(textSurface);
 }

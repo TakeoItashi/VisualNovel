@@ -56,6 +56,9 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
+                <MenuItem Header="_New Project" Command="{Binding NewProjectCommand}"/>
+                <MenuItem Header="_Save Project" Command="{Binding SaveCurrentProjectCommand}"/>
+                <MenuItem Header="_Load Project" Command="{Binding LoadCurrentProjectCommand}"/>
                 <MenuItem Header="_Export">
                     <MenuItem Header="_Set Output directory..." Command="{Binding SetOutputDirectoryCommand}"/>
                     <MenuItem Header="_Run Export" Command="{Binding RunExportCommand}"/>
@@ -107,14 +110,21 @@
                                                     <RowDefinition Height="20"/>
                                                 </Grid.RowDefinitions>
                                                 <ListView x:Name="PanelListView"
-                                                          ItemsSource="{Binding CurrentProject.Panels}" 
-                                                          DataContext="{Binding Mode=OneWay}" 
+                                                          ItemsSource="{Binding CurrentProject.Panels,
+                                                                                Mode=TwoWay}"
                                                           SelectedIndex="0" 
                                                           SelectedItem="{Binding SelectedPanel}"
                                                           SelectionMode="Single">
                                                     <ListView.ItemTemplate>
                                                         <DataTemplate>
-                                                            <TextBlock Text="{Binding PanelName}"/>
+                                                            <TextBlock Text="{Binding PanelName}">
+                                                                <TextBlock.ContextMenu>
+                                                                    <ContextMenu>
+                                                                        <MenuItem Header="Rename"
+                                                                                  Click="Click_Rename_Panel"/>
+                                                                    </ContextMenu>
+                                                                </TextBlock.ContextMenu>
+                                                            </TextBlock>
                                                         </DataTemplate>
                                                     </ListView.ItemTemplate>
                                                 </ListView>
@@ -140,7 +150,8 @@
                                                     <RowDefinition Height="20"/>
                                                 </Grid.RowDefinitions>
                                                 <ListView x:Name="BranchListView"
-                                                          ItemsSource="{Binding SelectedPanel.Branches}"
+                                                          ItemsSource="{Binding SelectedPanel.Branches,
+                                                                                Mode=TwoWay}"
                                                           SelectedIndex="0"
                                                           SelectedItem="{Binding SelectedBranch}">
                                                     <ListView.ItemTemplate>
@@ -201,12 +212,12 @@
                                                     <Button Grid.Column="0" 
                                                             Grid.Row="0"
                                                             Content="Move selected line up"
-                                                            IsEnabled="{Binding CanMoveSelectedItem}"
+                                                            IsEnabled="{Binding IsSelectedItemDialogLine}"
                                                             Command="{Binding MoveSelectedShownItemUpCommand}"/>
                                                     <Button Grid.Column="1" 
                                                             Grid.Row="0"
                                                             Content="Move selected line 'down"
-                                                            IsEnabled="{Binding CanMoveSelectedItem}"
+                                                            IsEnabled="{Binding IsSelectedItemDialogLine}"
                                                             Command="{Binding MoveSelectedShownItemDownCommand}"/>
                                                     <Button Grid.Column="0" 
                                                             Grid.Row="1"
@@ -215,7 +226,7 @@
                                                     <Button Grid.Column="1" 
                                                             Grid.Row="1"
                                                             Content="Remove Selected DialogLine"
-                                                            IsEnabled="{Binding IsItemSelected}"
+                                                            IsEnabled="{Binding IsSelectedItemDialogLine}"
                                                             Command="{Binding RemoveSelectedItemCommand}"/>
                                                 </Grid>
                                             </Grid>
@@ -226,7 +237,7 @@
                                                     <RowDefinition/>
                                                     <RowDefinition Height="20"/>
                                                 </Grid.RowDefinitions>
-                                                <ListBox ItemsSource="{Binding GlobalSprites}"
+                                                <ListBox ItemsSource="{Binding CurrentProject.GlobalSprites}"
                                                          SelectedItem="{Binding SelectedGlobalSprite}">
                                                     <ListBox.ItemTemplate>
                                                         <DataTemplate>
@@ -255,7 +266,7 @@
                                                     <RowDefinition/>
                                                     <RowDefinition Height="20"/>
                                                 </Grid.RowDefinitions>
-                                                <ListBox ItemsSource="{Binding GlobalButtonSprites}"
+                                                <ListBox ItemsSource="{Binding CurrentProject.GlobalButtonSprites}"
                                                          SelectedItem="{Binding SelectedGlobalButtonSprite}">
                                                     <ListBox.ItemTemplate>
                                                         <DataTemplate>
@@ -292,7 +303,8 @@
                                         MaxHeight="1280"
                                         MaxWidth="720">
                                     <Grid x:Name="Preview_Grid">
-                                        <Image Source="{Binding SelectedPanel.BackgroundImage.Image}" 
+                                        <Image Source="{Binding SelectedPanel.BackgroundImage.Image,
+                                                                Mode=TwoWay}" 
                                                    VerticalAlignment="Center"
                                                    Panel.ZIndex="-2"/>
                                         <ItemsControl x:Name="Sprite_Preview"
@@ -331,7 +343,8 @@
                                             </ItemsControl.Style>
                                         </ItemsControl>
                                         <ItemsControl x:Name="Option_Preview"
-                                                          ItemsSource="{Binding SelectedItem.Split.Options}"
+                                                          ItemsSource="{Binding SelectedItem.Split.Options,
+                                                                                Mode=TwoWay}"
                                                           IsHitTestVisible="False">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -442,7 +455,9 @@
                                         Content="Remove Selected Sprite"
                                         IsEnabled="{Binding IsPanelSelected}"
                                         Command="{Binding RemoveSelectedSpriteCommand}"/>
-                                <ListBox Margin="0,0,0,5" ItemsSource="{Binding SelectedItem.Sprites}"
+                                <ListBox Margin="0,0,0,5"
+                                         ItemsSource="{Binding SelectedItem.Sprites,
+                                                               Mode=TwoWay}"
                                          SelectedItem="{Binding SelectedSprite}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
@@ -653,6 +668,19 @@
                     <Button Content="Add Background Image"
                             Margin="0,0,0,5"
                             Command="{Binding AddBackgroundImageCommand}"/>
+                    <GroupBox Header="Selected Items"
+                              Margin="0,0,0,5">
+                        <StackPanel>
+                            <DockPanel Margin="0,0,0,3">
+                                <Label Content="Panel Name:"/>
+                                <TextBox Text="{Binding SelectedPanel.PanelName, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
+                            <DockPanel Margin="0,0,0,3">
+                                <Label Content="Branch Name:"/>
+                                <TextBox Text="{Binding SelectedBranch.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </GroupBox>
                     <GroupBox Header="Sprite"
                               Margin="0,0,0,5"
                               Visibility="{Binding IsSpriteSelected, Converter={StaticResource BoolToVisibilityConverter}}">

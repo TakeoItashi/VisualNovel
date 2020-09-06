@@ -148,7 +148,7 @@ bool Game::NewGame(Button* _butt) {
 	return true;
 }
 
-bool Game::Update(SDL_Event* _eventhandler) {
+bool Game::Update(SDL_Event* _currentEvent) {
 
 	if (m_CurrentMenu != nullptr) {
 
@@ -271,7 +271,7 @@ void Game::ShowMenu(Menu* _menuInstance) {
 	for (int i = 0; i < _menuInstance->m_MenuItems.size(); i++) {
 
 		bool cancel = false;
-		cancel = _menuInstance->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+		cancel = _menuInstance->m_MenuItems[i]->Button->HandleEvent(m_EventHandler);
 		if (cancel) {
 			return;
 		}
@@ -298,13 +298,17 @@ bool Game::ChangePanel(const char* _panelKey) {
 void Game::ResetGameToMainMenu() {
 	m_CurrentMenu = m_MainMenu;
 	m_GameIsRunning = false;
-	m_CurrentPanelKey = m_PanelMap.begin()->second->m_PanelName;
-	std::map<std::string, Panel*>::iterator it;
 
-	for (it = m_PanelMap.begin(); it != m_PanelMap.end(); it++) {
-		it->second->m_currentBranchKey = it->second->m_EntryBranchKey;
-	}
-	m_CurrentLine = 0;
+	//m_CurrentPanelKey = m_PanelMap.begin()->second->m_PanelName;
+	
+	ShowMenu(m_CurrentMenu);
+
+	//std::map<std::string, Panel*>::iterator it;
+	//
+	//for (it = m_PanelMap.begin(); it != m_PanelMap.end(); it++) {
+	//	it->second->m_currentBranchKey = it->second->m_EntryBranchKey;
+	//}
+	//m_CurrentLine = 0;
 }
 
 bool Game::LoadCustomMethod(Button* _buttonCallback) {
@@ -346,7 +350,7 @@ bool Game::ChangeResolution(Button* _buttonCallback) {
 
 	for (int i = 0; i < m_OptionsMenu->m_MenuItems.size(); i++) {
 
-		m_OptionsMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+		m_OptionsMenu->m_MenuItems[i]->Button->HandleEvent(m_EventHandler);
 
 		SDL_RenderPresent(m_Renderer);
 	}
@@ -375,7 +379,7 @@ void Game::RenderCurrentMenu() {
 
 	for (int i = 0; i < m_CurrentMenu->m_MenuItems.size(); i++) {
 
-		m_CurrentMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+		m_CurrentMenu->m_MenuItems[i]->Button->HandleEvent(m_EventHandler);
 
 	}
 	SDL_RenderPresent(m_Renderer);

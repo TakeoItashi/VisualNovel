@@ -29,7 +29,7 @@ namespace VisualNovelInterface.Models
 		}
 
 		public string RenderedCharacterName {
-			get => characterName + ':';
+			get => characterName != "" ? characterName + ':' : "";
 		}
 
 		public ObservableCollection<SpriteViewModel> Sprites {

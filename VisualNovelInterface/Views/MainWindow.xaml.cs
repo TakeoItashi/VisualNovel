@@ -96,8 +96,8 @@ namespace VisualNovelInterface
 				Option currentOption = Option_Preview.Items[i-1] as Option;
 				currentOption.Height = ItemsSpace;
 				currentOption.Width = Width / 3;
-				currentOption.PosX = (Width / 2) - (currentOption.Width/2);
-				currentOption.PosY = (ItemsSpace * i) - (currentOption.Height/2);
+				currentOption.PosX = (Width / 2) - (currentOption.Width / 2);
+				currentOption.PosY = (ItemsSpace * i) - (currentOption.Height / 2);
 			}
 			UpdateLayout();
 		}
@@ -120,7 +120,7 @@ namespace VisualNovelInterface
 
 				SpriteViewModel currentSprite = _sprites[i-1];
 
-				currentSprite.PosY = (Height / 2) - (currentSprite.Height /2);
+				currentSprite.PosY = (Height / 2) - (currentSprite.Height / 2);
 				currentSprite.PosX = (ItemsSpace * i) - (currentSprite.Width / 2);
 			}
 		}
@@ -132,5 +132,10 @@ namespace VisualNovelInterface
 			Console.WriteLine(e.Effects);
 		}
 		#endregion
+
+		private void Click_Rename_Panel(object sender, RoutedEventArgs e) {
+			var selectedLabel = (Label)PanelListView.SelectedItem;
+			selectedLabel.Content = "Text to change to";
+		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -47,6 +48,7 @@ namespace VisualNovelInterface.Models
 			set => SetProperty(ref m_isEntryBranch, value);
 		}
 
+		[JsonIgnore]
 		public RelayCommand SetToEntryBranchCommand {
 			get;
 			set;
@@ -61,7 +63,11 @@ namespace VisualNovelInterface.Models
 
 				m_shownItems = _shownItems;
 			}
-			m_continue = _continue;
+			if (_continue == null) {
+				m_continue = new Continue(Enums.ContinueTypeEnum.Branch, Name);
+			} else {
+				m_continue = _continue;
+			}
 			m_selectedItem = m_shownItems.First();
 			SetToEntryBranchCommand = new RelayCommand(SetToEntryBranch);
 			ShownItems.CollectionChanged += NotifyShownItemsListChange;

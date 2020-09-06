@@ -33,13 +33,13 @@ namespace VisualNovelInterface.ProjectExport
 				//Text Files
 
 
-				//Gib den SpriteImages einen unique Key und füge diesen KEy beim Export für jede Benutzung einem Dictionary zu
+				//Gib den SpriteImages einen unique Key und füge diesen Key beim Export für jede Benutzung einem Dictionary zu
 				//Wenn Das Sprite scho einmal benutzt wurde, wird es trotzdem nurt einmal vermerkt.
 
 				//ImageImports
 				using (StreamWriter writer = new StreamWriter(Path.Combine(m_exportPath, "ImageImports.txt"), false)) {
 					for (int i = 0; i < _spriteExporter.SpriteCount; ++i) {
-						writer.WriteLine(Path.GetFileName(_spriteExporter.Sprites[i].Image));
+						writer.WriteLine(Path.GetFileName(_spriteExporter.SpritesArray[i].Image));
 					}
 					writer.Close();
 				}
@@ -47,7 +47,7 @@ namespace VisualNovelInterface.ProjectExport
 				//(Button)Sprite Imports
 				using (StreamWriter writer = new StreamWriter(Path.Combine(m_exportPath, "SpriteImports.txt"), false)) {
 					for (int i = 0; i < _spriteExporter.ButtonSpriteCount; ++i) {
-						writer.WriteLine(Path.GetFileName(_spriteExporter.ButtonSprites[i].Image));
+						writer.WriteLine(Path.GetFileName(_spriteExporter.ButtonSpritesArray[i].Image));
 					}
 					writer.Close();
 				}
@@ -69,7 +69,7 @@ namespace VisualNovelInterface.ProjectExport
 					writer.WriteLine($"TextBoxBlue: {svm.TextBoxBlue};");
 					writer.WriteLine($"TextBoxAlpha: {svm.TextBoxAlpha};");
 					writer.WriteLine($"Font: {fmvm.CurrentUsedFont.Font.Source}.ttf;");
-					writer.WriteLine($"FontSize: {fmvm.FontSize};");
+					writer.Write($"FontSize: {fmvm.FontSize};"); //Last entry has to not contain new Line or Game loading will fail
 					writer.Close();
 				}
 
@@ -81,28 +81,69 @@ namespace VisualNovelInterface.ProjectExport
 				//Image Files
 				for (int i = 0; i < _spriteExporter.SpriteCount; ++i) {
 
-					filename = Path.GetFileName(_spriteExporter.Sprites[i].Image);
+					filename = Path.GetFileName(_spriteExporter.SpritesArray[i].Image);
 					destFile = Path.Combine(m_exportPath, filename);
-					File.Copy(_spriteExporter.Sprites[i].Image, destFile, true);
+					File.Copy(_spriteExporter.SpritesArray[i].Image, destFile, true);
 				}
 				//Button Image Files
 				for (int i = 0; i < _spriteExporter.ButtonSpriteCount; ++i) {
 
-					filename = Path.GetFileName(_spriteExporter.ButtonSprites[i].Image);
+					filename = Path.GetFileName(_spriteExporter.ButtonSpritesArray[i].Image);
 					destFile = Path.Combine(m_exportPath, filename);
-					File.Copy(_spriteExporter.ButtonSprites[i].Image, destFile, true);
+					File.Copy(_spriteExporter.ButtonSpritesArray[i].Image, destFile, true);
 				}
 				//TTF Font Files
 				string path = Path.Combine(_project.FontManagerViewModel.CurrentUsedFont.Font.BaseUri.OriginalString, _project.FontManagerViewModel.CurrentUsedFont.Font.Source+".TTF");
 				filename = _project.FontManagerViewModel.CurrentUsedFont.Font.Source;
 				destFile = Path.Combine(m_exportPath, filename + ".ttf");
 				File.Copy(path, destFile, true);
+				
+				//bin Files
+				path = Directory.GetCurrentDirectory() + @"\bin";
+				DirectoryCopy(path, m_exportPath, false);
 
 				//Options Datei
 				return success = true;
 			} catch (Exception ex) {
 				MessageBox.Show("Export failed! " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return success;
+			}
+		}
+
+		//https://docs.microsoft.com/en-us/dotnet/standard/io/how-to-copy-directories?redirectedfrom=MSDN
+		private void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs) {
+			// Get the subdirectories for the specified directory.
+			DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+			if (!dir.Exists) {
+				throw new DirectoryNotFoundException(
+					"Source directory does not exist or could not be found: "
+					+ sourceDirName);
+			}
+
+			DirectoryInfo[] dirs = dir.GetDirectories();
+
+			// If the destination directory doesn't exist, create it.       
+			Directory.CreateDirectory(destDirName);
+
+			// Get the files in the directory and copy them to the new location.
+			FileInfo[] files = dir.GetFiles();
+			foreach (FileInfo file in files) {
+				try {
+				
+					string temppath = Path.Combine(sourceDirName, file.Name);
+					file.CopyTo(temppath, true);
+				} catch (Exception) {
+
+				}
+			}
+
+			// If copying subdirectories, copy them and their contents to new location.
+			if (copySubDirs) {
+				foreach (DirectoryInfo subdir in dirs) {
+					string temppath = Path.Combine(destDirName, subdir.Name);
+					DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+				}
 			}
 		}
 	}

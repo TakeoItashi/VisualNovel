@@ -12,6 +12,7 @@ using VisualNovelInterface.MVVM;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
 using VisualNovelInterface.Models;
+using Newtonsoft.Json;
 
 namespace VisualNovelInterface.ViewModels
 {
@@ -38,26 +39,31 @@ namespace VisualNovelInterface.ViewModels
 			get => SelectedValue != null;
 		}
 
+		[JsonIgnore]
 		public RelayCommand<TextCompositionEventArgs> CheckInputForIntegerCommand {
 			get;
 			set;
 		}
 
+		[JsonIgnore]
 		public RelayCommand<TextBoxEventArgs> CheckInputForDecimalCommand {
 			get;
 			set;
 		}
 
+		[JsonIgnore]
 		public RelayCommand<TextBoxEventArgs> ChechForDecimalInTextCommand {
 			get;
 			set;
 		}
 
+		[JsonIgnore]
 		public RelayCommand AddNewVariableCommand {
 			get;
 			set;
 		}
 
+		[JsonIgnore]
 		public RelayCommand DeleteSelectedVariableCommand {
 			get;
 			set;

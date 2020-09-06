@@ -266,6 +266,9 @@
     <ClInclude Include="SplitOption.h">
       <Filter>Headerdateien\InGameView\SplitDecisions</Filter>
     </ClInclude>
+    <ClInclude Include="MenuText.h">
+      <Filter>Headerdateien\UI\BaseMenu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ImageImports.txt">
@@ -290,6 +293,9 @@
       <Filter>Ressourcendateien\TextFiles</Filter>
     </Text>
     <Text Include="SpriteImports.txt">
+      <Filter>Ressourcendateien\TextFiles</Filter>
+    </Text>
+    <Text Include="Variables.txt">
       <Filter>Ressourcendateien\TextFiles</Filter>
     </Text>
   </ItemGroup>

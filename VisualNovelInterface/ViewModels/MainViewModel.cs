@@ -27,6 +27,7 @@ using FontFamily = System.Windows.Media.FontFamily;
 using VisualNovelInterface.ProjectExport;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
+using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
 
 namespace VisualNovelInterface.ViewModels
 {
@@ -38,8 +39,7 @@ namespace VisualNovelInterface.ViewModels
 		private SpriteImage m_selectedGlobalButtonSprite;
 		private bool canExecute;
 		private int selectedPanelIndex;
-		private ObservableCollection<SpriteImage> m_globalSprites;
-		private ObservableCollection<SpriteImage> m_globalButtonSprites;
+
 		private Option m_selectedOption;
 		private string m_exportPath;
 		private static readonly Regex m_integerRegex = new Regex("[^0-9]+");
@@ -160,15 +160,7 @@ namespace VisualNovelInterface.ViewModels
 			set => VariableManager.Variables = value;
 		}
 
-		public ObservableCollection<SpriteImage> GlobalSprites {
-			get => m_globalSprites;
-			set => m_globalSprites = value;
-		}
 
-		public ObservableCollection<SpriteImage> GlobalButtonSprites {
-			get => m_globalButtonSprites;
-			set => m_globalButtonSprites = value;
-		}
 
 		public string SelectionPath {
 			get {
@@ -203,9 +195,6 @@ namespace VisualNovelInterface.ViewModels
 			get => SelectedItem != null;
 		}
 
-		public bool CanMoveSelectedItem {
-			get => IsItemSelected && (SelectedItem is DialogLine);
-		}
 
 		public bool IsItemsTabSelected {
 			get => SelectedTabIndex == 2;
@@ -224,7 +213,7 @@ namespace VisualNovelInterface.ViewModels
 		}
 
 		public double NameTextBoxHeight {
-			get => LineTextBoxHeight / 4 ;
+			get => LineTextBoxHeight / 4;
 		}
 
 		public double LineTextBoxHeight {
@@ -349,13 +338,28 @@ namespace VisualNovelInterface.ViewModels
 			get;
 			set;
 		}
-		
+
 		public RelayCommand AddNewGlobalButtonSpriteCommand {
 			get;
 			set;
 		}
 
 		public RelayCommand RemoveSelectedGlobalButtonSpriteCommand {
+			get;
+			set;
+		}
+
+		public RelayCommand NewProjectCommand {
+			get;
+			set;
+		}
+
+		public RelayCommand SaveCurrentProjectCommand {
+			get;
+			set;
+		}
+
+		public RelayCommand LoadCurrentProjectCommand {
 			get;
 			set;
 		}
@@ -366,8 +370,7 @@ namespace VisualNovelInterface.ViewModels
 			m_parentWindow = _parentWindow;
 			currentProject = new Project();
 			currentProject.FontManagerViewModel.OnNewUsedFont += NotifyOfChangedUsedFont;
-			GlobalSprites = new ObservableCollection<SpriteImage>();
-			GlobalButtonSprites = new ObservableCollection<SpriteImage>();
+
 			AddBackgroundImageCommand = new RelayCommand(AddBackgroundImage);
 			OpenVariableManagerCommand = new RelayCommand(OpenVariableManager);
 			AddNewSpriteCommand = new RelayCommand(AddNewSprite);
@@ -391,7 +394,10 @@ namespace VisualNovelInterface.ViewModels
 			OpenFullsizePreviewCommand = new RelayCommand(OpenFullsizePreview);
 			RemoveSelectedGlobalSpriteCommand = new RelayCommand(RemoveSelectedGlobalSprite);
 			AddNewGlobalButtonSpriteCommand = new RelayCommand(AddNewGlobalButtonSprite);
-			RemoveSelectedGlobalButtonSpriteCommand = new RelayCommand(RemoveSelectedGlobalButtonSprite); 
+			RemoveSelectedGlobalButtonSpriteCommand = new RelayCommand(RemoveSelectedGlobalButtonSprite);
+			NewProjectCommand = new RelayCommand(NewProject);
+			SaveCurrentProjectCommand = new RelayCommand(SaveCurrentProject);
+			LoadCurrentProjectCommand = new RelayCommand(LoadCurrentProject);
 #if DEBUG
 			GenerateTestStory();
 			OnPropertyChanged(nameof(SelectedItem));
@@ -429,7 +435,7 @@ namespace VisualNovelInterface.ViewModels
 				if (newFile.ShowDialog() == DialogResult.OK) {
 
 					SelectedPanel.BackgroundImage = new SpriteImage(newFile.FileName, newFile.SafeFileName);
-					GlobalSprites.Add(SelectedPanel.BackgroundImage);
+					CurrentProject.GlobalSprites.Add(SelectedPanel.BackgroundImage);
 				}
 			}
 		}
@@ -446,7 +452,7 @@ namespace VisualNovelInterface.ViewModels
 
 					string path = newFile.FileName;
 					SpriteImage newSVM = new SpriteImage(path, newFile.SafeFileName);
-					GlobalSprites.Add(newSVM);
+					CurrentProject.GlobalSprites.Add(newSVM);
 				}
 			}
 		}
@@ -552,16 +558,21 @@ namespace VisualNovelInterface.ViewModels
 		}
 
 		public void AddNewPanel() {
-			CurrentProject.Panels.Add(new Panel("NewPanel"));
+			CurrentProject.Panels.Add(new Panel("NewPanel", OpenButtonSpriteDialog));
+			CurrentProject.Panels.First().Branches.First().SetEntryBranchEventHandler += EntryBranchChecked;
 		}
 
 		public void RemoveSelectedPanel() {
 			if (SelectedPanel != null) {
-				CurrentProject.Panels.Remove(SelectedPanel);
-				if (CurrentProject.Panels.Count > 0) {
-					SelectedPanel = CurrentProject.Panels.First();
+				if (CurrentProject.Panels.Count <= 1) {
+					System.Windows.Forms.MessageBox.Show("Cannot Remove Last Panel! ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				} else {
-					SelectedPanel = null;
+					CurrentProject.Panels.Remove(SelectedPanel);
+					if (CurrentProject.Panels.Count > 0) {
+						SelectedPanel = CurrentProject.Panels.First();
+					} else {
+						SelectedPanel = null;
+					}
 				}
 			}
 		}
@@ -569,18 +580,24 @@ namespace VisualNovelInterface.ViewModels
 		public void AddNewBranch() {
 			Branch newBranch = new Branch("NewBranch");
 			newBranch.SetEntryBranchEventHandler += EntryBranchChecked;
+			newBranch.Continue.OpenButtonSpriteDialogReference = OpenButtonSpriteDialog;
 			SelectedPanel.Branches.Add(newBranch);
 
 		}
 
 		public void RemoveSelectedBranch() {
 			if (SelectedBranch != null) {
-				Branch tobeRemovedBranch = SelectedBranch;
-				SelectedBranch = SelectedPanel.Branches.First();
-				SelectedPanel.Branches.Remove(tobeRemovedBranch);
-				if (SelectedPanel.Branches.Count > 0) {
-					SelectedBranch = SelectedPanel.Branches.First();
+				if (SelectedPanel.Branches.Count <= 1) {
+					System.Windows.Forms.MessageBox.Show("Cannot Remove Last Branch! ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				} else {
+					Branch tobeRemovedBranch = SelectedBranch;
+					SelectedBranch = SelectedPanel.Branches.First();
+					SelectedPanel.Branches.Remove(tobeRemovedBranch);
+					if (SelectedPanel.Branches.Count > 0) {
+						SelectedBranch = SelectedPanel.Branches.First();
+					} else {
+						SelectedBranch = null;
+					}
 				}
 			}
 		}
@@ -633,7 +650,7 @@ namespace VisualNovelInterface.ViewModels
 		public void RunExport() {
 
 			Exporter exporter = new Exporter(m_exportPath);
-			SpriteExporter spriteExporter = new SpriteExporter(m_globalSprites.ToList(), m_globalButtonSprites.ToList());
+			SpriteExporter spriteExporter = new SpriteExporter(CurrentProject.GlobalSprites.ToList(), CurrentProject.GlobalButtonSprites.ToList());
 			bool result = exporter.Export(currentProject, spriteExporter);
 			if (result) {
 				System.Windows.Forms.MessageBox.Show("Export successfull", "Success", MessageBoxButtons.OK);
@@ -645,7 +662,7 @@ namespace VisualNovelInterface.ViewModels
 		}
 
 		public void RemoveSelectedGlobalSprite() {
-			GlobalSprites.Remove(SelectedGlobalSprite);
+			CurrentProject.GlobalButtonSprites.Remove(SelectedGlobalSprite);
 		}
 
 		public void AddNewGlobalButtonSprite() {
@@ -660,19 +677,48 @@ namespace VisualNovelInterface.ViewModels
 
 					string path = newFile.FileName;
 					SpriteImage newSVM = new SpriteImage(path, newFile.SafeFileName);
-					GlobalButtonSprites.Add(newSVM);
+					CurrentProject.GlobalButtonSprites.Add(newSVM);
 				}
 			}
 		}
 
 		public void RemoveSelectedGlobalButtonSprite() {
-			GlobalButtonSprites.Remove(SelectedGlobalButtonSprite);
+			CurrentProject.GlobalButtonSprites.Remove(SelectedGlobalButtonSprite);
+		}
+
+		public void NewProject() {
+			CurrentProject.Panels = new ObservableCollection<Panel>();
+			CurrentProject = new Project();
+			CurrentProject.FontManagerViewModel.OnNewUsedFont += NotifyOfChangedUsedFont;
+		}
+
+		public void SaveCurrentProject() {
+			SaveFileDialog dialog = new SaveFileDialog();
+			dialog.Title = "Save current project";
+			dialog.Filter = "Project Save (*.vnproj)|*.vnproj";
+			DialogResult result = dialog.ShowDialog();
+			if (result == DialogResult.OK) {
+
+				Project.Serialize(CurrentProject, dialog.FileName);
+			}
+		}
+
+		public void LoadCurrentProject() {
+			OpenFileDialog dialog = new OpenFileDialog();
+			dialog.Title = "Open saved project";
+			dialog.Filter = "Project Save (*.vnproj)|*.vnproj";
+			if (dialog.ShowDialog() == DialogResult.OK) {
+
+				Project.Deserialize(out currentProject, dialog.FileName, MoveSprite, OpenButtonSpriteDialog, EntryBranchChecked);
+				CurrentProject.FontManagerViewModel.OnNewUsedFont += NotifyOfChangedUsedFont;
+				OnPropertyChanged("");
+			}
 		}
 
 #if DEBUG
 		public void GenerateTestStory() {
 
-			currentProject.Panels.Add(new Panel("NewPanel_01"));
+			currentProject.Panels.Add(new Panel("NewPanel_01", OpenButtonSpriteDialog));
 			//currentProject.Panels.Add(new Panel("NewPanel_02"));
 			//currentProject.Panels.Add(new Panel("NewPanel_03"));
 			currentProject.Panels.First().Branches.Clear(); //TODO: Why clear???
@@ -693,16 +739,16 @@ namespace VisualNovelInterface.ViewModels
 			SpriteImage stickSprite = new SpriteImage(fullPath, "StickSprite");
 			fullPath = Path.Combine(curDir, "GoblinMage.png");
 			SpriteImage goblinSprite = new SpriteImage(fullPath, "GoblinSprite");
-			GlobalSprites.Add(dogeSprite);
+			CurrentProject.GlobalSprites.Add(dogeSprite);
 			SelectedPanel.SpriteImages.Add(dogeSprite);
-			GlobalSprites.Add(stickSprite);
+			CurrentProject.GlobalSprites.Add(stickSprite);
 			SelectedPanel.SpriteImages.Add(stickSprite);
-			GlobalSprites.Add(goblinSprite);
+			CurrentProject.GlobalSprites.Add(goblinSprite);
 			SelectedPanel.SpriteImages.Add(goblinSprite);
-			GlobalButtonSprites.Add(buttonSprite);
-			GlobalButtonSprites.Add(buttonColorSprite);
+			CurrentProject.GlobalButtonSprites.Add(buttonSprite);
+			CurrentProject.GlobalButtonSprites.Add(buttonColorSprite);
 
-			GlobalSprites.Add(wallpaperSprite);
+			CurrentProject.GlobalSprites.Add(wallpaperSprite);
 			SelectedPanel.BackgroundImage = wallpaperSprite;
 
 			SpriteViewModel dogeSVM = new SpriteViewModel(dogeSprite);
@@ -750,6 +796,7 @@ namespace VisualNovelInterface.ViewModels
 															new DialogLine{ CharacterName = "Heinrich Kleinrich", TextShown = "And I am Heinrich", Sprites = new ObservableCollection<SpriteViewModel>(){dogeSVM2, stickSVM}},
 														},
 														new Continue(ContinueTypeEnum.Branch, "Branch4")));
+			currentProject.SelectedPanel.Branches.Last().Continue.OpenButtonSpriteDialogReference = OpenButtonSpriteDialog;
 
 			SpriteViewModel dogeSVM3 = new SpriteViewModel(dogeSprite);
 			dogeSVM3.OnSpriteMoveEvent += MoveSprite;
@@ -770,6 +817,8 @@ namespace VisualNovelInterface.ViewModels
 														},
 														new Continue(ContinueTypeEnum.Branch, "Branch4")));
 
+			currentProject.SelectedPanel.Branches.Last().Continue.OpenButtonSpriteDialogReference = OpenButtonSpriteDialog;
+
 			Option newOption3 = new Option("Option3", "Repeat Doge", buttonSprite, new Continue(ContinueTypeEnum.Branch, "Branch5"));
 			newOption3.OnButtonSpriteChange += OpenButtonSpriteDialog;
 			Option newOption4 = new Option("Option4", "Repeat Heinrich", buttonSprite, new Continue(ContinueTypeEnum.Branch, "Branch6"));
@@ -789,24 +838,28 @@ namespace VisualNovelInterface.ViewModels
 																}
 															)
 														)));
+			currentProject.SelectedPanel.Branches.Last().Continue.OpenButtonSpriteDialogReference = OpenButtonSpriteDialog;
 
 			currentProject.SelectedPanel.Branches.Add(new Branch("Branch5",
 														new ObservableCollection<ShownItem>() {
 															new DialogLine{ CharacterName = "Doge", TextShown = "Hello there", Sprites = new ObservableCollection<SpriteViewModel>(){dogeSVM4}},
 														},
 														new Continue(ContinueTypeEnum.Branch, "Branch7")));
+			currentProject.SelectedPanel.Branches.Last().Continue.OpenButtonSpriteDialogReference = OpenButtonSpriteDialog;
 
 			currentProject.SelectedPanel.Branches.Add(new Branch("Branch6",
 														new ObservableCollection<ShownItem>() {
 															new DialogLine{ CharacterName = "Heinrich Kleinrich", TextShown = "General Ke-dogee", Sprites = new ObservableCollection<SpriteViewModel>(){stickSVM4}},
 														},
 														new Continue(ContinueTypeEnum.Branch, "Branch7")));
+			currentProject.SelectedPanel.Branches.Last().Continue.OpenButtonSpriteDialogReference = OpenButtonSpriteDialog;
 
 			currentProject.SelectedPanel.Branches.Add(new Branch("Branch7",
 														new ObservableCollection<ShownItem>() {
 															new DialogLine{ CharacterName = "Goblin Doctor", TextShown = "Hello", Sprites = new ObservableCollection<SpriteViewModel>(){goblinSVM2}},
 														},
 														new Continue(ContinueTypeEnum.Panel, "Panel2")));
+			currentProject.SelectedPanel.Branches.Last().Continue.OpenButtonSpriteDialogReference = OpenButtonSpriteDialog;
 
 			SelectedPanel.EntryBranchKey = SelectedPanel.Branches.First().Name;
 
@@ -830,6 +883,6 @@ namespace VisualNovelInterface.ViewModels
 			//currentProject.SelectedPanel.SelectedLine.Sprites.Add(new SpriteViewModel(GlobalSprites.First()));
 			//currentProject.SelectedPanel.SelectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
 		}
-	}
 #endif
+	}
 }

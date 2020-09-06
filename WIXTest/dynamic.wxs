@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Directory Id="dir6DF60639259B472DD4A38D791759B5C5" Name="output">
+                <Component Id="cmp0F780D56073CC0C75C361AB684221A10" Guid="{BAB54AE3-DEA9-4E19-8657-48891315F456}">
+                    <File Id="fil98B2C6A72A5126E905F3E2EEE4643767" KeyPath="yes" Source="$(var.output)\Neues Textdokument (2).txt" />
+                </Component>
+                <Component Id="cmp949CE4472DD56EEB01AB13D517782607" Guid="{081E87B1-7962-4889-A70C-3A5A99001A46}">
+                    <File Id="fil6B493925B7B8C76787B07ADD51F81B79" KeyPath="yes" Source="$(var.output)\Neues Textdokument (3).txt" />
+                </Component>
+                <Component Id="cmp27AD6C1B1E1082D5FC78655A5D76F759" Guid="{40F1F18F-F7D3-4E2D-B0C2-14AA5ED9020A}">
+                    <File Id="filF82EDF3A8EF64295D70083815331F861" KeyPath="yes" Source="$(var.output)\Neues Textdokument.txt" />
+                </Component>
+            </Directory>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="OutputFilesGroup">
+            <ComponentRef Id="cmp0F780D56073CC0C75C361AB684221A10" />
+            <ComponentRef Id="cmp949CE4472DD56EEB01AB13D517782607" />
+            <ComponentRef Id="cmp27AD6C1B1E1082D5FC78655A5D76F759" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

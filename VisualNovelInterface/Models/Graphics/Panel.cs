@@ -13,7 +13,6 @@ namespace VisualNovelInterface.Models {
 
         private SpriteImage backgroundImage;
         private string panelName;
-        private ObservableCollection<DialogLine> dialogueLines;
 		private DialogLine m_selectedDialogLine;
         private ObservableCollection<Branch> m_branches;
         private Condition m_condition;
@@ -29,11 +28,6 @@ namespace VisualNovelInterface.Models {
         public string PanelName {
             get => panelName;
             set => panelName = value;
-        }
-
-        public ObservableCollection<DialogLine> DialogueLines {
-            get => dialogueLines;
-            set => dialogueLines = value;
         }
 
 		public DialogLine SelectedLine {
@@ -53,7 +47,7 @@ namespace VisualNovelInterface.Models {
 
         public ObservableCollection<SpriteImage> SpriteImages {
             get => m_spriteImages;
-            set => m_spriteImages = value;
+            set => SetProperty(ref m_spriteImages, value);
         }
 
         public string EntryBranchKey {
@@ -66,15 +60,16 @@ namespace VisualNovelInterface.Models {
             set => SetProperty(ref m_selectedBranch, value);
         }
 
-        public Panel(string _newPanelName)
+
+        public Panel(string _newPanelName, Option.ButtonSpriteChange _buttonSpriteChangeDelegate)
         {
             PanelName = _newPanelName;
 
-            dialogueLines = new ObservableCollection<DialogLine>();
-            m_branches = new ObservableCollection<Branch>();
-            m_branches.Add(new Branch("Branch1"));
+            Branches = new ObservableCollection<Branch>();
+            Branches.Add(new Branch("Branch1"));
+            Branches.First().Continue.OpenButtonSpriteDialogReference = _buttonSpriteChangeDelegate;
             SpriteImages = new ObservableCollection<SpriteImage>();
-            SelectedBranch = m_branches.First();
+            SelectedBranch = Branches.First();
         }
     }
 }

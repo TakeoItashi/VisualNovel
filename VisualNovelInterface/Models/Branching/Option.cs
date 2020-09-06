@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -28,7 +29,7 @@ namespace VisualNovelInterface.Models
 
 
 		private Int32Rect m_normalSpriteRect {
-			get => new Int32Rect(0, 0, ButtonSprite.BitmapImage.PixelWidth / 2, ButtonSprite.BitmapImage.PixelHeight / 2);
+			get =>new Int32Rect(0, 0, ButtonSprite.BitmapImage.PixelWidth / 2, ButtonSprite.BitmapImage.PixelHeight / 2);
 		}
 
 		private Int32Rect m_MouseOverSpriteRect {
@@ -57,6 +58,7 @@ namespace VisualNovelInterface.Models
 			set => SetProperty(ref m_buttonSprite, value);
 		}
 
+		[JsonIgnore]
 		public CroppedBitmap CroppedButtonSprite {
 			get => new CroppedBitmap(ButtonSprite.BitmapImage, m_spriteRects[(int)m_spriteState]);
 		}
@@ -93,7 +95,7 @@ namespace VisualNovelInterface.Models
 				OnPropertyChanged(nameof(CroppedButtonSprite));
 			}
 		}
-
+		[JsonIgnore]
 		public RelayCommand OpenButtonSpriteDialogCommand {
 			get;
 			set;
@@ -119,7 +121,7 @@ namespace VisualNovelInterface.Models
 		public void OpenButtonSpriteDialog() {
 			bool result = OnButtonSpriteChange.Invoke();
 			if (result) {
-			
+
 				OnPropertyChanged(nameof(ButtonSprite));
 			}
 		}

@@ -61,8 +61,7 @@
             <Button Content="Delete" DockPanel.Dock="Top"
                     Command="{Binding RemoveSelectedFontCommand}"
                     IsEnabled="{Binding IsFontSelected}"/>
-            <Button Content="Close" DockPanel.Dock="Bottom"/>
-            <!--Click="CloseButton_Click"/>-->
+            <Button Content="Close" DockPanel.Dock="Bottom" Click="CloseButton_Click"/>
         </DockPanel>
     </Grid>
 </Window>

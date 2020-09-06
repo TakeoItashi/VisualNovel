@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -58,16 +59,17 @@ namespace VisualNovelInterface.ViewModels
 			set => SetProperty(ref m_fontSize, value);
 		}
 
+		[JsonIgnore]
 		public RelayCommand AddNewFontCommand {
 			get;
 			set;
 		}
-
+		[JsonIgnore]
 		public RelayCommand RemoveSelectedFontCommand {
 			get;
 			set;
 		}
-
+		[JsonIgnore]
 		public RelayCommand<ProjectFont> SetNewUsedFontCommand {
 			get;
 			set;

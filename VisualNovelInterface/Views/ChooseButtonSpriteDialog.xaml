@@ -9,7 +9,7 @@
         SizeToContent="WidthAndHeight">
     <StackPanel>
         <Label Content="Choose a button Sprite:"/>
-        <ListBox x:Name="ButtonSpriteList" ItemsSource="{Binding GlobalButtonSprites}">
+        <ListBox x:Name="ButtonSpriteList" ItemsSource="{Binding CurrentProject.GlobalButtonSprites}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Label Content="{Binding Name}"/>

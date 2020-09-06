@@ -30,8 +30,8 @@ Panel {
 	Sprites {
 	
 		Sprite: 1;
+		Sprite: 3;
 		Sprite: 4;
-		Sprite: 5;
 	}
 	
 	EntryBranch: "Branch 1";

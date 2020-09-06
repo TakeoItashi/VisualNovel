@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="SetupInstaller" Language="1033" Version="1.0.0.0" Manufacturer="Tom Appel" UpgradeCode="bcf137b2-920f-4ed0-bcb7-e4d4b7b67905">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate />
+
+    <Feature Id="ProductFeature" Title="SetupInstaller" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Game" />
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <!-- TODO: Insert files, registry keys, and other resources here. -->
+      <Component Id="VisualNovel.exe" Guid="{D78A04F2-74E7-44AA-A539-93F9281CE705}">
+        <File Source="$(var.VisualNovel.TargetPath)" />
+      </Component>
+      <Component Id="libfreetype.dll">
+        <File Source="$(var.VisualNovel.TargetDir)libfreetype-6.dll" />
+      </Component>
+      <Component Id="libjpeg.dll">
+        <File Source="$(var.VisualNovel.TargetDir)libjpeg-9.dll" />
+      </Component>
+      <Component Id="libpng.dll">
+        <File Source="$(var.VisualNovel.TargetDir)libpng16-16.dll" />
+      </Component>
+      <Component Id="libtiff.dll">
+        <File Source="$(var.VisualNovel.TargetDir)libtiff-5.dll" />
+      </Component>
+      <Component Id="libwebp.dll">
+        <File Source="$(var.VisualNovel.TargetDir)libwebp-7.dll" />
+      </Component>
+      <Component Id="SDL2.dll">
+        <File Source="$(var.VisualNovel.TargetDir)SDL2.dll" />
+      </Component>
+      <Component Id="SDL2_image.dll">
+        <File Source="$(var.VisualNovel.TargetDir)SDL2_image.dll" />
+      </Component>
+      <Component Id="SDL2_ttf.dll">
+        <File Source="$(var.VisualNovel.TargetDir)SDL2_ttf.dll" />
+      </Component>
+      <Component Id="zlib1.dll">
+        <File Source="$(var.VisualNovel.TargetDir)zlib1.dll" />
+      </Component>
+      <ComponentGroupRef Id="HeatGenerated" />
+    </ComponentGroup>
+  </Fragment>
+</Wix>

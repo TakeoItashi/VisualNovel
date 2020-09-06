@@ -1,4 +1,4 @@
-Menu {800
+Menu {
 
 	Name: "Options Menu";
 

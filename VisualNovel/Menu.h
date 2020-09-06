@@ -10,6 +10,7 @@ class Button;
 class TextLoader;
 class ImageLoader;
 class MenuItem;
+class MenuText;
 class SpritePosition;
 class Settings;
 
@@ -20,7 +21,8 @@ public:
 	~Menu();
 
 	std::string m_Name;
-	std::vector<MenuItem> m_MenuItems;
+	std::vector<MenuItem*> m_MenuItems;
+	std::vector<MenuText*> m_MenuTexts;
 	std::vector<SpritePosition> m_SpriteIndices;
 	SDL_Renderer* m_Renderer;
 	Texture* m_BackgroundImage;
@@ -29,9 +31,8 @@ public:
 	std::vector<Texture*> m_Sprites;
 	void CreateMenu(Settings* _settings);
 	void LoadMenu(std::string _filepath);
-	void AutoWidth(Button* _button);
+	void AutoPositionButton(Button* _button, int _previousElementIndex  =0);
 	void Render();
-	void loadFont(std::string _path = "");
 	virtual void AddFunctions(Button* _button, int _type);
 
 private:

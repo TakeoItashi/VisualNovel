@@ -3,8 +3,11 @@
 #include "SpriteSheetTexture.h"
 #include <functional>
 #include <SDL.h>
+#include <SDL_ttf.h>
 
 class SDL_Renderer;
+class ImageLoader;
+class Settings;
 union SDL_Event;
 
 class Button : public SpriteSheetTexture {
@@ -21,10 +24,12 @@ class Button : public SpriteSheetTexture {
 		int TextureIndex;
 		//The Texture of the Button
 		Texture* m_textTexture;
+		std::string m_ShownText;
 		//Handles the Events for the Button
 		//@param A pointer to the event that is passed to the Button
 		//@return true for a Button press
 		bool HandleEvent(SDL_Event* _event);
 		std::function<bool(void*)> m_delegateFunction;
+		void UpdateText(std::string _newText, ImageLoader* _imageLoader, Settings* _settings);
 	private:
 };

@@ -1,0 +1,17 @@
+Variables {
+	DataValue {
+		Name: testBool;
+		Type: trigger;
+		Value: true;
+	}
+	DataValue {
+		Name: testDecimal;
+		Type: decimal;
+		Value: 12.8;
+	}
+	DataValue {
+		Name: testString;
+		Type: text;
+		Value: "test test";
+	}
+}

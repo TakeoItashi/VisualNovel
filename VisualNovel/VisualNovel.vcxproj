@@ -135,6 +135,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <ExpandAttributedSource>
+      </ExpandAttributedSource>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -175,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Branch.h" />
+    <ClInclude Include="MenuText.h" />
     <ClInclude Include="SplitOption.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ButtonSpriteState.h" />
@@ -228,6 +232,7 @@
     <Text Include="StoryboardSyntax.txt">
       <DeploymentContent>true</DeploymentContent>
     </Text>
+    <Text Include="Variables.txt" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ttf\OpenSans-Regular.ttf" />

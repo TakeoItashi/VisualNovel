@@ -47,7 +47,7 @@ void Settings::LoadSettings() {
 			i += 3;
 		} else if (keywords[i] == "Font:") {
 			LoadFont(keywords[i + 1], std::stoi(keywords[i + 4]));
-			i += 6;
+			i += 8;
 		}
 	}
 }

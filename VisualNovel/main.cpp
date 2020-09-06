@@ -8,21 +8,21 @@
 
 int main(int argc, char* argv[]) {
 
-	SDL_Event* eventHandler = new SDL_Event();	//TODO in game verschieben
-	Game::GetInstance()->Init(new Settings(Game::GetInstance()->m_textLoader), eventHandler);
+	SDL_Event* currentEvent = new SDL_Event();	//TODO in game verschieben
+	Game::GetInstance()->Init(new Settings(Game::GetInstance()->m_textLoader), currentEvent);
 
 	//Main loop
 	bool quit = new bool;
 	quit = false;
 	while (!quit) {
-		int pending = SDL_PollEvent(eventHandler);
+		int pending = SDL_PollEvent(currentEvent);
 		if ((pending != 0)) {
 
-			if (eventHandler->type == SDL_QUIT) {
+			if (currentEvent->type == SDL_QUIT) {
 
 				quit = true;
 			}
-			Game::GetInstance()->Update(eventHandler);
+			Game::GetInstance()->Update(currentEvent);
 		}
 	}
 	SDL_Quit();
