@@ -21,7 +21,8 @@ public:
 	~Menu();
 
 	std::string m_Name;
-	std::vector<MenuItem> m_MenuItems;
+	std::vector<MenuItem*> m_MenuItems;
+	std::vector<MenuText*> m_MenuTexts;
 	std::vector<SpritePosition> m_SpriteIndices;
 	SDL_Renderer* m_Renderer;
 	Texture* m_BackgroundImage;
@@ -30,9 +31,9 @@ public:
 	std::vector<Texture*> m_Sprites;
 	void CreateMenu(Settings* _settings);
 	void LoadMenu(std::string _filepath);
-	void AutoWidth(Button* _button);
+	void AutoPositionButton(Button* _button, int _previousElementIndex  =0);
 	void Render();
-	virtual void AddFunctions(Button* _button, int _type, std::string _args[]);
+	virtual void AddFunctions(Button* _button, int _type);
 
 private:
 
@@ -41,5 +42,4 @@ private:
 	TextLoader* m_textLoader;
 	std::vector<std::string> m_keywords;
 	std::vector<Texture*> m_Texture;
-	int m_saveSlotIndex;
 };

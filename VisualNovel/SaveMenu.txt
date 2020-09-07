@@ -1,0 +1,45 @@
+Menu {
+
+	Name: "Save Menu";
+
+	BGIndex: 2
+
+	Items {
+		Button {
+			Text: "Go Back";
+			Button: 600, 500, 100, 200, 0;
+			Type: 11;
+		}
+		Button {
+			Text: "Temp";
+			Button: 50, 170, 50, 100, 0;
+			Type: 7;
+		}
+		Button {
+			Text: "Temp";
+			Button: 50, 230, 50, 100, 0;
+			Type: 7;
+		}
+		Button {
+			Text: "Temp";
+			Button: 50, 290, 50, 100, 0;
+			Type: 7;
+		}
+
+		Button {
+			Text: "Temp";
+			Button: 200, 170, 50, 100, 0;
+			Type: 7;
+		}
+		Button {
+			Text: "Temp";
+			Button: 200, 230, 50, 100, 0;
+			Type: 7;
+		}
+		Button {
+			Text: "Temp";
+			Button: 200, 290, 50, 100, 0;
+			Type: 7;
+		}
+	}
+}

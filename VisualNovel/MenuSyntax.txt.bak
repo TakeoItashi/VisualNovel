@@ -27,13 +27,4 @@
 ##		4 = QuitGame, 
 ##		5 = Resolution, 
 ##		6 = Back,
-##		7 = SaveSlot,
-##		8 = FullScreen,
-##		9 = Custom,
-##		10 = BackToGame,
-##		11 = BackToPauseMenu,
-##		12 = LoadSlot,
-##		13 = BackToMainMenu,
-##		14 = ShowSaveMenu,
-##		15 = ShowLoadMenu
-##
+##		7 = Custom

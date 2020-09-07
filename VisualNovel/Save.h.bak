@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include <SDL.h>
-#include <iostream>
 #include "map"
 
 class DataValue;
@@ -23,8 +22,4 @@ public:
 
 	void Serialize(std::string _path = "savegame.sg");
 	void Deserialize(std::string _path = "savegame.sg");
-
-	static std::string* GetSaveGameText(std::string _path = "savegame.sg");
-	static void WriteStringToFile(std::string _string, SDL_RWops* _targetFile);
-	static std::string ReadStringFromFile(SDL_RWops* _sourceFile);
 };

@@ -1,0 +1,29 @@
+Menu {
+
+	Name: "Pause Menu";
+
+	BGIndex: 2
+
+	Items {
+		Button {
+			Text: "Back to Game";
+			Button: 50, 50, 100, 200, 0;
+			Type: 10;
+		}
+		Button {
+			Text: "Save";
+			Button: 50, 110, 50, 100, 0;
+			Type: 14;
+		}
+		Button {
+			Text: "Load";
+			Button: 50, 170, 50, 100, 0;
+			Type: 15;
+		}
+		Button {
+			Text: "Back to Main Menu";
+			Button: 50, 230, 50, 100, 0;
+			Type: 13;
+		}
+	}
+}

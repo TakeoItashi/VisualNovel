@@ -7,8 +7,15 @@ enum MenuItemType {
 	Gallery,
 	Options,
 	QuitGame, 
-	Resolution, 
-	Fullscreen, 
+	Resolution,
 	Back,
-	Custom
+	SaveSlot,
+	Fullscreen,
+	Custom,
+	BackToGame,
+	BackToPauseMenu,
+	LoadSlot,
+	BackToMainMenu,
+	ShowSaveMenu,
+	ShowLoadMenu
 };

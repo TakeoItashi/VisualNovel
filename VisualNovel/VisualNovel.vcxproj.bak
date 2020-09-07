@@ -300,9 +300,6 @@
       <DeploymentContent>true</DeploymentContent>
     </Text>
     <Text Include="Variables.txt" />
-    <Text Include="SaveMenu.txt" />
-    <Text Include="LoadMenu.txt" />
-    <Text Include="PauseMenu.txt" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ttf\OpenSans-Regular.ttf" />

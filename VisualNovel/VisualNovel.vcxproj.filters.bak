@@ -299,8 +299,6 @@
       <Filter>Ressourcendateien\TextFiles</Filter>
     </Text>
     <Text Include="Variables.txt">
-    	<Filter>Ressourcendateien\TextFiles</Filter>
-    </Text>
     <Text Include="SaveMenu.txt">
       <Filter>Ressourcendateien\TextFiles</Filter>
     </Text>

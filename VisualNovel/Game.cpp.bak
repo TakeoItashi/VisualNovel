@@ -22,9 +22,6 @@
 Game* Game::m_gamePointer = nullptr;					//required for singleton
 MainMenu* Game::m_MainMenu;								//
 OptionsMenu* Game::m_OptionsMenu;						//
-OptionsMenu* Game::m_PauseMenu;							//
-OptionsMenu* Game::m_SaveMenu;							//
-OptionsMenu* Game::m_LoadMenu;							//
 Settings* Game::m_GameSettings;							//
 ImageLoader* Game::m_ImageLoader;						//
 TextBox* Game::m_TextBox;								//
@@ -101,9 +98,9 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler, std::strin
 
 	m_MainMenu = new MainMenu(m_Renderer, m_ImageLoader, m_GameSettings, "MainMenu.txt");
 	m_CurrentMenu = m_MainMenu;
-	m_PauseMenu = new OptionsMenu(m_Renderer, m_ImageLoader, m_GameSettings, "PauseMenu.txt");
-	m_LoadMenu = new OptionsMenu(m_Renderer, m_ImageLoader, m_GameSettings, "LoadMenu.txt");
-	m_SaveMenu = new OptionsMenu(m_Renderer, m_ImageLoader, m_GameSettings, "SaveMenu.txt");
+	m_CurrentMenu->Render();
+
+	//m_OptionsMenu = new OptionsMenu(m_Renderer, m_ImageLoader, "OptionsMenu.txt");
 
 	LoadStoryBoard();
 	m_GameIsRunning = false;
@@ -114,7 +111,7 @@ bool Game::NewGame(Button* _butt) {
 	m_CurrentPanelKey = m_PanelMap.begin()->second->m_PanelName;
 	m_CurrentLine = 0;
 
-	////Test for save game serialization. TODO must be removed
+	////Test for save game serialization. must be removed
 	m_save = new Save();
 	m_save->m_currentLine = m_CurrentLine;
 	m_save->m_currentPanel = m_CurrentPanelKey;
@@ -160,13 +157,6 @@ bool Game::Update(SDL_Event* _currentEvent) {
 	}
 
 	if (m_GameIsRunning) {
-
-
-		if (m_EventHandler->type == SDL_KEYUP) {
-			if (m_EventHandler->key.keysym.sym == SDLK_s) {
-				ShowPauseMenu();
-			}
-		}
 
 		if (!m_IsDecisionPending) {
 
@@ -281,7 +271,7 @@ void Game::ShowMenu(Menu* _menuInstance) {
 	for (int i = 0; i < _menuInstance->m_MenuItems.size(); i++) {
 
 		bool cancel = false;
-		cancel = _menuInstance->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+		cancel = _menuInstance->m_MenuItems[i]->Button->HandleEvent(m_EventHandler);
 		if (cancel) {
 			return;
 		}
@@ -305,121 +295,20 @@ bool Game::ChangePanel(const char* _panelKey) {
 	return true;
 }
 
-bool Game::ResetGameToMainMenu() {
+void Game::ResetGameToMainMenu() {
 	m_CurrentMenu = m_MainMenu;
 	m_GameIsRunning = false;
-	m_CurrentPanelKey = m_PanelMap.begin()->second->m_PanelName;
-	std::map<std::string, Panel*>::iterator it;
 
-	for (it = m_PanelMap.begin(); it != m_PanelMap.end(); it++) {
-		it->second->m_currentBranchKey = it->second->m_EntryBranchKey;
-	}
-	m_CurrentLine = 0;
-	return false;
-}
+	//m_CurrentPanelKey = m_PanelMap.begin()->second->m_PanelName;
 
-bool Game::BackToGame(Button* _buttonCallback) {
-	m_CurrentMenu = nullptr;
-	m_GameIsRunning = true;
-	Render();
-	return false;
-}
-
-bool Game::ShowPauseMenu() {
-	m_CurrentMenu = m_PauseMenu;
-	m_GameIsRunning = false;
-	ShowMenu(m_CurrentMenu);
-	return false;
-}
-
-bool Game::ShowSaveMenu(Button* _buttonCallback) {
-	//Change the current Menu to the save menu
-	m_CurrentMenu = m_SaveMenu;
-	m_GameIsRunning = false;
-
-	//Iterate over all the buttons and for each one check the corresponding save file.
-	//If it doesn't exist change the buttons text to "Empty Save Slot"
-	//Otherwise set its text to the last shown line of the saved game
-	//Starting at index 1 since the button at index 0 is the back button
-	for (int i = 1; i < m_SaveMenu->m_MenuItems.size(); i++) {
-		std::string buttonText;
-		std::string* saveGameInfos = Save::GetSaveGameText(GetSaveSlotPath(i - 1));
-		if (saveGameInfos == nullptr) {
-			buttonText = "Empty Save Slot";
-		}
-		else {
-			//TODO set the save slot name to the last shown line of text by using the saveGameInfos that were created by the GetSaveGameText method
-			std::string currentLineString = saveGameInfos[0];
-			std::string panelKey = saveGameInfos[1];
-			std::string branchKey = saveGameInfos[2];
-			//TODO use the following line to get the last text in the save file
-			//DialogLine* line = (DialogLine*)m_PanelMap[panelKey]->m_Branches[branchKey]->m_shownItems[currentLine];
-			buttonText = GetSaveSlotPath(i - 1);
-		}
-		m_SaveMenu->m_MenuItems[i].Button->UpdateText(buttonText, m_ImageLoader, m_GameSettings);
-	}
-
-	//Update the button positions so that they align with one another and are located around the center
-	//Buttons 1-3 are on the left side. Buttons 4-6 are on the right side
-	for (int i = 1; i < 4; i++) {
-		m_SaveMenu->m_MenuItems[i].Button->PosX = 640 - m_SaveMenu->m_MenuItems[i].Button->Width;
-		m_SaveMenu->m_MenuItems[i].Button->m_textTexture->PosX = 640 - m_SaveMenu->m_MenuItems[i].Button->Width;
-	}
-	for (int i = 4; i < 7; i++) {
-		m_SaveMenu->m_MenuItems[i].Button->PosX = 660;
-		m_SaveMenu->m_MenuItems[i].Button->m_textTexture->PosX = 660;
-	}
-	
-
-
-
-
-
-	//Render the Menu once
 	ShowMenu(m_CurrentMenu);
 
-	//TODO support saving on splits
-	return false;
-}
-
-bool Game::ShowLoadMenu(Button* _buttonCallback) {
-	m_CurrentMenu = m_LoadMenu;
-	m_GameIsRunning = false;
-
-	//Iterate over all the buttons and for each one check the corresponding save file.
-	//If it doesn't exist change the buttons text to "Empty Save Slot"
-	//Otherwise set its text to the last shown line of the saved game
-	//Starting at index 1 since the button at index 0 is the back button
-	for (int i = 1; i < m_SaveMenu->m_MenuItems.size(); i++) {
-		std::string buttonText;
-		std::string* saveGameInfos = Save::GetSaveGameText(GetSaveSlotPath(i - 1));
-		if (saveGameInfos == nullptr) {
-			buttonText = "Empty Save Slot";
-		}
-		else {
-			//TODO set the save slot name to the last shown line of text by using the saveGameInfos that were created by the GetSaveGameText method
-			std::string currentLineString = saveGameInfos[0];
-			std::string panelKey = saveGameInfos[1];
-			std::string branchKey = saveGameInfos[2];
-			//TODO use the following line to get the last text in the save file
-			//DialogLine* line = (DialogLine*)m_PanelMap[panelKey]->m_Branches[branchKey]->m_shownItems[currentLine];
-			buttonText = GetSaveSlotPath(i - 1);
-		}
-		m_LoadMenu->m_MenuItems[i].Button->UpdateText(buttonText, m_ImageLoader, m_GameSettings);
-	}
-
-	//Update the button positions so that they align with one another and are located around the center
-	//Buttons 1-3 are on the left side. Buttons 4-6 are on the right side
-	for (int i = 1; i < 4; i++) {
-		m_LoadMenu->m_MenuItems[i].Button->PosX = 640 - m_LoadMenu->m_MenuItems[i].Button->Width;
-		m_LoadMenu->m_MenuItems[i].Button->m_textTexture->PosX = 640 - m_LoadMenu->m_MenuItems[i].Button->Width;
-	}
-	for (int i = 4; i < 7; i++) {
-		m_LoadMenu->m_MenuItems[i].Button->PosX = 660;
-		m_LoadMenu->m_MenuItems[i].Button->m_textTexture->PosX = 660;
-	}
-	ShowMenu(m_CurrentMenu);
-	return false;
+	//std::map<std::string, Panel*>::iterator it;
+	//
+	//for (it = m_PanelMap.begin(); it != m_PanelMap.end(); it++) {
+	//	it->second->m_currentBranchKey = it->second->m_EntryBranchKey;
+	//}
+	//m_CurrentLine = 0;
 }
 
 bool Game::LoadCustomMethod(Button* _buttonCallback) {
@@ -461,7 +350,7 @@ bool Game::ChangeResolution(Button* _buttonCallback) {
 
 	for (int i = 0; i < m_OptionsMenu->m_MenuItems.size(); i++) {
 
-		m_OptionsMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+		m_OptionsMenu->m_MenuItems[i]->Button->HandleEvent(m_EventHandler);
 
 		SDL_RenderPresent(m_Renderer);
 	}
@@ -482,31 +371,6 @@ bool Game::OpenMainMenu(Button* _buttonCallback) {
 
 }
 
-std::string Game::GetSaveSlotPath(int _saveSlotNum) {
-	return "SaveSlot" + std::to_string(_saveSlotNum) + ".sg";
-}
-
-bool Game::LoadFunction(Button* _button, int _saveSlotNum) {
-	//Make loading the game functional
-	std::string saveSlotPath = GetSaveSlotPath(_saveSlotNum);
-	m_save->Deserialize(saveSlotPath);
-	m_CurrentLine = m_save->m_currentLine;
-	m_CurrentPanelKey = m_save->m_currentPanel;
-	return false;
-}
-
-bool Game::SaveFunction(Button* _button, int _saveSlotNum) {
-	std::string saveSlotPath = GetSaveSlotPath(_saveSlotNum);
-	m_save->m_currentLine = m_CurrentLine;
-	m_save->m_currentPanel = m_CurrentPanelKey;
-	//TODO update the branch key in the m_save class
-	m_save->Serialize(saveSlotPath);
-	//Updates all the save slot names
-	//UpdateSaveSlotNames();
-
-	return false;
-}
-
 void Game::RenderCurrentMenu() {
 
 	SDL_RenderClear(m_Renderer);
@@ -515,7 +379,7 @@ void Game::RenderCurrentMenu() {
 
 	for (int i = 0; i < m_CurrentMenu->m_MenuItems.size(); i++) {
 
-		m_CurrentMenu->m_MenuItems[i].Button->HandleEvent(m_EventHandler);
+		m_CurrentMenu->m_MenuItems[i]->Button->HandleEvent(m_EventHandler);
 
 	}
 	SDL_RenderPresent(m_Renderer);

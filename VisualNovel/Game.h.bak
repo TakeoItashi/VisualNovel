@@ -25,9 +25,6 @@ public:
 
 	static MainMenu* m_MainMenu;
 	static OptionsMenu* m_OptionsMenu;
-	static OptionsMenu* m_PauseMenu;
-	static OptionsMenu* m_SaveMenu;
-	static OptionsMenu* m_LoadMenu;
 	static Settings* m_GameSettings;
 	static ImageLoader* m_ImageLoader;
 	static TextBox* m_TextBox;
@@ -60,18 +57,6 @@ public:
 	Renders all the Current Sprites
 	*/
 	static bool Render();
-	/**
-	Saves the current progress in save slot saveSlotNum
-	*/
-	static bool SaveFunction(Button* _button, int saveSlotNum);
-	/**
-	Returns the path of the save slot with the specified save slot number
-	*/
-	static std::string GetSaveSlotPath(int _saveSlotNum);
-	/**
-	Loads the Save slot saveSlotNum
-	*/
-	static bool LoadFunction(Button* _button, int _saveSlotNum);
 	/**
 	Loads a serialized game state
 	*/
@@ -106,15 +91,7 @@ public:
 
 	static bool ChangePanel(const char* _panelKey);
 
-	static bool ResetGameToMainMenu();
-
-	static bool BackToGame(Button* _buttonCallback);
-
-	static bool ShowPauseMenu();
-
-	static bool ShowSaveMenu(Button* _buttonCallback);
-
-	static bool ShowLoadMenu(Button* _buttonCallback);
+	static void ResetGameToMainMenu();
 
 	inline static Game* GetInstance() { if (m_gamePointer == nullptr) { m_gamePointer = new Game(); } return m_gamePointer; };
 

@@ -17,7 +17,7 @@ Menu {
 		Button {
 			Text: "Load Game";
 			Button: 50, 110, 50, 100, 0;
-			Type: 1;
+			Type: 15;
 		}
 ##		Button {
 ##			Text: "Gallery";
