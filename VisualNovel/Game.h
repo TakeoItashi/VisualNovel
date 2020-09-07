@@ -44,7 +44,7 @@ public:
 	/**
 	Initializes the Game Libraries and Variables
 	*/
-	static void Init(Settings* _initialSettings, SDL_Event* _eventHandler);
+	static void Init(Settings* _initialSettings, SDL_Event* _eventHandler, std::string _gameName);
 	/**
 	Starts a new Game
 	*/

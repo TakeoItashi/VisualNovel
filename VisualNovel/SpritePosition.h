@@ -6,4 +6,6 @@ public:
 	int Index;
 	int PosX;
 	int PosY;
+	int Width;
+	int Height;
 };

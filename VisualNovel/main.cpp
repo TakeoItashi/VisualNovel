@@ -8,8 +8,20 @@
 
 int main(int argc, char* argv[]) {
 
+	char sep = '/';
+
+#ifdef _WIN32
+	sep = '\\';
+#endif
+	std::string gamePath = argv[0];
+	std::string gameName;
+	size_t i = gamePath.rfind(sep, gamePath.length());
+	if (i != std::string::npos) {
+		gameName = (gamePath.substr(i + 1, gamePath.length() - i));
+	}
+
 	SDL_Event* currentEvent = new SDL_Event();	//TODO in game verschieben
-	Game::GetInstance()->Init(new Settings(Game::GetInstance()->m_textLoader), currentEvent);
+	Game::GetInstance()->Init(new Settings(Game::GetInstance()->m_textLoader), currentEvent, gameName);
 
 	//Main loop
 	bool quit = new bool;

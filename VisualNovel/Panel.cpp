@@ -57,24 +57,30 @@ void Panel::ShowLine(int _lineIndex) {
 		int HeightRatio = ((m_Settings->m_WindowWidth / 4) * 3) - 100;
 		int SpritePosX = 0;
 		int SpritePosY = 0;		//TODO Padding für die Sprites überarbeiten
+		int SpriteWidth = 0;
+		int SpriteHeight = 0;
 		if (m_SpriteList.size() > 0) {
 			for (int i = 0; i < currentLine->m_SpritesShown.size(); i++) {
 
+				SpriteWidth = CurrentSprite.Width;
+				SpriteHeight = CurrentSprite.Height;
+
 				if (CurrentSprite.PosX < 0) {
 
-					SpritePosX = (aviableSpriteSpace * (i + 1)) - (widthRatio / 2);		//TODO richtige Textur Width benutzen
+					SpritePosX = (aviableSpriteSpace * (i + 1)) - (SpriteWidth / 2);		//TODO richtige Textur Width benutzen
 				} else {
 
 					SpritePosX = CurrentSprite.PosX;
 				}
 				if (CurrentSprite.PosY < 0) {
 
-					SpritePosY = 50;
-				} else { 
+					SpritePosY = (m_Settings->m_WindowHeight / 2) - (SpriteHeight / 2);
+				} else {
 
 					SpritePosY = CurrentSprite.PosY;
 				}
-				m_SpriteList[CurrentSprite.Index]->Render(SpritePosX, SpritePosY, HeightRatio, widthRatio);
+
+				m_SpriteList[CurrentSprite.Index]->Render(SpritePosX, SpritePosY, SpriteHeight, SpriteWidth);
 			}
 		}
 		//TODO currentLine parsen um Sprite Positionen rauszufinden

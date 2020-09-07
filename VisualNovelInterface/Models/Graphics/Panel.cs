@@ -45,9 +45,9 @@ namespace VisualNovelInterface.Models {
             set => SetProperty(ref m_condition, value);
         }
 
-        public ObservableCollection<SpriteImage> SpriteImages {
-            get => m_spriteImages;
-            set => SetProperty(ref m_spriteImages, value);
+        public Dictionary<Guid, SpriteImage> SpriteImages {
+            get;
+            set;
         }
 
         public string EntryBranchKey {
@@ -68,7 +68,9 @@ namespace VisualNovelInterface.Models {
             Branches = new ObservableCollection<Branch>();
             Branches.Add(new Branch("Branch1"));
             Branches.First().Continue.OpenButtonSpriteDialogReference = _buttonSpriteChangeDelegate;
-            SpriteImages = new ObservableCollection<SpriteImage>();
+            Branches.First().IsEntryBranch = true;
+            EntryBranchKey = Branches.First().Name;
+            SpriteImages = new Dictionary<Guid, SpriteImage>();
             SelectedBranch = Branches.First();
         }
     }

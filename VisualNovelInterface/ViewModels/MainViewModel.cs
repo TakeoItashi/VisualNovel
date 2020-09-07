@@ -399,8 +399,8 @@ namespace VisualNovelInterface.ViewModels
 			SaveCurrentProjectCommand = new RelayCommand(SaveCurrentProject);
 			LoadCurrentProjectCommand = new RelayCommand(LoadCurrentProject);
 #if DEBUG
-			GenerateTestStory();
-			OnPropertyChanged(nameof(SelectedItem));
+			//GenerateTestStory();
+			//OnPropertyChanged(nameof(SelectedItem));
 #endif
 			//IntPtr handle = DLLImporter.CreateDataValue_bool("newTrigger", true);
 			//Console.WriteLine($"The Adress is: 0x{handle.ToString("X16")}");
@@ -478,9 +478,14 @@ namespace VisualNovelInterface.ViewModels
 				FrameworkElement canvas = (Canvas)dea.OriginalSource;
 				System.Windows.Point coordinates = dea.GetPosition(canvas);
 
-				selectedLine.Sprites.Add(new SpriteViewModel(Sprite, (int)coordinates.X, coordinates.Y));
-				selectedLine.Sprites.Last().OnSpriteMoveEvent += MoveSprite;
-				SelectedSprite = selectedLine.Sprites.Last();
+				SpriteViewModel newSpriteVM = new SpriteViewModel(Sprite, (int)coordinates.X, coordinates.Y);
+				bool exists = SelectedPanel.SpriteImages.ContainsKey(newSpriteVM.SpriteImage.Id);
+				if (!exists) {
+					SelectedPanel.SpriteImages.Add(newSpriteVM.SpriteImage.Id, newSpriteVM.SpriteImage);
+				}
+				newSpriteVM.OnSpriteMoveEvent += MoveSprite;
+				selectedLine.Sprites.Add(newSpriteVM);
+				SelectedSprite = newSpriteVM;
 			}
 		}
 
@@ -560,6 +565,10 @@ namespace VisualNovelInterface.ViewModels
 		public void AddNewPanel() {
 			CurrentProject.Panels.Add(new Panel("NewPanel", OpenButtonSpriteDialog));
 			CurrentProject.Panels.First().Branches.First().SetEntryBranchEventHandler += EntryBranchChecked;
+			if (CurrentProject.Panels.Count < 2) {
+				OnPropertyChanged(nameof(SelectedPanel));
+				OnPropertyChanged(nameof(IsPanelSelected));
+			}
 		}
 
 		public void RemoveSelectedPanel() {
@@ -649,11 +658,16 @@ namespace VisualNovelInterface.ViewModels
 
 		public void RunExport() {
 
-			Exporter exporter = new Exporter(m_exportPath);
-			SpriteExporter spriteExporter = new SpriteExporter(CurrentProject.GlobalSprites.ToList(), CurrentProject.GlobalButtonSprites.ToList());
-			bool result = exporter.Export(currentProject, spriteExporter);
-			if (result) {
-				System.Windows.Forms.MessageBox.Show("Export successfull", "Success", MessageBoxButtons.OK);
+			ExportWizardDialog ewd = new ExportWizardDialog();
+			ewd.DataContext = this;
+			if (ewd.ShowDialog() == true) {
+
+				Exporter exporter = new Exporter(m_exportPath, ewd.GameName);
+				SpriteExporter spriteExporter = new SpriteExporter(CurrentProject.GlobalSprites.ToList(), CurrentProject.GlobalButtonSprites.ToList());
+				bool result = exporter.Export(currentProject, spriteExporter, ewd.MainMenuBackgroundImage);
+				if (result) {
+					System.Windows.Forms.MessageBox.Show("Export successfull", "Success", MessageBoxButtons.OK);
+				}
 			}
 		}
 
@@ -662,7 +676,7 @@ namespace VisualNovelInterface.ViewModels
 		}
 
 		public void RemoveSelectedGlobalSprite() {
-			CurrentProject.GlobalButtonSprites.Remove(SelectedGlobalSprite);
+			CurrentProject.GlobalSprites.Remove(SelectedGlobalSprite);
 		}
 
 		public void AddNewGlobalButtonSprite() {
@@ -740,15 +754,27 @@ namespace VisualNovelInterface.ViewModels
 			fullPath = Path.Combine(curDir, "GoblinMage.png");
 			SpriteImage goblinSprite = new SpriteImage(fullPath, "GoblinSprite");
 			CurrentProject.GlobalSprites.Add(dogeSprite);
-			SelectedPanel.SpriteImages.Add(dogeSprite);
+
+			bool exists = SelectedPanel.SpriteImages.ContainsKey(dogeSprite.Id);
+			if (!exists) {
+				SelectedPanel.SpriteImages.Add(dogeSprite.Id, dogeSprite);
+			}
+
 			CurrentProject.GlobalSprites.Add(stickSprite);
-			SelectedPanel.SpriteImages.Add(stickSprite);
+			exists = SelectedPanel.SpriteImages.ContainsKey(stickSprite.Id);
+			if (!exists) {
+				SelectedPanel.SpriteImages.Add(stickSprite.Id, stickSprite);
+			}
+
 			CurrentProject.GlobalSprites.Add(goblinSprite);
-			SelectedPanel.SpriteImages.Add(goblinSprite);
+			exists = SelectedPanel.SpriteImages.ContainsKey(goblinSprite.Id);
+			if (!exists) {
+				SelectedPanel.SpriteImages.Add(goblinSprite.Id, goblinSprite);
+			}
+
 			CurrentProject.GlobalButtonSprites.Add(buttonSprite);
 			CurrentProject.GlobalButtonSprites.Add(buttonColorSprite);
 
-			CurrentProject.GlobalSprites.Add(wallpaperSprite);
 			SelectedPanel.BackgroundImage = wallpaperSprite;
 
 			SpriteViewModel dogeSVM = new SpriteViewModel(dogeSprite);
@@ -787,8 +813,16 @@ namespace VisualNovelInterface.ViewModels
 
 			SpriteViewModel dogeSVM2 = new SpriteViewModel(dogeSprite);
 			dogeSVM2.OnSpriteMoveEvent += MoveSprite;
+			exists = SelectedPanel.SpriteImages.ContainsKey(dogeSVM2.SpriteImage.Id);
+			if (!exists) {
+				SelectedPanel.SpriteImages.Add(dogeSVM2.SpriteImage.Id, dogeSVM2.SpriteImage);
+			}
 			SpriteViewModel stickSVM2 = new SpriteViewModel(stickSprite);
 			stickSVM2.OnSpriteMoveEvent += MoveSprite;
+			exists = SelectedPanel.SpriteImages.ContainsKey(stickSVM2.SpriteImage.Id);
+			if (!exists) {
+				SelectedPanel.SpriteImages.Add(stickSVM2.SpriteImage.Id, stickSVM2.SpriteImage);
+			}
 
 			currentProject.SelectedPanel.Branches.Add(new Branch("Branch2",
 														new ObservableCollection<ShownItem>() {
@@ -800,15 +834,32 @@ namespace VisualNovelInterface.ViewModels
 
 			SpriteViewModel dogeSVM3 = new SpriteViewModel(dogeSprite);
 			dogeSVM3.OnSpriteMoveEvent += MoveSprite;
+			exists = SelectedPanel.SpriteImages.ContainsKey(dogeSVM3.SpriteImage.Id);
+			if (!exists) {
+				SelectedPanel.SpriteImages.Add(dogeSVM3.SpriteImage.Id, dogeSVM3.SpriteImage);
+			}
 
 			SpriteViewModel dogeSVM4 = new SpriteViewModel(dogeSprite);
 			dogeSVM4.OnSpriteMoveEvent += MoveSprite;
+			exists = SelectedPanel.SpriteImages.ContainsKey(dogeSVM4.SpriteImage.Id);
+			if (!exists) {
+				SelectedPanel.SpriteImages.Add(dogeSVM4.SpriteImage.Id, dogeSVM4.SpriteImage);
+			}
 
 			SpriteViewModel stickSVM3 = new SpriteViewModel(stickSprite);
 			stickSVM3.OnSpriteMoveEvent += MoveSprite;
+			exists = SelectedPanel.SpriteImages.ContainsKey(stickSVM3.SpriteImage.Id);
+			if (!exists) {
+				SelectedPanel.SpriteImages.Add(stickSVM3.SpriteImage.Id, stickSVM3.SpriteImage);
+			}
 
 			SpriteViewModel stickSVM4 = new SpriteViewModel(stickSprite);
 			stickSVM4.OnSpriteMoveEvent += MoveSprite;
+			exists = SelectedPanel.SpriteImages.ContainsKey(stickSVM4.SpriteImage.Id);
+			if (!exists) {
+				SelectedPanel.SpriteImages.Add(stickSVM4.SpriteImage.Id, stickSVM4.SpriteImage);
+			}
+
 
 			currentProject.SelectedPanel.Branches.Add(new Branch("Branch3",
 														new ObservableCollection<ShownItem>() {

@@ -70,7 +70,7 @@ Game::~Game() {
 	//TODO: delete all the lists and maps
 }
 
-void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
+void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler, std::string _string) {
 
 	m_GameSettings = _initialSettings;
 	m_EventHandler = _eventHandler;
@@ -81,7 +81,7 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler) {
 
 	_initialSettings->LoadSettings();
 
-	m_Window = SDL_CreateWindow("Visual Novel", 100, 50, _initialSettings->m_WindowWidth, _initialSettings->m_WindowHeight, SDL_WINDOW_SHOWN);
+	m_Window = SDL_CreateWindow(_string.c_str(), 100, 50, _initialSettings->m_WindowWidth, _initialSettings->m_WindowHeight, SDL_WINDOW_SHOWN);
 	m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
 
 	SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -300,7 +300,7 @@ void Game::ResetGameToMainMenu() {
 	m_GameIsRunning = false;
 
 	//m_CurrentPanelKey = m_PanelMap.begin()->second->m_PanelName;
-	
+
 	ShowMenu(m_CurrentMenu);
 
 	//std::map<std::string, Panel*>::iterator it;
@@ -596,40 +596,37 @@ void Game::LoadStoryBoard() {
 										continue;
 									} else if (m_keywords[i] == ",") {
 										i++;
-										SpritePosition spritePosition;
-										spritePosition.Index = std::stoi(m_keywords[i]);
-										spritePosition.PosX = -1;
-										spritePosition.PosY = -1;
-										i++;
 										while (m_keywords[i] != ";") {
+											SpritePosition spritePosition;
+											spritePosition.Index = std::stoi(m_keywords[i]);
+											spritePosition.Width = -1;
+											spritePosition.Height = -1;
+											spritePosition.PosX = -1;
+											spritePosition.PosY = -1;
+											i += 2;
 
+											spritePosition.Width = std::stoi(m_keywords[i]);
+											i = i + 2;											//um 2 Positionen verschieben, weil sich zwischen den Koordinaten ein Komma befindet
+											spritePosition.Height = std::stoi(m_keywords[i]);
+											i++;
 											if (m_keywords[i] == ",") {
-
-												newLine->m_SpritesShown.push_back(spritePosition);
-												i++;
-												spritePosition = { -1, -1, -1 };
-												continue;
-											}
-											if (m_keywords[i] == "(") {
 												i++;
 												spritePosition.PosY = std::stoi(m_keywords[i]);
 												i = i + 2;											//um 2 Positionen verschieben, weil sich zwischen den Koordinaten ein Komma befindet
 												spritePosition.PosX = std::stoi(m_keywords[i]);
 												i++;
-												continue;
 											}
-											if (m_keywords[i] == ")") {
-												i++;
-												continue;
-											}
-											spritePosition.Index = std::stoi(m_keywords[i]);
 											i++;
+											if (m_keywords[i] == ",") {
+												i++;
+											}
+
+											newLine->m_SpritesShown.push_back(spritePosition);
+											spritePosition = { -1, -1, -1 };
 										}
-										newLine->m_SpritesShown.push_back(spritePosition);
+										i++;
 										newBranch->m_shownItems.insert(std::pair(lineKey, newLine));
 										lineKey++;
-										i++;
-										spritePosition = { -1, -1, -1 };
 									}
 									continue;
 								}

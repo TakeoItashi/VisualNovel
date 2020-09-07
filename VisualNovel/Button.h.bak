@@ -24,6 +24,7 @@ class Button : public SpriteSheetTexture {
 		int TextureIndex;
 		//The Texture of the Button
 		Texture* m_textTexture;
+		std::string m_ShownText;
 		//Handles the Events for the Button
 		//@param A pointer to the event that is passed to the Button
 		//@return true for a Button press

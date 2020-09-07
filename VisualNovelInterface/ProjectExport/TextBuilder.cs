@@ -17,7 +17,7 @@ namespace VisualNovelInterface.ProjectExport
 
 		}
 
-		public void Export(IndentedTextWriter _writer, Project _Project, SpriteExporter _spriteExporter) {
+		public void ExportStory(IndentedTextWriter _writer, Project _Project, SpriteExporter _spriteExporter) {
 
 			_writer.Indent = 0;
 			//Panels
@@ -71,9 +71,10 @@ namespace VisualNovelInterface.ProjectExport
 				++_writer.Indent;
 				//Sprites
 				if (currentPanel.SpriteImages != null) {
-					for (int j = 0; j < currentPanel.SpriteImages.Count; j++) {
-						//-Sprite
-						_writer.WriteLine($"Sprite: {_spriteExporter.GetSpriteIndex(currentPanel.SpriteImages[j])};");
+
+					foreach (KeyValuePair<Guid, SpriteImage> pair in currentPanel.SpriteImages) {
+
+						_writer.WriteLine($"Sprite: {_spriteExporter.GetSpriteIndex(pair.Value)};");
 					}
 				}
 				--_writer.Indent;
@@ -182,6 +183,45 @@ namespace VisualNovelInterface.ProjectExport
 				--_writer.Indent;
 				_writer.WriteLine("}");    //currentPanel closing Braces
 			}
+		}
+
+		public void ExportMainMenu(IndentedTextWriter _writer, SpriteImage _backgroundImage, SpriteExporter _spriteExporter) {
+			_writer.Indent = 0;
+
+			_writer.WriteLine("Menu {");
+			_writer.WriteLine();
+			++_writer.Indent;
+			_writer.WriteLine("Name: \"Main Menu\";");
+			_writer.WriteLine();
+			_writer.WriteLine($"BGIndex: {_spriteExporter.GetSpriteIndex(_backgroundImage)};");
+			_writer.WriteLine();
+			_writer.WriteLine("Items {");
+			++_writer.Indent;
+			_writer.WriteLine("Button {");
+			++_writer.Indent;
+			_writer.WriteLine("Text: \"Start Game\";");
+			_writer.WriteLine("Button: 50, 50, 50, 100, 0;");
+			_writer.WriteLine("Type: 0;");
+			--_writer.Indent;
+			_writer.WriteLine("}");
+			_writer.WriteLine("Button {");
+			++_writer.Indent;
+			_writer.WriteLine("Text: \"Load Game\";");
+			_writer.WriteLine("Button: 50, 110, 50, 100, 0;");
+			_writer.WriteLine("Type: 1;");
+			--_writer.Indent;
+			_writer.WriteLine("}");
+			_writer.WriteLine("Button {");
+			++_writer.Indent;
+			_writer.WriteLine("Text: \"Quit Game\";");
+			_writer.WriteLine("Button: 50, 170, 50, 100, 0;");
+			_writer.WriteLine("Type: 4;");
+			--_writer.Indent;
+			_writer.WriteLine("}");
+			--_writer.Indent;
+			_writer.WriteLine("}");
+			--_writer.Indent;
+			_writer.WriteLine("}");
 		}
 	}
 }

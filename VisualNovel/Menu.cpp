@@ -33,6 +33,8 @@ void Menu::LoadMenu(std::string _filepath) {
 
 	m_keywords = m_textLoader->LoadText(_filepath);
 	auto test = 0;
+	//Last keyword is an empty string for some reason
+	m_keywords.erase(m_keywords.end()-1);
 	//TODO while schleifen benutzen
 	for (int i = 0; i < m_keywords.size() - 1; i++) {
 
@@ -61,7 +63,7 @@ void Menu::LoadMenu(std::string _filepath) {
 					SpritePosition spritePosition;
 					spritePosition.Index = std::stoi(m_keywords[i + 1]);
 					m_SpriteIndices.push_back(spritePosition);
-					i = i + 2;
+					i = i + 3;
 					continue;
 				}
 				// Parse the Menu Items

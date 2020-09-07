@@ -15,16 +15,19 @@ namespace VisualNovelInterface.ProjectExport
 	{
 		private string m_exportPath;
 		private TextBuilder m_textBuilder;
-		public Exporter(string _exportPath = null) {
+		private string m_gameName;
+
+		public Exporter(string _exportPath = null, string _gameName = null) {
 			if (_exportPath == null) {
 				m_exportPath = Path.Combine(Directory.GetCurrentDirectory(), "Output");
 			} else {
 				m_exportPath = _exportPath;
 			}
+			m_gameName = _gameName + ".exe";
 			m_textBuilder = new TextBuilder();
 		}
 
-		public bool Export(Project _project, SpriteExporter _spriteExporter) {
+		public bool Export(Project _project, SpriteExporter _spriteExporter, SpriteImage _mainMenuBGImage) {
 			bool success = false;
 			try {
 				if (!Directory.Exists(m_exportPath)) {
@@ -54,7 +57,7 @@ namespace VisualNovelInterface.ProjectExport
 
 				//Storyboard
 				using (IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(Path.Combine(m_exportPath, "Storyboard.txt"), false))) {
-					m_textBuilder.Export(writer, _project, _spriteExporter);
+					m_textBuilder.ExportStory(writer, _project, _spriteExporter);
 					writer.Close();
 				}
 
@@ -74,6 +77,10 @@ namespace VisualNovelInterface.ProjectExport
 				}
 
 				//Menu Files
+				using (IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(Path.Combine(m_exportPath, "MainMenu.txt"), false))) {
+					m_textBuilder.ExportMainMenu(writer, _mainMenuBGImage, _spriteExporter);
+					writer.Close();
+				}
 
 				//Copy Files
 				string filename;
@@ -93,7 +100,7 @@ namespace VisualNovelInterface.ProjectExport
 					File.Copy(_spriteExporter.ButtonSpritesArray[i].Image, destFile, true);
 				}
 				//TTF Font Files
-				string path = Path.Combine(_project.FontManagerViewModel.CurrentUsedFont.Font.BaseUri.OriginalString, _project.FontManagerViewModel.CurrentUsedFont.Font.Source+".TTF");
+				string path = _project.FontManagerViewModel.CurrentUsedFont.Font.BaseUri.OriginalString;
 				filename = _project.FontManagerViewModel.CurrentUsedFont.Font.Source;
 				destFile = Path.Combine(m_exportPath, filename + ".ttf");
 				File.Copy(path, destFile, true);
@@ -130,8 +137,12 @@ namespace VisualNovelInterface.ProjectExport
 			FileInfo[] files = dir.GetFiles();
 			foreach (FileInfo file in files) {
 				try {
-				
-					string temppath = Path.Combine(sourceDirName, file.Name);
+					string temppath;
+					if (file.Extension != ".exe") {
+						temppath = Path.Combine(destDirName, file.Name);
+					} else {
+						temppath = Path.Combine(destDirName, m_gameName);
+					}
 					file.CopyTo(temppath, true);
 				} catch (Exception) {
 

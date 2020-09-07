@@ -667,6 +667,7 @@
                 <StackPanel Margin="10">
                     <Button Content="Add Background Image"
                             Margin="0,0,0,5"
+                            IsEnabled="{Binding IsPanelSelected}"
                             Command="{Binding AddBackgroundImageCommand}"/>
                     <GroupBox Header="Selected Items"
                               Margin="0,0,0,5">

@@ -97,6 +97,12 @@ namespace VisualNovelInterface.ViewModels
 			AddNewFontCommand = new RelayCommand(AddNewFont);
 			RemoveSelectedFontCommand = new RelayCommand(RemoveSelectedFont);
 			SetNewUsedFontCommand = new RelayCommand<ProjectFont>(SetNewUsedFont);
+
+			ProjectFont newFont = new ProjectFont(){
+				Font = new FontFamily(new Uri(Directory.GetCurrentDirectory() + "\\Resources\\fonts\\OpenSans-Regular.ttf"), "OpenSans-Regular"),
+				IsUsed = true };
+			CurrentUsedFont = newFont;
+			Fonts.Add(newFont);
 		}
 
 		private void AddNewFont() {

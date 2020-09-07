@@ -66,6 +66,10 @@ namespace VisualNovelInterface.Models
 			GlobalSprites = new ObservableCollection<SpriteImage>();
 			GlobalButtonSprites = new ObservableCollection<SpriteImage>();
 			OnPropertyChanged(nameof(Panels));
+
+			string path = Directory.GetCurrentDirectory() + "\\Resources\\images\\ButtonSpriteState.png";
+			SpriteImage newSprite = new SpriteImage(path, "ButtonSpriteState");
+			GlobalButtonSprites.Add(newSprite);
 		}
 
 		public static void Serialize(Project _project, string path = null) {
@@ -383,6 +387,10 @@ namespace VisualNovelInterface.Models
 																			  currentLine.UsedSprites[l].Width);
 							newSpriteVM.OnSpriteMoveEvent += _spriteMoveEvent;
 							newLine.Sprites.Add(newSpriteVM);
+							bool exists = newPanel.SpriteImages.ContainsKey(newSpriteVM.SpriteImage.Id);
+							if (!exists) {
+								newPanel.SpriteImages.Add(newSpriteVM.SpriteImage.Id, newSpriteVM.SpriteImage);
+							}
 						}
 						newBranch.SetEntryBranchEventHandler += _entryBranchEvent;
 						newBranch.ShownItems.Add(newLine);

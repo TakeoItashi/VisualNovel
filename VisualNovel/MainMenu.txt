@@ -2,7 +2,7 @@ Menu {
 
 	Name: "Main Menu";
 
-	BGIndex: 2
+	BGIndex: 2;
 
 	Items {
 ##		Text {
@@ -11,12 +11,12 @@ Menu {
 ##		}
 		Button {
 			Text: "Start Game";
-			Button: 0; ## 50, 50, 50, 100, 0;
+			Button: 50, 50, 50, 100, 0;
 			Type: 0;
 		}
 		Button {
 			Text: "Load Game";
-			Button: 0; ##50, 110, 50, 100, 0;
+			Button: 50, 110, 50, 100, 0;
 			Type: 1;
 		}
 ##		Button {
@@ -31,7 +31,7 @@ Menu {
 ##		}
 		Button {
 			Text: "Quit Game";
-			Button: 0; ## 50, 290, 50, 100, 0;
+			Button: 50, 170, 50, 100, 0;
 			Type: 4;
 		}
 	}

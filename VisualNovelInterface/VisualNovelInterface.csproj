@@ -54,6 +54,16 @@
   <PropertyGroup>
     <StartupObject>VisualNovelInterface.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'InterfaceDebug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\InterfaceDebug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
@@ -159,6 +169,9 @@
     <Compile Include="Views\ChooseButtonSpriteDialog.xaml.cs">
       <DependentUpon>ChooseButtonSpriteDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ExportWizardDialog.xaml.cs">
+      <DependentUpon>ExportWizardDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FontConfigWindow.xaml.cs">
       <DependentUpon>FontConfigWindow.xaml</DependentUpon>
     </Compile>
@@ -172,6 +185,10 @@
       <DependentUpon>VariableManagerWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ChooseButtonSpriteDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExportWizardDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
