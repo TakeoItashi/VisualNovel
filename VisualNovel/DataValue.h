@@ -17,7 +17,7 @@ using ValueVariant = std::variant<int, std::string, float, bool>;
 class DataValue {
 	public:
 		DataValue();
-		DataValue(std::string _name, DataValueType _type, ValueVariant _value, ConditionAction _action);
+		DataValue(std::string _name, DataValueType _type, ValueVariant _value, ConditionAction _action = ConditionAction::NOACTION);
 		~DataValue();
 
 		std::string m_name;
@@ -26,6 +26,7 @@ class DataValue {
 		void SetValue(int _value);
 		void SetValue(float _value);
 		void SetValue(std::string _value);
+		void SetValue(ValueVariant _value);
 
 		//TODO strings hinzufügen
 		bool GetBool();

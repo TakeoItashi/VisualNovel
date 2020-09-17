@@ -232,6 +232,7 @@
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TextLoader.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="VariableAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="ButtonSpriteState.png" />
@@ -273,6 +274,8 @@
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="TextLoader.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="VariableAction.h" />
+    <ClInclude Include="VariableOperation.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ImageImports.txt">

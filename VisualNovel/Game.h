@@ -100,6 +100,8 @@ public:
 
 	static void LoadStoryBoard();
 
+	static void LoadVariables();
+
 	static void ShowMenu(Menu* _menuInstance);
 
 	static bool ChangeBranch(const char* _BranchKey);

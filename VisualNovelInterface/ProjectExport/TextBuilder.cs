@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
 using VisualNovelInterface.Models;
+using VisualNovelInterface.Models.Enums;
 using VisualNovelInterface.ViewModels;
 
 namespace VisualNovelInterface.ProjectExport
@@ -220,6 +221,40 @@ namespace VisualNovelInterface.ProjectExport
 			_writer.WriteLine("}");
 			--_writer.Indent;
 			_writer.WriteLine("}");
+			--_writer.Indent;
+			_writer.WriteLine("}");
+		}
+
+		public void ExportVariables(IndentedTextWriter _writer, VariableManagerViewModel _vm) {
+			_writer.Indent = 0;
+			_writer.WriteLine("Variables {");
+			++_writer.Indent;
+
+			for (int i = 0; i < _vm.Variables.Count; ++i) {
+				string type = "";
+				switch (_vm.Variables[i].ValueType) {
+					case DataValueTypeEnum.trigger:
+						type = "trigger";
+						break;
+					case DataValueTypeEnum.variable:
+						type = "variable";
+						break;
+					case DataValueTypeEnum.decimalCCPlus:
+						type = "decimal";
+						break;
+					case DataValueTypeEnum.text:
+						type = "text";
+						break;
+				}
+
+				_writer.WriteLine("DataValue {");
+				++_writer.Indent;
+				_writer.WriteLine($"Name: {_vm.Variables[i].Name};");
+				_writer.WriteLine($"Type: {type};");
+				_writer.WriteLine($"Value: { _vm.Variables[i].Value };");
+				--_writer.Indent;
+				_writer.WriteLine("}");
+			}
 			--_writer.Indent;
 			_writer.WriteLine("}");
 		}

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "ContinueType.h"
+#include "VariableAction.h"
 
 class SplitOption {
 public:
@@ -9,4 +10,5 @@ public:
 	int SpriteIndex;
 	ContinueType m_type;
 	std::string m_continueKey;
+	std::vector<VariableAction*> m_VariableActions;
 };

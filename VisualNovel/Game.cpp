@@ -18,6 +18,7 @@
 #include "Game.h"
 #include "SplitDecision.h"
 #include "Branch.h"
+#include "VariableAction.h"
 
 Game* Game::m_gamePointer = nullptr;					//required for singleton
 MainMenu* Game::m_MainMenu;								//
@@ -33,11 +34,11 @@ SDL_Renderer* Game::m_Renderer;							// Defining the static members is required
 SDL_Event* Game::m_EventHandler;						//
 TextLoader* Game::m_textLoader;							//
 Save* Game::m_save;										//
-std::map<std::string, Panel*> Game::m_PanelMap;					//
+std::map<std::string, Panel*> Game::m_PanelMap;			//
 std::map<std::string, int> Game::m_panelNameDictionary;	//
 std::vector<std::string> Game::m_keywords;				//
 int Game::m_CurrentLine;								//
-std::string Game::m_CurrentPanelKey;								//
+std::string Game::m_CurrentPanelKey;					//
 Menu* Game::m_CurrentMenu;								//
 bool Game::m_GameIsRunning;								//
 bool Game::m_IsDecisionPending;							//
@@ -97,7 +98,6 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler, std::strin
 	_initialSettings->m_Font = m_TextBox->GetFont();
 
 	m_textLoader = new TextLoader();
-	m_keywords = m_textLoader->LoadText("Storyboard.txt");
 
 	m_MainMenu = new MainMenu(m_Renderer, m_ImageLoader, m_GameSettings, "MainMenu.txt");
 	m_CurrentMenu = m_MainMenu;
@@ -105,6 +105,12 @@ void Game::Init(Settings* _initialSettings, SDL_Event* _eventHandler, std::strin
 	m_LoadMenu = new OptionsMenu(m_Renderer, m_ImageLoader, m_GameSettings, "LoadMenu.txt");
 	m_SaveMenu = new OptionsMenu(m_Renderer, m_ImageLoader, m_GameSettings, "SaveMenu.txt");
 
+	m_save = new Save();
+
+	m_keywords = m_textLoader->LoadText("Variables.txt");
+	LoadVariables();
+	m_keywords.shrink_to_fit();
+	m_keywords = m_textLoader->LoadText("Storyboard.txt");
 	LoadStoryBoard();
 	m_GameIsRunning = false;
 }
@@ -118,22 +124,7 @@ bool Game::NewGame(Button* _butt) {
 	m_save = new Save();
 	m_save->m_currentLine = m_CurrentLine;
 	m_save->m_currentPanel = m_CurrentPanelKey;
-	DataValue* testValue = new DataValue();
-	testValue->m_name = "StoryTrigger1";
-	testValue->SetValue(true);
-	m_save->m_values.insert({ testValue->m_name, testValue });
 
-	testValue = new DataValue();
-	testValue->m_name = "StoryVariable1";
-	testValue->SetValue(3);
-	m_save->m_values.insert({ testValue->m_name, testValue });
-
-	testValue = new DataValue();
-	testValue->m_name = "TestDecimal1";
-	testValue->SetValue(6.9f);
-	m_save->m_values.insert({ testValue->m_name, testValue });
-
-	m_save->Serialize();
 	m_GameIsRunning = true;
 
 	m_CurrentMenu = nullptr;
@@ -346,8 +337,7 @@ bool Game::ShowSaveMenu(Button* _buttonCallback) {
 		std::string* saveGameInfos = Save::GetSaveGameText(GetSaveSlotPath(i - 1));
 		if (saveGameInfos == nullptr) {
 			buttonText = "Empty Save Slot";
-		}
-		else {
+		} else {
 			//TODO set the save slot name to the last shown line of text by using the saveGameInfos that were created by the GetSaveGameText method
 			std::string currentLineString = saveGameInfos[0];
 			std::string panelKey = saveGameInfos[1];
@@ -369,7 +359,7 @@ bool Game::ShowSaveMenu(Button* _buttonCallback) {
 		m_SaveMenu->m_MenuItems[i].Button->PosX = 660;
 		m_SaveMenu->m_MenuItems[i].Button->m_textTexture->PosX = 660;
 	}
-	
+
 
 
 
@@ -395,8 +385,7 @@ bool Game::ShowLoadMenu(Button* _buttonCallback) {
 		std::string* saveGameInfos = Save::GetSaveGameText(GetSaveSlotPath(i - 1));
 		if (saveGameInfos == nullptr) {
 			buttonText = "Empty Save Slot";
-		}
-		else {
+		} else {
 			//TODO set the save slot name to the last shown line of text by using the saveGameInfos that were created by the GetSaveGameText method
 			std::string currentLineString = saveGameInfos[0];
 			std::string panelKey = saveGameInfos[1];
@@ -596,6 +585,10 @@ void Game::LoadStoryBoard() {
 									} else if (m_keywords[i + 1] == "decimal") {
 
 										newType = DataValueType::decimal;
+										i = i + 2;
+									} else if (m_keywords[i + 1] == "text") {
+
+										newType = DataValueType::text;
 										i = i + 2;
 									} else {
 										//TODO Fehlermeldung
@@ -822,8 +815,90 @@ void Game::LoadStoryBoard() {
 																	case ContinueType::PanelContinue:
 																		i += 3;
 																		newOption->m_continueKey = m_keywords[i];
-																		i += 3;
-																		continue;
+																		i += 2;
+																		if (m_keywords[i] == "Variables" && m_keywords[i + 1] == "{") {
+																			i += 2;
+																			VariableAction* newVariableAction = new VariableAction();
+																			for (i; i < m_keywords.size(); i) {
+																				if (m_keywords[i] == "Variable" && m_keywords[i + 1] == "{") {
+																					i += 2;
+																					if (m_keywords[i] == "Name:") {
+																						i++;
+																						newVariableAction->m_VariableKey = m_keywords[i];
+																						i += 2;
+																					}
+																					if (m_keywords[i] == "Type:") {
+																						i++;
+
+																						if (m_keywords[i] == "trigger") {
+
+																							newVariableAction->m_VariableType = DataValueType::trigger;
+																						} else if (m_keywords[i] == "variable") {
+
+																							newVariableAction->m_VariableType = DataValueType::variable;
+																						} else if (m_keywords[i] == "decimal") {
+
+																							newVariableAction->m_VariableType = DataValueType::decimal;
+																						} else if (m_keywords[i] == "text") {
+
+																							newVariableAction->m_VariableType = DataValueType::text;
+																						}
+																						i += 2;
+																					}
+																					if (m_keywords[i] == "Operation:") {
+																						i++;
+																						if (m_keywords[i] == "add") {
+
+																							newVariableAction->m_Operation = VariableOperation::add;
+																						} else if (m_keywords[i] == "subtract") {
+
+																							newVariableAction->m_Operation = VariableOperation::subtract;
+																						} else if (m_keywords[i] == "set") {
+
+																							newVariableAction->m_Operation = VariableOperation::set;
+																						}
+																						i += 2;
+																					}
+																					if (m_keywords[i] == "Value:") {
+																						i++;
+																						switch (newVariableAction->m_VariableType) {
+																							case DataValueType::trigger:
+																								if (m_keywords[i] == "true") {
+
+																									newVariableAction->m_Value = true;
+																								} else {
+
+																									newVariableAction->m_Value = false;
+																								}
+																								break;
+																							case DataValueType::variable:
+																								newVariableAction->m_Value = atoi(m_keywords[i].c_str());
+																								break;
+																							case DataValueType::decimal:
+																								newVariableAction->m_Value = (float)atof(m_keywords[i].c_str());
+																								break;
+																							case DataValueType::text:
+																								newVariableAction->m_Value = m_keywords[i];
+																								break;
+																						}
+																						i += 2;
+																					}
+																					if (m_keywords[i] == "}") {
+																						i++;
+																						newOption->m_VariableActions.push_back(newVariableAction);
+																						continue;
+																					}
+																				}
+																				if (m_keywords[i] == "}") {
+																					i += 2;
+																					break;
+																				}
+																			}
+																		} else {
+
+																			i++;
+																			continue;
+																		}
 																}
 															}
 															if (m_keywords[i] == "}") {
@@ -874,6 +949,106 @@ void Game::LoadStoryBoard() {
 			newPanel->m_currentBranchKey = newPanel->m_EntryBranchKey;
 			m_PanelMap.insert(std::pair(newPanel->m_PanelName, newPanel));
 			m_panelNameDictionary.insert(std::pair(newPanel->m_PanelName, (m_PanelMap.size() - 1)));
+		}
+	}
+}
+
+void Game::LoadVariables() {
+	for (int i = 0; i < m_keywords.size(); i++) {
+
+		if (m_keywords[i] == "Variables" && m_keywords[i + 1] == "{") {
+			i += 2;
+			for (i; i < m_keywords.size(); i) {
+
+				if (m_keywords[i] == "DataValue" && m_keywords[i + 1] == "{") {
+
+					DataValue* newDataValue;
+					i = i + 2;
+					DataValueType newType;
+					std::string newName;
+					std::variant<int, std::string, float, bool> newValue = new void*;
+
+					for (i; i < m_keywords.size(); i) {
+
+						if (m_keywords[i] == ";") {
+
+							i++;
+							continue;
+						}
+						if (m_keywords[i] == "Name:") {
+
+							newName = m_keywords[i + 1];
+							i = i + 2;
+							continue;
+						}
+						if (m_keywords[i] == "Type:") {
+
+							if (m_keywords[i + 1] == "trigger") {
+
+								newType = DataValueType::trigger;
+								i = i + 2;
+							} else if (m_keywords[i + 1] == "variable") {
+
+								newType = DataValueType::variable;
+								i = i + 2;
+							} else if (m_keywords[i + 1] == "decimal") {
+
+								newType = DataValueType::decimal;
+								i = i + 2;
+							} else if (m_keywords[i + 1] == "text") {
+
+								newType = DataValueType::text;
+								i = i + 2;
+							} else {
+								//TODO Fehlermeldung
+							}
+							continue;
+						}
+						if (m_keywords[i] == "Value:") {
+
+							switch (newType) {
+								case DataValueType::trigger:
+									if (m_keywords[i + 1] == "true") {
+
+										newValue = true;
+									} else {
+
+										newValue = false;
+									}
+									i = i + 2;
+									break;
+								case DataValueType::variable:
+									newValue = atoi(m_keywords[i + 1].c_str());
+									i = i + 2;
+									break;
+								case DataValueType::decimal:
+									newValue = (float)atof(m_keywords[i + 1].c_str());
+									i = i + 2;
+									break;
+								case DataValueType::text:
+									newValue = m_keywords[i + 1];
+									i = i + 2;
+									break;
+							}
+							if (m_keywords[i] == "}") {
+								i++;
+								break;
+							}
+						}
+						
+						if (m_keywords[i] == "}") {
+							newDataValue = new DataValue(newName, newType, newValue);
+							m_save->m_values.insert({ newDataValue->m_name, newDataValue });
+							i++;
+							break;
+						}
+					}
+				}
+				if (m_keywords[i] == "}") {
+					i++;
+					break;
+				}
+			}
 		}
 	}
 }

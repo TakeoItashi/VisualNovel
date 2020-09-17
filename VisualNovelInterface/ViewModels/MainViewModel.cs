@@ -399,8 +399,8 @@ namespace VisualNovelInterface.ViewModels
 			SaveCurrentProjectCommand = new RelayCommand(SaveCurrentProject);
 			LoadCurrentProjectCommand = new RelayCommand(LoadCurrentProject);
 #if DEBUG
-			//GenerateTestStory();
-			//OnPropertyChanged(nameof(SelectedItem));
+			GenerateTestStory();
+			OnPropertyChanged(nameof(SelectedItem));
 #endif
 			//IntPtr handle = DLLImporter.CreateDataValue_bool("newTrigger", true);
 			//Console.WriteLine($"The Adress is: 0x{handle.ToString("X16")}");
@@ -774,7 +774,8 @@ namespace VisualNovelInterface.ViewModels
 
 			CurrentProject.GlobalButtonSprites.Add(buttonSprite);
 			CurrentProject.GlobalButtonSprites.Add(buttonColorSprite);
-
+			
+			CurrentProject.GlobalSprites.Add(wallpaperSprite);
 			SelectedPanel.BackgroundImage = wallpaperSprite;
 
 			SpriteViewModel dogeSVM = new SpriteViewModel(dogeSprite);
@@ -923,8 +924,8 @@ namespace VisualNovelInterface.ViewModels
 			var ProjectDir = Path.GetFullPath(currentPath);
 			currentPath = Path.Combine(ProjectDir, @"VisualNovelInterface\Resources\fonts\");
 
-			FontFamily newFontFam = new FontFamily(new Uri(currentPath), "PAPYRUS");
-			ProjectFont newFont = new ProjectFont(){ Font = newFontFam, IsUsed = true};
+			FontFamily newFontFam = new FontFamily(new Uri(currentPath + "PAPYRUS.TTF"), "PAPYRUS");
+			ProjectFont newFont = new ProjectFont(){ Font = newFontFam, IsUsed = false};
 			//FontFamily newFont = new FontFamily(new Uri(currentPath), "OpenSans-Regular");
 			currentProject.FontManagerViewModel.Fonts.Add(newFont);
 			currentProject.FontManagerViewModel.CurrentUsedFont = currentProject.FontManagerViewModel.Fonts.First();

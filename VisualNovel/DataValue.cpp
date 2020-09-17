@@ -43,6 +43,12 @@ void DataValue::SetValue(std::string _value) {
 	m_Type = DataValueType::text;
 }
 
+void DataValue::SetValue(ValueVariant _value) {
+
+	m_Value = _value;
+	m_Type = (DataValueType)_value.index();
+}
+
 bool DataValue::GetBool() {
 
 	//getIf gibt einen nullptr zurück, wenn der wert nicht auf float gesetzt ist

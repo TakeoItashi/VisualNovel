@@ -495,7 +495,8 @@
                                             HorizontalAlignment="Left"
                                             Orientation="Horizontal">
                                     <Button Click="Refresh_Button_Click"
-                                            Content="Refresh"/>
+                                            Content="Refresh"
+                                            Visibility="Collapsed"/>
                                     <Button x:Name="Add_Option_Button"
                                             Margin="5,0,0,0"
                                             Width="75"

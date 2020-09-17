@@ -124,13 +124,16 @@ namespace VisualNovelInterface.Models
 			newProject.FontManager = new SerializableFontManager() {
 				CurrentUsedFont = FontManagerViewModel.CurrentUsedFont.Font,
 				FontSize = FontManagerViewModel.FontSize,
-				Fonts = new System.Windows.Media.FontFamily[FontManagerViewModel.Fonts.Count]
+				EncodedFontName_FontFiles = new Tuple<string, string>[FontManagerViewModel.Fonts.Count]
 			};
 
 			//Fonts
 			for (int i = 0; i < FontManagerViewModel.Fonts.Count; ++i) {
 
-				newProject.FontManager.Fonts[i] = FontManagerViewModel.Fonts[i].Font;
+				byte[] bytes = File.ReadAllBytes(FontManagerViewModel.Fonts[i].Font.BaseUri.LocalPath.ToString());
+				string file = Convert.ToBase64String(bytes);
+				Tuple<string, string> font = new Tuple<string, string>(Path.GetFileNameWithoutExtension(FontManagerViewModel.Fonts[i].Font.BaseUri.ToString()), file);
+				newProject.FontManager.EncodedFontName_FontFiles[i] = font;
 			}
 
 			newProject.Settings = new SerializableSettings() {
@@ -291,8 +294,13 @@ namespace VisualNovelInterface.Models
 								  new Tuple<Enums.DataValueTypeEnum, object>(_project.VariableManager.Variables[i].Type, _project.VariableManager.Variables[i].Value)));
 			}
 			ObservableCollection<ProjectFont> FontsList = new ObservableCollection<ProjectFont>();
-			for (int i = 0; i < _project.FontManager.Fonts.Length; ++i) {
-				FontsList.Add(new ProjectFont() { Font = _project.FontManager.Fonts[i], IsUsed = false });
+
+			for (int i = 0; i < _project.FontManager.EncodedFontName_FontFiles.Length; ++i) {
+				byte[] bytes = Convert.FromBase64String(_project.FontManager.EncodedFontName_FontFiles[i].Item2);
+				string path = Directory.GetCurrentDirectory()+"\\" +_project.FontManager.EncodedFontName_FontFiles[i].Item1;
+				File.WriteAllBytes(path, bytes);
+				Uri uriPath = new Uri(path);
+				FontsList.Add(new ProjectFont() { Font = new System.Windows.Media.FontFamily(uriPath,Path.GetFileNameWithoutExtension(path)), IsUsed = false });
 			}
 
 			FontManagerViewModel = new FontManagerViewModel() {

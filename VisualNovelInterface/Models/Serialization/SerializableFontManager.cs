@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 
 namespace VisualNovelInterface.Models.Serialization
 {
@@ -8,7 +9,7 @@ namespace VisualNovelInterface.Models.Serialization
 			get;
 			set;
 		}
-		public FontFamily[] Fonts {
+		public Tuple<string, string>[] EncodedFontName_FontFiles {
 			get;
 			set;
 		}

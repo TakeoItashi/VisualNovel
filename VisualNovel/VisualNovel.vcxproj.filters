@@ -103,6 +103,12 @@
     <Filter Include="Ressourcendateien\TextFiles\TestFilter">
       <UniqueIdentifier>{3c9a4df1-1d58-4b59-af14-afd7d9a08a49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\InGameView\Variables">
+      <UniqueIdentifier>{94f8e620-ce56-4ed2-b278-9b96fc34107b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\InGameView\Variables">
+      <UniqueIdentifier>{2fd496a3-92ce-4bc1-983a-8df9501a753d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -156,6 +162,9 @@
     </ClCompile>
     <ClCompile Include="SplitDecision.cpp">
       <Filter>Quelldateien\InGameView\SplitDecision</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableAction.cpp">
+      <Filter>Quelldateien\InGameView\Conditions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,6 +281,12 @@
     <ClInclude Include="MenuText.h">
       <Filter>Headerdateien\UI\BaseMenu</Filter>
     </ClInclude>
+    <ClInclude Include="VariableAction.h">
+      <Filter>Headerdateien\InGameView\Variables</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableOperation.h">
+      <Filter>Headerdateien\InGameView\Variables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ImageImports.txt">
@@ -299,7 +314,7 @@
       <Filter>Ressourcendateien\TextFiles</Filter>
     </Text>
     <Text Include="Variables.txt">
-    	<Filter>Ressourcendateien\TextFiles</Filter>
+      <Filter>Ressourcendateien\TextFiles</Filter>
     </Text>
     <Text Include="SaveMenu.txt">
       <Filter>Ressourcendateien\TextFiles</Filter>

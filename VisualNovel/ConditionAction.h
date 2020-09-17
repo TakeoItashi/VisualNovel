@@ -4,4 +4,5 @@ enum ConditionAction {
 	isSmaller,
 	isEqual,
 	isBigger,
+	NOACTION,
 };

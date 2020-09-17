@@ -33,6 +33,9 @@ void Menu::LoadMenu(std::string _filepath) {
 
 	m_keywords = m_textLoader->LoadText(_filepath);
 	int saveSlotIndex = 0;
+	if (m_keywords[m_keywords.size() - 1] == "") {
+		m_keywords.pop_back();
+	}
 	//TODO while schleifen benutzen
 	for (int i = 0; i < m_keywords.size() - 1; i++) {
 

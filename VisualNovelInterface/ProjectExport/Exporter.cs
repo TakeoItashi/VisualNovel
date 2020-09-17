@@ -61,7 +61,7 @@ namespace VisualNovelInterface.ProjectExport
 					writer.Close();
 				}
 
-				//options
+				//Options Datei
 				using (StreamWriter writer = new StreamWriter(Path.Combine(m_exportPath, "options.txt"), false)) {
 					SettingsViewModel svm = _project.ProjectSettingsViewModel;
 					FontManagerViewModel fmvm = _project.FontManagerViewModel;
@@ -79,6 +79,34 @@ namespace VisualNovelInterface.ProjectExport
 				//Menu Files
 				using (IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(Path.Combine(m_exportPath, "MainMenu.txt"), false))) {
 					m_textBuilder.ExportMainMenu(writer, _mainMenuBGImage, _spriteExporter);
+					writer.Close();
+				}
+
+				//SaveMenu
+				using (IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(Path.Combine(m_exportPath, "SaveMenu.txt"), false))) {
+
+					var base64EncodedBytes = Convert.FromBase64String("TWVudSB7CgoJTmFtZTogIlNhdmUgTWVudSI7CgoJQkdJbmRleDogMgoKCUl0ZW1zIHsKCQlCdXR0b24gewoJCQlUZXh0OiAiR28gQmFjayI7CgkJCUJ1dHRvbjogNjAwLCA1MDAsIDEwMCwgMjAwLCAwOwoJCQlUeXBlOiAxMTsKCQl9CgkJQnV0dG9uIHsKCQkJVGV4dDogIlRlbXAiOwoJCQlCdXR0b246IDUwLCAxNzAsIDUwLCAxMDAsIDA7CgkJCVR5cGU6IDc7CgkJfQoJCUJ1dHRvbiB7CgkJCVRleHQ6ICJUZW1wIjsKCQkJQnV0dG9uOiA1MCwgMjMwLCA1MCwgMTAwLCAwOwoJCQlUeXBlOiA3OwoJCX0KCQlCdXR0b24gewoJCQlUZXh0OiAiVGVtcCI7CgkJCUJ1dHRvbjogNTAsIDI5MCwgNTAsIDEwMCwgMDsKCQkJVHlwZTogNzsKCQl9CgoJCUJ1dHRvbiB7CgkJCVRleHQ6ICJUZW1wIjsKCQkJQnV0dG9uOiAyMDAsIDE3MCwgNTAsIDEwMCwgMDsKCQkJVHlwZTogNzsKCQl9CgkJQnV0dG9uIHsKCQkJVGV4dDogIlRlbXAiOwoJCQlCdXR0b246IDIwMCwgMjMwLCA1MCwgMTAwLCAwOwoJCQlUeXBlOiA3OwoJCX0KCQlCdXR0b24gewoJCQlUZXh0OiAiVGVtcCI7CgkJCUJ1dHRvbjogMjAwLCAyOTAsIDUwLCAxMDAsIDA7CgkJCVR5cGU6IDc7CgkJfQoJfQp9");
+					string exportString = Encoding.UTF8.GetString(base64EncodedBytes);
+					writer.Write(exportString);
+					writer.Close();
+				}
+				//LoadMenu
+				using (IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(Path.Combine(m_exportPath, "LoadMenu.txt"), false))) {
+					var base64EncodedBytes = Convert.FromBase64String("TWVudSB7CgoJTmFtZTogIkxvYWQgTWVudSI7CgoJQkdJbmRleDogMgoKCUl0ZW1zIHsKCQlCdXR0b24gewoJCQlUZXh0OiAiR28gQmFjayI7CgkJCUJ1dHRvbjogNjAwLCA1MDAsIDEwMCwgMjAwLCAwOwoJCQlUeXBlOiAxMTsKCQl9CgkJQnV0dG9uIHsKCQkJVGV4dDogIlRlbXAiOwoJCQlCdXR0b246IDUwLCAxNzAsIDUwLCAxMDAsIDA7CgkJCVR5cGU6IDEyOwoJCX0KCQlCdXR0b24gewoJCQlUZXh0OiAiVGVtcCI7CgkJCUJ1dHRvbjogNTAsIDIzMCwgNTAsIDEwMCwgMDsKCQkJVHlwZTogMTI7CgkJfQoJCUJ1dHRvbiB7CgkJCVRleHQ6ICJUZW1wIjsKCQkJQnV0dG9uOiA1MCwgMjkwLCA1MCwgMTAwLCAwOwoJCQlUeXBlOiAxMjsKCQl9CgoJCUJ1dHRvbiB7CgkJCVRleHQ6ICJUZW1wIjsKCQkJQnV0dG9uOiAyMDAsIDE3MCwgNTAsIDEwMCwgMDsKCQkJVHlwZTogMTI7CgkJfQoJCUJ1dHRvbiB7CgkJCVRleHQ6ICJUZW1wIjsKCQkJQnV0dG9uOiAyMDAsIDIzMCwgNTAsIDEwMCwgMDsKCQkJVHlwZTogMTI7CgkJfQoJCUJ1dHRvbiB7CgkJCVRleHQ6ICJUZW1wIjsKCQkJQnV0dG9uOiAyMDAsIDI5MCwgNTAsIDEwMCwgMDsKCQkJVHlwZTogMTI7CgkJfQoJfQp9");
+					string exportString = Encoding.UTF8.GetString(base64EncodedBytes);
+					writer.Write(exportString);
+					writer.Close();
+				}
+				//PauseMenu
+				using (IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(Path.Combine(m_exportPath, "PauseMenu.txt"), false))) {
+					var base64EncodedBytes = Convert.FromBase64String("TWVudSB7CgoJTmFtZTogIlBhdXNlIE1lbnUiOwoKCUJHSW5kZXg6IDIKCglJdGVtcyB7CgkJQnV0dG9uIHsKCQkJVGV4dDogIkJhY2sgdG8gR2FtZSI7CgkJCUJ1dHRvbjogNTAsIDUwLCAxMDAsIDIwMCwgMDsKCQkJVHlwZTogMTA7CgkJfQoJCUJ1dHRvbiB7CgkJCVRleHQ6ICJTYXZlIjsKCQkJQnV0dG9uOiA1MCwgMTEwLCA1MCwgMTAwLCAwOwoJCQlUeXBlOiAxNDsKCQl9CgkJQnV0dG9uIHsKCQkJVGV4dDogIkxvYWQiOwoJCQlCdXR0b246IDUwLCAxNzAsIDUwLCAxMDAsIDA7CgkJCVR5cGU6IDE1OwoJCX0KCQlCdXR0b24gewoJCQlUZXh0OiAiQmFjayB0byBNYWluIE1lbnUiOwoJCQlCdXR0b246IDUwLCAyMzAsIDUwLCAxMDAsIDA7CgkJCVR5cGU6IDEzOwoJCX0KCX0KfQ==");
+					string exportString = Encoding.UTF8.GetString(base64EncodedBytes);
+					writer.Write(exportString);
+					writer.Close();
+				}
+				//Variables
+				using (IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(Path.Combine(m_exportPath, "Variables.txt"), false))) {
+					m_textBuilder.ExportVariables(writer, _project.VariableManagerViewModel);
 					writer.Close();
 				}
 
@@ -104,12 +132,11 @@ namespace VisualNovelInterface.ProjectExport
 				filename = _project.FontManagerViewModel.CurrentUsedFont.Font.Source;
 				destFile = Path.Combine(m_exportPath, filename + ".ttf");
 				File.Copy(path, destFile, true);
-				
+
 				//bin Files
 				path = Directory.GetCurrentDirectory() + @"\bin";
 				DirectoryCopy(path, m_exportPath, false);
 
-				//Options Datei
 				return success = true;
 			} catch (Exception ex) {
 				MessageBox.Show("Export failed! " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
